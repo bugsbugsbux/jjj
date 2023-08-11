@@ -980,6 +980,3 @@ monad           scripts show shortnames
 monad           loadd   like load but print each line before executing
 monad           require like load but only if was not loaded already
 ```
-
-### TODO
-short explaination of used builtins
