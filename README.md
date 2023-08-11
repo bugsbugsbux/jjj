@@ -259,16 +259,7 @@ way.
   matchthis 1 2 3
   matchthis 1 2 4
   ```
-- Goto: According to Uncle Bob "goto"s in modern code are a nogo.
-  ```J
-  again =. 1            NB. local assignment
-  label_mylabel.        NB. name is part of controlword
-  echo 'twice'
-  if. again do.
-    again =. 0
-    goto_mylabel.       NB. name is part of controlword
-  end.
-  ```
+- Goto: Considered Harmful - Edsger Dijkstra
 - While loops: Only run if *first atom* is not false (0).
   ```J
   while. 'aa'='ab' do.  NB. only considers FIRST atom
