@@ -9,17 +9,19 @@ Found anything wrong? File an issue at
 
 # An overview of J
 
-An introduction to J that gets to the point. The reader should know some
-programming (but doesn't have to be an expert).
+An introduction to the J programming language that gets to the point. It
+is intended for those with (some) programming experience, but others
+should be mostly fine after googling function, argument, class and
+instance.
 
-This is not a reference: read the whole thing and try the examples.
-Abbreviations are listed in the appendix.
+This is not a reference: Read the whole thing and try the examples.
+Abbreviations and covered builtins are listed in the appendix.
 
 Important links:
 
 - Project Homepage: <https://jsoftware.com>
 - Try J online: <https://jsoftware.github.io/j-playground/bin/html2/>
-- All builtin operators, with links to their wiki pages:
+- **All builtin operators**, with links to their wiki pages:
   <https://code.jsoftware.com/wiki/NuVoc>
 - Good old wiki:
   <https://www.jsoftware.com/help/dictionary/contents.htm>
