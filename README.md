@@ -893,22 +893,6 @@ The following verbs inherited from the z-locale are used to import code:
 
 ## Appendix
 
-#### Abbreviations:
-
-- x                 ... left arg (in modifiers: of created entity)
-- y                 ... right arg (in modifiers: of created entity)
-- u                 ... left arg of modifier, indicates it is a verb
-- v                 ... right arg of modifier, indicates it is a verb
-- m                 ... left arg of modifier, indicates it is a noun
-- n                 ... right arg of modifier, indicates it is a noun
-- fn                ... function
-- arg/s             ... argument/s
-- esc               ... escape
-- elem/s            ... element/s
-- dim/s             ... dimension/s
-- docs              ... documentation
-- excl              ... excluding
-
 #### Covered builtins:
 ```
 comment         NB.     comment rest of line
@@ -980,3 +964,19 @@ monad           scripts show shortnames
 monad           loadd   like load but print each line before executing
 monad           require like load but only if was not loaded already
 ```
+
+#### Abbreviations:
+
+- x                 ... left arg (in modifiers: of created entity)
+- y                 ... right arg (in modifiers: of created entity)
+- u                 ... left arg of modifier, indicates it is a verb
+- v                 ... right arg of modifier, indicates it is a verb
+- m                 ... left arg of modifier, indicates it is a noun
+- n                 ... right arg of modifier, indicates it is a noun
+- fn                ... function
+- arg/s             ... argument/s
+- esc               ... escape
+- elem/s            ... element/s
+- dim/s             ... dimension/s
+- docs              ... documentation
+- excl              ... excluding
