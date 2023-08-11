@@ -904,17 +904,17 @@ dyad            -       subtract
 dyad            ,       join lists
 dyad            +       addition
 monad           +       complex conjugate
-adverb          /       inserts its verb between elements of new verb's arg/s
+adverb          /       puts verb between elements of new verb's arg/s
 conjunction     :       define entities, separate monad and dyad bodies
 monad           echo    output message
-monad/dyad      __: _9: ... 0: ... 9: _: ignore arg/s and return its digit
+ambivalent      __: _9: ... 0: ... 9: _: ignore arg/s and return digit
 monad           ":      convert to displayable byte array
 dyad            *       multiplication
 monad           names   show names defined in current namespace
 (conjunction    !:)     access lots of system functions
 (dyad           o.)     access to circle functions (sin, cos, ...)
 assignment      =:      assign to global namespace
-assignment      =.      assign to local namespace if possible else global
+assignment      =.      try assigning to local namespace else to global
 dyad            =       compare per element
 monad           $       get shape
 monad           #       get length
