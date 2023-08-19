@@ -1,8 +1,10 @@
-<!-- <head><meta http-equiv="refresh" content="5"/></head> -->
+<!--
+<head><meta http-equiv="refresh" content="5"/></head>
 <style>
 pre { background: #dddddd; padding: 1em; overflow: auto; }
 code { background:#dddddd; }
 </style>
+-->
 
 Found anything wrong? File an issue at
 <https://github.com/herrvonvoid/jjj/issues>.
