@@ -481,8 +481,8 @@ verb-rank                   frame, selected shape           shape
 x234 +"0 0 x23
 ```
 
-Replace the rank-conjunction in the last example with the ones from the
-following table:
+Replace the rank-conjunction in the last expression with the ones from
+the following table:
 ```
             left-arg-shape  right-arg-shape verb-results-   final
 verb-ranks  frame, selected frame, selected shape           shape
