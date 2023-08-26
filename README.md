@@ -120,7 +120,7 @@ a noun). The new function may return any entity, even more modifiers,
 which would also be processed before the first verb evaluates!
 
 ```J
-1 + 2 + 3           NB. dyadic + gives the sum: 6
+1 + 2 + 3           NB. dyadic + is addition
 +  1 2 3j4          NB. monadic + gives the complex conjugates: 1 2 3j_4
 +/ 1 2 3            NB. 6 because: 1 + 2 + 3 is 6
 ```
