@@ -430,12 +430,20 @@ the selection made by the rank) or a scalar work!
 3 4 5 6 - 1 2       NB. error; every other shape is incompatible
 ```
 
-Explicitly defined verbs are assumed to be of ranks `_ _ _`.
+Explicitly defined verbs are of ranks `_ _ _`.
 ```J
-fn =: 3 : 'echo y'  NB. an explicit verb
-fn 1 2 3
-fn=: 3 :'echo y' "0 NB. assigns ranks (0 0 0) to the explicit verb
-fn 1 2 3
+fn1 =: 3 : 'echo y'
+fn1 b.0
+
+NB. apply desired rank before assignment to set it as default rank:
+fn2 =: (3 :'echo y') "0
+fn2 b.0
+fn3 =: {{echo y}}"0
+fn3 b.0
+
+fn1 1 2 3
+fn2 1 2 3
+fn3 1 2 3
 ```
 
 #### Frames:
