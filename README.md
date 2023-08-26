@@ -182,8 +182,11 @@ percent =: 1 : 0        NB. same as multiline definition
 )
 echo 0.7 percent
 
-sthElse =: 2 : 'y - x'      NB. ignore verbs and pass swapped args to -
-5 + sthElse + 3
+NB. conjunction that swaps its arguments and the args of its result
+swap =: 2 : 'y v u x'
+1 + - 2
+2 - + 1
+1 + swap - 2
 ```
 
 #### Index functions, helpers:
