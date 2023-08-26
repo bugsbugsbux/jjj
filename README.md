@@ -102,16 +102,15 @@ called *monads*; not related to the haskell term).
 - 1                 NB. monad (1 arg, but may be list)
 1 -                 NB. error: monads take their arg from the right only
 1 - 2               NB. dyad (2 args, may be lists)
+
+- 1 2               NB. monad with list argument
+0 1 , 2 3           NB. the dyad , joins lists
 ```
 Note that the monadic and dyadic case are two distinct functions:
 negate and subtract. They share a name (the symbol `-`) and a
 definition. A function does not have to have both cases.
 
 ```J
-- 1 2               NB. list-arg to monad
-0 1 , 2 3           NB. dyad with two list-args (dyad , joins lists)
-```
-
 **Modifiers** are functions used to pre-process a statement/expression.
 To do so they are processed first, returning a new function in which the
 original arguments to the modifier are still available, and thus can be
