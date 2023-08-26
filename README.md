@@ -194,19 +194,21 @@ swap =: 2 : 'y v u x'
 As demonstrated, explicit definitions specify the type to create as a
 number. This pattern of selecting functionality with a numeric index is
 sort of J's guilty pleasure. In most cases you'd look the functions up
-in the docs and assign an alias when used often; in fact, J already
+in the docs and assign an alias to often used ones; in fact, J already
 comes with a set of aliases (and other helpers). List them with
 `names_z_''`. New users should definitely look over the docs for `!:`
 and `o.` for once.
 
 #### Direct definitions:
 
-Direct definitions, DDs for short, are another way to define entities
-explicitly. They are wrapped in double-braces and assume their type from
-the argument-variable-names used:
-If variables `v` or `n` are used a conjunction,
-otherwise if `u` or `m` are used an adverb,
-otherwise if `x` is used a dyad or ambivalent verb is created.
+Direct definitions, *DD*s for short, are another way to write explicit
+definitions. They are wrapped in double-braces and assume their type
+from the argument-variable-names used:
+
+- If variables `v` or `n` are used a conjunction,
+- otherwise if `u` or `m` are used an adverb,
+- otherwise if `x` is used a dyad or ambivalent verb is created.
+
 A type may also be forced by appending `)` and one of the letters
 `n`oun, `a`dverb, `c`onjunction, `m`onad or `d`yad.
 ```J
