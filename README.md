@@ -648,8 +648,9 @@ x (  D [: B A) y    =       x D (        B (  A y)) fork ([:BA) -> monad
 
 #### Gerunds:
 
-Gerunds are a special kind of array containing functions, thus create
-a noun from a function:
+Gerunds are a special kind of **array containing functions**, thus
+create a noun from a function. They can be applied in different ways
+with `` `:``
 ```J
 + , -                   NB. error cannot join two functions
 + ; -                   NB. error cannot box-join two functions
