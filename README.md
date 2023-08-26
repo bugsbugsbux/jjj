@@ -448,8 +448,8 @@ fn3 1 2 3
 
 #### Frames:
 
-A frame is the shape in which to assemble some values, for example after
-iterating over and deriving values from those iterated elements.
+A frame is the shape in which to assemble some values, for example
+after iterating over and deriving values from those iterated elements.
 
 As already discussed, a verb's rank selects rank-amount of dimensions
 from (the back of) the shape to operate on. The frame of the result is
