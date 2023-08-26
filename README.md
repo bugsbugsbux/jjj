@@ -93,13 +93,15 @@ either.
 
 **Verbs** are functions that take nouns as their argument/s and return
 nouns. A verb has access to its left argument via the local variable `x`
-and to its right argument via the local variable `y`.
-
+and to its right argument via the local variable `y`. If there are
+arguments on both sides of a function it is called dyadic (such verbs
+are *dyads*) otherwise the function is monadic (and such verbs are
+called *monads*; not related to the haskell term).
 ```J
 -                   NB. fn (here minus) without arg does not execute
-- 1                 NB. a monad is a fn taking one arg (may be list)
+- 1                 NB. monad (1 arg, but may be list)
 1 -                 NB. error: monads take their arg from the right only
-1 - 2               NB. a dyad is a fn taking two args (may be lists)
+1 - 2               NB. dyad (2 args, may be lists)
 ```
 Note that the monadic and dyadic case are two distinct functions:
 negate and subtract. They share a name (the symbol `-`) and a
