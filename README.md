@@ -1199,10 +1199,16 @@ monad           require like load but only if was not loaded already
 - v                 ... right arg of modifier, indicates it is a verb
 - m                 ... left arg of modifier, indicates it is a noun
 - n                 ... right arg of modifier, indicates it is a noun
-- fn                ... function
+- (pl)              ... plural
+- (sg)              ... singular
 - arg/s             ... argument/s
-- esc               ... escape
-- elem/s            ... element/s
+- bc                ... because
+- char/s            ... character/s
 - dim/s             ... dimension/s
 - docs              ... documentation
+- elem/s            ... element/s
+- esc               ... escape
 - excl              ... excluding
+- fn                ... function
+- ns                ... namespace
+- var/s             ... variable/s
