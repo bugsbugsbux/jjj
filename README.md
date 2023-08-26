@@ -597,14 +597,14 @@ The basic idea is called **fork** and best explained by the computation
 of the mean:
 ```J
 Y =: 1 2 3 4
-(+/ % #) Y          NB. the mean of a list is sum divided by length
+(+/ % #) Y          NB. a list's mean is its sum divided by its length
 (+/ Y) % (# Y)      NB. equivalent expanded form
 ```
 
 A longer train simply continues this pattern using the result of the
 previous fork as the right argument to the next fork. When the last fork
 doesn't get a left argument (because the train is of even length) it
-uses an argument of the train instead: the left, or if missing the right
+uses an argument of the train instead: its left, or if missing its right
 one. This is called hook-rule and when it's used the whole train is
 called *a* hook, otherwise its *a* fork.
 ```
