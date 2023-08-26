@@ -516,13 +516,16 @@ happens all the time when assembling subresults into a frame.
 >1; 2 2             NB. numeric arrays are padded with zeros
 2 3 $ 'a'           NB. reshaping reuses the original as needed
 >'a'; 'aaa'         NB. padding adds filler if necessary. here spaces
+
 NB. note the resulting pattern:
  (2 1 $ 1); (2 3 $ 2)
 >(2 1 $ 1); (2 3 $ 2)
  (2 3 $ 1); (2 3 4 $ 2)
 >(2 3 $ 1); (2 3 4 $ 2)
-NB. different length results are padded before being put into a frame:
-(3 : '1+i.y,y' "0) 1 2 3
+
+NB. different length results are padded before being put into a frame as
+NB. this example (that creates y by y matrices) shows:
+(3 : '1 + i.y,y' "0) 1 2 3
 ```
 
 #### Evaluation:
