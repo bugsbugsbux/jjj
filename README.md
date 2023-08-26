@@ -582,7 +582,7 @@ result <---- D <---- B         }combinators: dyads
            ?       /   \
           E       C     A      }operators: use train's arg/s, monads
          ? \     ? \   ? \          except when train not hook and has x
-        x?  y   x?  y x?  y
+        x?  y   x?  y x?  y    }using arguments of the train itself
         -------------
        =======       \
     last left arg      All except the first operator may be replaced by:
