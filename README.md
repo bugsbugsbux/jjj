@@ -111,14 +111,14 @@ negate and subtract. They share a name (the symbol `-`) and a
 definition: the function `-` is *ambivalent*. A function does not have
 to have both cases.
 
-```J
-**Modifiers** are functions used to pre-process a statement/expression.
-To do so they are processed first, returning a new function in which the
-original arguments to the modifier are still available, and thus can be
-used in any desired way on the new arguments. However, they may also
-return other entities than verbs, even new modifiers. Only once all
-modifiers were processed and just nouns and verbs are left, the regular
-evaluation happens.
+**Modifiers** are functions used to pre-process a statement/expression;
+this means they run before the main evaluation step. Modifiers return a
+new function that has, additionally to its own arguments `x` and `y`,
+access to the original arguments as variables `u` (left, `m` may be used
+instead to indicate a noun) and `v` (right, use `n` instead to indicate
+a noun). The new function may return any entity, even more modifiers,
+which would also be processed before the first verb evaluates!
+
 ```J
 1 + 2 + 3           NB. dyadic + gives the sum: 6
 +  1 2 3j4          NB. monadic + gives the complex conjugates: 1 2 3j_4
