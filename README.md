@@ -106,9 +106,10 @@ called *monads*; not related to the haskell term).
 - 1 2               NB. monad with list argument
 0 1 , 2 3           NB. the dyad , joins lists
 ```
-Note that the monadic and dyadic case are two distinct functions:
+Note that the monadic and dyadic case here are two distinct functions:
 negate and subtract. They share a name (the symbol `-`) and a
-definition. A function does not have to have both cases.
+definition: the function `-` is *ambivalent*. A function does not have
+to have both cases.
 
 ```J
 **Modifiers** are functions used to pre-process a statement/expression.
