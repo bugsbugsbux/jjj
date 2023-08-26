@@ -135,17 +135,22 @@ argument `1 2 3`.
 modifier not the returned entities) take two arguments. The `:`
 conjunction is commonly used to define new entities:
 
-#### Defining entities (functions, nouns) by Explicit Definition:
+#### Defining entities (functions, nouns) by Explicit-Definition:
 
-Explicit definitions use the `:` conjunction to create new entities. The
-right argument specifies the entity's value, which is the next lines,
-read in as a string, until a line contains `)` as its only printable
-character, when the right argument is `0`. Therefore, the value of a
-function is its body as a string, that can also be passed as string
-literal if it's only one line. The left argument specifies the type to
-create with a number: `0` for nouns, `1` for adverbs, `2` for
-conjunctions, `3` for monadic (optionally ambivalent) verbs, `4` for
-dyads.
+Explicit-definitions are created with the `:` conjunction that returns
+an entity of the type indicated by the integer to its left:
+
+- `0` for nouns,
+- `1` for adverbs,
+- `2` for conjunctions,
+- `3` for monadic (optionally ambivalent) verbs,
+- `4` for dyads.
+
+The entities value is specified as the right argument and is a string
+for functions. A value of `0` always means to read in the following
+lines as a string - until the next line containing `)` as its only
+printable character.
+
 ```J
 echo (0 : 300) + 1          NB. a noun, in particular: a number
 
