@@ -590,10 +590,11 @@ result <---- D <---- B         }combinators: dyads
 then replaced with x/y      *) noun to be used as left arg of combinator
 ```
 
-An isolated sequence of verbs (in other words: multiple verbs not
-followed by a noun) creates a train, that is a special pattern defining
-which verbs receive what arguments and execute in which order. The basic
-idea is the fork, best explained by the computation of the mean:
+An **isolated sequence of verbs (in other words: multiple verbs not
+followed by a noun) creates a train**, that is a special pattern
+defining which verbs receive what arguments and execute in which order.
+The basic idea is called **fork** and best explained by the computation
+of the mean:
 ```J
 Y =: 1 2 3 4
 (+/ % #) Y          NB. the mean of a list is sum divided by length
