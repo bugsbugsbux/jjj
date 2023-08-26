@@ -606,7 +606,7 @@ previous fork as the right argument to the next fork. When the last fork
 doesn't get a left argument (because the train is of even length) it
 uses an argument of the train instead: its left, or if missing its right
 one. This is called hook-rule and when it's used the whole train is
-called *a* hook, otherwise its *a* fork.
+called *a* **hook**, otherwise its *a* fork.
 ```
 Train:              Expands to:                     Note:
   (    C B A) y     =            (  C y) B (  A y)  the basic fork
@@ -615,7 +615,7 @@ Train:              Expands to:                     Note:
   (      B A) y     =                  y B (  A y) first is last -> hook
 ```
 
-Using my own terminology, a train consists of operators (the odd
+Using my own terminology: A train consists of operators (the odd
 numbered verbs counting from right) that operate on the train's
 arguments, and combinators (the even numbered verbs counting from right)
 that are dyads combining the result of everything to their right with
@@ -623,7 +623,7 @@ the result of the operator to their left.
 
 As said before, a hook's last combinator uses an argument of the train
 to replace its missing left operator. When the train is dyadic, another
-peculiarity of hooks becomes evident: A hook's operators always stay
+peculiarity of hooks becomes evident: A hook's operators are always
 monads:
 ```
 x (E D C B A) y     = (x E y) D ((x C y) B (x A y)) operators -> dyads
@@ -631,15 +631,16 @@ x (  D C B A) y     =       x D ((  C y) B (  A y)) operators all monads
 x (      B A) y     =                  x B (  A y) first is last -> hook
 ```
 
-Any left operators may be replaced with a noun to create a so called NVV
-(noun-verb-verb) fork, that simply uses this noun as its left argument:
+Any left operators may be replaced with a noun to create a so called
+**NVV (noun-verb-verb) fork**, that simply uses this noun as its left
+argument:
 ```
 x (E D 1 B A) y     = (x E y) D (      1 B (x A y))   left arg to B is 1
 x (  D 1 B A) y     =       x D (      1 B (  A y))   left arg to B is 1
 ```
 
 Any left operators may be replaced with `[:` to create a so called
-capped fork that converts its combinator into a monad:
+**capped fork** that converts its combinator into a monad:
 ```
 x (E D [: B A) y    = (x E y) D (        B (x A y)) fork ([:BA) -> monad
 x (  D [: B A) y    =       x D (        B (  A y)) fork ([:BA) -> monad
