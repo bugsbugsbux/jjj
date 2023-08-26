@@ -372,10 +372,16 @@ a:                  NB. equivalent; called "ace", a noun
 1 2 , 'abc'         NB. error: different types and lengths
 1 2 ; 'abc'         NB. ok because ; boxes the values first
 (<1 2) , <'abc'     NB. here we manually boxed the values first -> ok
+
+NB. comparison of boxed values
+'bar' = 'baz'
+(<'bar') = <'baz'
+(<'bar') = <'bar'
+'bar' = <'bar'
 ```
 
-The boxing state is the third of the three descriptive properties of a
-value: type, shape, boxed?.
+The boxing state of a noun is the third of the three descriptive
+properties of a value: type, shape (and thus rank), boxed?.
 
 #### Rank:
 
