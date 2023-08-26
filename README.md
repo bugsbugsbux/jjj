@@ -390,8 +390,8 @@ properties of a value: type, shape (and thus rank), boxed?.
 arguments they operate and can be changed allowing to apply a function
 to any array.
 
-The three ranks (monad, dyad left, dyad right) can be shown with the
-adverb `b.0`. The "rank conjunction" `"` assigns new ranks. Rank 0
+The three ranks (monadic, dyadic left, dyadic right) can be shown with
+the adverb `b.0`. The "rank conjunction" `"` assigns new ranks. Rank 0
 works on atoms, rank infinity on the highest dimension; a negative rank
 works on n dimensions lower than the rank of the argument.
 ```J
