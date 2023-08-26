@@ -667,14 +667,17 @@ _1 - - 0 - - 1          NB. equivalent
 (- -) _1 0 1            NB. equivalent (see: trains)
 ```
 
-#### Names, Scopes/Namespaces
+#### Names
 
-Variable-names may only contain ASCII-letters (upper and lowercase),
-numbers (but not as first character) and underscores (except leading,
-trailing or double).
+Variable-names may only contain
+
+- ASCII-letters (upper and lowercase),
+- numbers (but not as first character) and
+- underscores (except leading, trailing or double).
 
 Assignments return their values, but the interpreter doesn't display
-them.
+them, so often monads `[` or `]` (return their argument unachanged) are
+used to prefix assignments.
 
 ```J
 foo =: 1            NB. assignment's return-value not shown
@@ -686,137 +689,275 @@ foo; bar
 foo; bar
 ```
 
-Unknown variables are assumed to be verbs.
+Unknown variables are assumed to be verbs because nouns are evaluated
+*immediately* when defined, so their variable parts have to exist
+beforehand. Verbs, however, are only evaluated when *used*, so unknown
+parts at the time of definition are ok. This also allows functions to
+reference themselves!
 ```J
-foo =: 2 + unknown
-unknown =: 5
-foo + 3             NB. error unknown is not a verb
-unknown =: 3 : '5'  NB. now it is
-foo + 3             NB. thus no error here
+foo =: 10
+] bar =: 1 + foo    NB. foo is noun, immediately evalueted: bar is 11
+
+foo =: unknown + 1  NB. error executing monad unknown
+foo =: 1 + unknown  NB. assumed verb without arg -> not evaluated -> ok
+foo ''              NB. error unknown not found
+unknown =: 10       NB. now unknown exists but:
+foo ''              NB. error unknown not a verb
+unknown =: 3 : '10' NB. now it is a verb (always returning 10)
+foo ''              NB. ok
+
+foo=:3 :'missing+1' NB. verb definition ok because not evaluated yet
+foo ''              NB. error missing not found
+missing =: 10
+foo ''              NB. ok
+
+fn =: {{
+    if. y > 0 do.
+        echo y
+        fn y-1       NB. calling own name -> recursion
+    end.
+}}
+fn 3
 ```
 
-Variables create subexpressions instead of simply representing their
-value, imagine they expand to their parenthesized value:
+Variables create subexpressions instead of simply standing in for a
+value; imagine they expand to their parenthesized value:
 ```J
 N =: 2              NB. N is not the number 2 but a subexpr returning 2
 N + 10              NB. Here it doesn't matter, but if N wasn't the...
 1 N 3               NB. ...subexpression but the number this would be ok
+
 < - 1 2 3           NB. How about creating an alias for this action?
 negated_box =: < -
 negated_box 1 2 3   NB. Suddenly the result is different because this:
 (< -) 1 2 3         NB. subexpression is a train and not (< - 1 2 3)
 ```
 
-Each name lives in a namespace (locale) and every evaluation has a
-context, that is a namespace in which it runs (and that can change per
-function-call). Namespaces can inherit each other, which means when a
-name is not found, it is looked up in the parent. J starts in an empty
-namespace "base" that inherits from "z" where the helper-functions like
-`echo` are defined. New namespaces by default inherit from "z".
+Each name lives in a namespace also called a locale: 
 
-Functions have their own private/local (unnamed) namespace that inherits
-the current global namespace (which can be changed) as context, is
-pre-populated with the relevant argument-variables (`x`, `y`, `u`, `v`,
-`m`, `n`) and can be written to with `=.`; whereas `=:` always writes to
-a global namespace. Control-structures do not have their own namespace.
-Creating a variable in a namespace hides an inherited variable of the
-same name until the local version is erased again.
+#### Namespaces
 
-Where to start looking for a name can also be explicitly stated with a
-**locative**, that looks like this: `name_namespace_` or
-`name__varContainingNSName`. Contrary to inheriting from other
-namespaces, this temporarily sets the current global namespace to the
-given namespace instead of the caller's. To avoid this use adverb `f.`
-to capture the verb in the current namespace.
-
+Every function has its own local scope, that is an **unnamed
+namespace** that cannot be inherited, thus a function defined within
+another function does not have access to the outer function's namespace.
 ```J
-coname ''           NB. get name of current namespace (should be 'base')
-clear 'base'        NB. rm all names from namespace base
-copath 'base'       NB. get ancestors of namespace base
-findme =: 'here'    NB. =: writes to current global namespace
-fn_z_ =: 3 : 0      NB. write to namespace z
-  echo findme
-)
-nl ''               NB. get names (defined) in current namespace
-fn ''               NB. fn is inherited (didn't show up), evaluates here
-fn_z_ ''            NB. error: evaluates in z, parent to where findme is
+var =. 'global'     NB. outside function =. is equivalent to =:
+fn1 =: {{
+    var =. 'local'  NB. in a function =. writes to its local namespace
+    fn2 =. {{
+        echo var    NB. uses global var as there is no local var in fn2
+        var2 =: '=: always writes to global scope'
+    }}
+    fn2 ''
+    echo var2       NB. finds var2 in global namespace
+
+    var2 =. 'local hides global of same name'
+    echo var2
+    erase 'var2'    NB. removes var2 from *its* scope (which is local)
+    echo var2       NB. global version available again
+    erase 'var2'    NB. careful: removes var2 from *its* scope (global!)
+}}
+fn1 ''
+echo var2           NB. show that it's really gone again
 ```
 
-Here is an example to see local/global scoping:
+Control-structures do not have their own namespaces. for_name. loops
+always use the local scope to create/update the loop variables.
 ```J
-conl ''             NB. get names of existing namespaces
-cocurrent 'N'       NB. swich to namespace N (created if necessary)
-  conl ''           NB. show N is now in namespace list
-  clear 'N'         NB. rm all names from namespace
-  A =: 0
-  B =. 1            NB. =. outside of function is like =:
-  C =. 2
-  i =: 1000         NB. if unshadowed it will be overriden by for_i
-  f =: 3 : 0
-    A =: 1          NB. updates global A
-    B =. 2          NB. shadows global B
-    C =. 3          NB. shadows global C
-    D =: 4          NB. writes to global namespace
-    NB. i =. 100    NB. shadowing global i to protect it
-    for_i. 1 do.    NB. will override vars of same name!
-      E =. 5        NB. control-structures don't have own-, use fn-scope
-    end.
-    echo A;B;C;D;E;i    NB. echo is inherited from z (default parent)
-    erase 'B'           NB. rm local B -> global B is visible again
-    echo A;B;C;D;E;i
-  )
+foo =: 'global'
+{{
+    foo_index =. 'local'
+    for_foo. 'abc' do. echo 'foo:'; foo; 'foo_index:'; foo_index end.
+    echo 'foo:'; foo; 'foo_index'; foo_index
+}} ''
+echo 'global foo:'; foo
+```
 
+The second type of namespace is the **named namespace**/locale, of which
+there may be many but at any time only one may be the **current/global
+namespace**, which is inherited by any function('s local namespace) when
+it is called. Inheriting means if a name is not found it is looked for
+in the inherited namespace/s, which for new named namespaces is "z"
+(where the standard helpers are defined) by default.
+```J
+conl ''             NB. shows available named namespaces
+coname ''           NB. shows currently used named namespace (=global)
+cocurrent <'base'   NB. switches global namespace to namespace "base"
+  nl ''             NB. shows all names defined in global namespace
+  nl 3              NB. show defined names of type: 0 1 2 or 3 (verbs)
+  clear ''          NB. rm all names from given namespace or "base"
+  nl ''
+  echo'hello world' NB. echo not defined -> where does it come from?
+  copath <'base'    NB. shows list of namespaces "base" inherits: "z"
+cocurrent <'z'      NB. make "z" the current=global namespace
+  nl ''             NB. contains echo; use names'' for pretty display
+cocurrent 'base'    NB. switch back
+```
+
+The examples showed that to evaluate a name in another namespace this
+needs to become the global namespace first, as well as that namespaces
+are addressed with strings. However, there is a simpler way of writing
+this (but behind the scenes it does the same): **Locatives** are names
+that specify a namespace either by appending its name in underscores or
+by appending two underscores and the name of a variable that contains
+the (boxed) name.
+
+```J
+names_z_ ''                 NB. pretty print names defined in "z"
+var =: <'z'
+names__var ''               NB. same
+{{ for_ns. conl'' do.       NB. iterate over available namespaces
+    echo coname__ns''       NB. locatives temporarily switch namespaces
+end. }} ''
+coname ''                   NB. back in original namespace
+```
+
+Note that in the last 4 lines the global namespace only changed during
+the evaluation of the locative in `echo coname__ns''` but not while
+executing `echo` with the result of `coname__ns''`. Moreover, while
+`echo` too is a verb from another namespace, it is inherited and thus
+does not change the global namespace! To use a locative-accessed verb
+with the current global namespace use adverb `f.` to pull the verb into
+the current namespace before executing it:
+
+```J
+fn_z_ =: fn =: {{ echo var }}
+
+var_z_ =: 'during locative'
+var =: 'during orig namespace'
+
+fn 'executes fn from current namespace'
+erase 'fn'
+fn 'executes fn from inheritance
+fn_z_ 'executes fn from locative'
+fn_z_ f. 'executes result of adverb (which gets fn from locative)'
+```
+
+Namespaces are automatically created when used.
+```J
+conl''
+ns =: <'mynamespace'
+echo__ns 'inherited echo from "z", the default parent'
+copath ns           NB. show "mynamespace" inherits from "z"
+```
+
+#### Classes, OOP
+
+In J, classes are simply namespaces whose instances (also namespaces)
+inherit them. As assigning to inherited names just creates an own
+version of the name in the inheriting namespace, shared fields need to
+be accessed with a locative.
+
+By convention `conew` is used to create new instances: It calls
+`cocreate` with an empty argument resulting in a new namespace with a
+stringified, previously unused, numeric name and then prepends the
+class' namespace to the list of ancestors. Finally `conew` remembers the
+namespace from which the new instance was created as the variable
+`COCREATOR`. Another convenience of the `conew` verb is that its dyadic
+version also calls the monad `create` with its left arguments. By
+convention a destructor should be implemented as the monadic function
+`destroy` calling `codestroy` which simply uses `coerase` on the current
+namespace.
+
+```J
+coclass 'C'                 NB. coclass is just an alias for cocreate
+    field =: 100
+
+    create =: {{
+        echo 'hi from C''s constructor'
+        field =: y
+    }}
+    destroy =: {{
+        echo 'hi from C''s destructor'
+        codestroy''
+    }}
+
+    get =: 3 : 'field'
+    inc =: 3 : 'field =: field +1'
+    dec =: 3 : 'field =: field -1'
+```
+
+```J
 cocurrent 'base'
-f_N_ ''
-A;B;C;D;E;i
-A_N_ ; B_N_ ; C_N_ ; D_N_ ; E_N_ ; i_N
+    c1 =: conew 'C'         NB. wont call constructor
+    c2 =: 1 conew 'C'       NB. calls constructor with its left args
+    echo (get__c1''); get__c2''
+    dec__c1''
+    inc__c2''
+    echo (get__c1''); get__c2''
 ```
 
-Classes in J are just namespaces; instances can be created with `conew`
-and then initialized by calling the constructor. This can be done in one
-step by defining a monad `create` that receives the left argument of
-`conew` automatically. `conew` returns the boxed numeric-string-id of
-the new instance. To access a namespace via its boxed name saved in a
-variable, append two underscores and the variable to the target name.
+This demonstrates creating a class inheriting from another, as well as
+how to use class-variables (as opposed to instance-variables), by
+creating a singleton, that is, a class that at any time may only have
+one instance:
 ```J
-coclass 'Parent'            NB. switch namespace
-  instances =: 0 $ <''      NB. empty boxed list
-  create =: 3 : 0
-    echo 'in'; coname''     NB. if 'Parent' you're in wrong namespace
-    instances =: instances, coname''
-  )
-  set =: 3 : 'field =: y'
-  pmeth =: 3 : 'echo field'
+coclass 'Singleton'
+    NB. inherit from "C":
+    NB. ('C'; (copath cocurrent'')) copath cocurrent''
+    NB. or simply:
+    coinsert 'C'
 
-coclass 'Child'             NB. switch namespace
-  NB. ((<'Parent'),(copath 'Child')) copath 'Child'     NB. or simply:
-  coinsert 'Parent'
-  copath 'Child'            NB. show ancestor list
-  not_local =. '=. only works in functions'
-  create =: 3 : 0           NB. constructor
-    NB. using locative to avoid recursion
-    NB. using f. to avoid executing in locative's namespace
-    create_Parent_ f. ''
-    set_Parent_ f. y        NB. prefer parent methods over direct access
-    NB. field =: y          NB. ... which would look like this
-  )
-  destroy =: 3 : 'codestroy '''''       NB. destructor
-  get =: 3 :'field return.' NB. no getter in parent -> use direct access
-  inc =: 3 : 'set_Parent_ f. field + 1'
+    NB. Shall be used as class-variable (=shared by instances)
+    hasInstance =: 0
 
-cocurrent 'base'            NB. switch namespace
-o1 =: 10 conew 'Child'      NB. create instance
-o2 =: 20 conew 'Child'      NB. another instance
-nl__o1 ''                   NB. evaluate nl in instance's namespace
-COCREATOR__o1               NB. auto-created field accessed from outside
-(inc__o1 ''), inc__o2 ''    NB. invoke method, changes state of instance
-(get__o1 ''); get__o2 ''    NB. show values are indeed different
-field__o1 =: 101            NB. assign to a field from outside
-pmeth__o1 ''                NB. inheritedMethod__child executes in child
-not_local__o1               NB. =. outside of fn does not hide a field
-(destroy__o1 ''),destroy__o1 ''     NB. call destructors
-coerase'Child';'Parent';'N' NB. or rm namespaces by name
-erase 'o1';'o2'             NB. rm now invalid references
+    NB. IMPORTANT:
+    NB. * Avoid using knowledge about internals of parents. Stick to
+    NB.   their functions as much as possible!
+    NB. * Avoid recursion when overriding functions by using a locative.
+    NB. * Avoid executing the locative in parent by using the f. adverb!
+
+    create =: {{
+        echo 'hi from Singleton''s constructor'
+        echo 'Singleton''s parents are: ', ": copath 'Singleton'
+        if. hasInstance_Singleton_ do.
+            throw. 'Cannot create more than 1 instance of a singleton.'
+        end.
+
+        create_C_ f. y
+
+        NB. If "C"'s constructor throws, this does not run.
+        NB. Use locative to write to class-var not instance-var:
+        hasInstance_Singleton_ =: 1
+    }}
+
+    NB. This shows why the destory function should always be implemented
+    NB. and used to dispose of instances: Some classes are intended to
+    NB. execute specific destruction behaviour but coerase does not call
+    NB. any destructors. Singleton breaks if hasInstance isn't reset:
+    destroy =: {{
+        echo 'hi from Singleton''s destructor'
+        hasInstance_Singleton_ =: 0
+
+        destroy_C_ f. ''
+    }}
+```
+
+```J
+cocurrent 'base'
+    NB. show "Singleton"'s ancestors/parents (namespaces it inherits):
+    copath 'Singleton'
+
+    s1 =: 111 conew 'Singleton'
+    get__s1 ''
+
+    {{ try.
+        s2 =: 222 conew 'Singleton'
+    catcht.
+        echo 'Caught SingletonException: Already has an instance!'
+    end. }}''
+
+    destroy__s1 ''
+    s2 =: 333 conew 'Singleton'
+    get__s2 ''
+
+    NB. clean up:
+    {{
+        for_insta. s2; c1;c2 do. destroy__insta'' end.
+        coerase 'Singleton'
+        coerase 'C'
+        for_name. 's1';'s2'; 'c1';'c2' do. erase name end.
+    }}''
 ```
 
 #### Indexing:
