@@ -214,11 +214,12 @@ A type may also be forced by appending `)` and one of the letters
 braces.
 
 ```J
-echo {{)nhello world}}, '!'
+1 {{x + y}} 2           NB. simple to use in-line
+{{x + y}}               NB. note the internal representation
 
-{{('hey, ', y, '!') return.}} 'you'
+{{echo 'Hi, ', y, {{)n! I'm a monad.}} }} 'Bob'
 
-1 {{x + y}} 2
+echo {{)nDD-nouns are always strings}}, '!'
 
 {{
 
