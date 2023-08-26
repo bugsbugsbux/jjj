@@ -83,10 +83,11 @@ Strings are lists of characters:
 
 #### Nouns:
 
-Nouns are data values and basically what was covered until now. Gerunds,
-arrays and boxes are also nouns but they are more like details to what
-was already covered. Classes and their instances are not nouns: you
-cannot reference them directly. Functions aren't nouns either.
+*Nouns* are data values and basically what was covered until now.
+*Gerunds*, *arrays* and *boxes* are also nouns but they are more like
+details to what was already covered. Classes and their instances are not
+nouns: you cannot reference them directly. Functions aren't nouns
+either.
 
 #### Functions:
 
