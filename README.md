@@ -16,8 +16,9 @@ Found anything wrong? File an issue at
 
 An introduction to the J programming language that gets to the point. It
 is intended for those with (some) programming experience, but others
-should be mostly fine after googling function, argument, class and
-instance.
+should be mostly fine after looking up some basic programming terms like
+function, argument, class, instance, inheritance, statement, expression,
+etc.
 
 This is not a reference: Read the whole thing and try the examples.
 Abbreviations and covered builtins are listed in the appendix.
