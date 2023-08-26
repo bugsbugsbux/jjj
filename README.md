@@ -385,10 +385,10 @@ properties of a value: type, shape (and thus rank), boxed?.
 
 #### Rank:
 
-**Rank (singular) of nouns** was already covered above. **Functions have
-ranks (plural)** too: they determine on which dimension/axis
-(nesting-level) of their arguments they operate and can be changed to be
-able to apply a function to any array.
+**Rank (sg) of nouns** was already covered above. **Functions have ranks
+(pl)** too: they determine on which dimension (nesting-level) of their
+arguments they operate and can be changed allowing to apply a function
+to any array.
 
 The three ranks (monad, dyad left, dyad right) can be shown with the
 adverb `b.0`. The "rank conjunction" `"` assigns new ranks. Rank 0
