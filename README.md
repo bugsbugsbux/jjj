@@ -158,8 +158,8 @@ NB. nouns
 echo '>', (0 : 0), '<'  NB. creates noun from next lines and uses it
 A Multiline string.
 Make sure to put a space between the left arg and : because otherwise it
-is parsed as one of the functions _9: to 0: to 9: and _: as well as __:
-that ignore their args and just return their number.
+is parsed as one of the functions __: or _9: to 0: or 1: to 9: or _:
+that ignore their args and always return their (negative) digit/infinity
 )
 
 1 (4 : 'x + y') 2          NB. a one-line dyad
