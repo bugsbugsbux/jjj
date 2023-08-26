@@ -222,18 +222,20 @@ braces.
 echo {{)nDD-nouns are always strings}}, '!'
 
 {{
+  echo 'Multiline DDs may contain other multiline DDs. For example:'
+  echo 'Note:', {{)n NB. usually this comment would create an error:
+Typed multiline DDs must not have any additional printable characters on
+the first line. However, multiline DD-nouns (such as this), may start on
+the opening line, but: must end with the closing braces as the first 2
+    }} characters (including whitespace!) of a line. Thus this line did
+not end the noun because it starts with whitespace but the next does!
+}}, LF, ' After the closing }} all DDs may continue the expression.'
+NB. ^^ predefined variable containing newline string
 
-    echo 'multiline DDs may contain other multiline DDs. For example:'
-echo '>', {{)n  NB. this comment on an opening line of a DD is an error!
-Multiline string defining DDs differ from others in that they may start
-on the opening line and have to put the ending braces as the first
-characters of a line (no whitespace prefix allowed).
-}}, '<'             NB. expression may continue here
+  :
+  echo 'Apart from that, DD-bodies are much like explicit definitions.'
 
-    :
-    echo 'Apart from that DD-bodies are much like explicit definitions.'
-
-}} 'call as monad'
+  }} 'call as monad'    NB. non-noun-DD's }} don't have to start a line
 ```
 
 #### (Explicit) Control-Structures and Control-Words:
