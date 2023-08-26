@@ -238,99 +238,6 @@ NB. ^^ predefined variable containing newline string
   }} 'call as monad'    NB. non-noun-DD's }} don't have to start a line
 ```
 
-#### (Explicit) Control-Structures and Control-Words:
-
-J has all common control-structures and -words, however, they can only
-be used within explicit functions (explicit definitions or DDs). They
-are not idiomatic J and hinder new users from learning to think in array
-programming style. Nevertheless, some problems are simpler to solve this
-way.
-
-- Assert: *All* elements have to be `1`.
-  ```J
-  assert. 1 1 1         NB. ERROR if ANY element is not 1
-  assert. 1 0 1
-  ```
-- Conditionals: *First atom* must not be false (`0`).
-  ```J
-  if. 0 1 1 do.         NB. only considers FIRST atom
-    echo 'if-block'
-  elseif. 0 1 1 do.     NB. only considers FIRST atom
-    echo 'elseif-block'
-  else.
-    echo 'else-block'
-  end.
-  ```
-- Select
-  ```J
-  matchthis =: {{       NB. global assignment
-    select. y
-    case. 'a' do.
-      echo '"a"'
-      echo 'afterwards always jumps to end.'
-
-    fcase. 'b' do.
-      echo 'afterwards unconditionally executes next (f)case. block!'
-    fcase. 'c' do.      NB. adds another valid case for the next body
-    case. 'd' do.
-      echo '"b", "c" or "d"'
-
-    case. 1 2 3 do.     NB. this is one value (the list) not 1 or 2 or 3
-      echo 'the list 1 2 3'
-
-    case. do.
-      echo 'empty case always matches'
-
-    end.
-  }}
-  matchthis 'a'
-  matchthis 'b'
-  matchthis 1 2 3
-  matchthis 1 2 4
-  ```
-- Goto: Considered Harmful - Edsger Dijkstra
-- While loops: Only run if *first atom* is not false (0).
-  ```J
-  while. 'aa'='ab' do.  NB. only considers FIRST atom
-    echo 'dyad = compares per element; here the first letters match'
-    break.              NB. end loop immediately
-    echo 'never echoed'
-  end.
-  ```
-- Whilst loops: While loop that always *runs at least once*.
-  ```J
-  whilst. 0 do.         NB. only considers FIRST atom
-    echo 'runs at least once'
-    echo 'only runs once because loop condition is false'
-    continue.           NB. immediately stop this & start next iteration
-    echo 'never echoed'
-  end.
-  ```
-- For (each) loops: There are no classic for loops. Iterating over a
-  list of integers can mimic one.
-  ```J
-  items =. 100 200
-
-  for. items do.
-    echo 'runs once for each item; the current item is not available!'
-    break.
-  end.
-
-  NB. the syntax is to make the variable name part of the controlword:
-  for_myname. items do.
-    echo 'variable myname', ": myname
-    echo 'variable myname_index', ": myname_index
-    continue.
-  end.
-  ```
-- Return statements: Exit function early. Pass a return-value as *left*
-  argument!
-  ```J
-  '"return." returns last computed noun or its left arg' return.
-  ```
-
-- Throw, Catch: TODO
-
 #### Arrays:
 
 **An array is a ((list of) list/s of) value/s.** Thus even single values
@@ -382,6 +289,139 @@ NB. comparison of boxed values
 
 The boxing state of a noun is the third of the three descriptive
 properties of a value: type, shape (and thus rank), boxed?.
+
+#### (Explicit) Control-Structures and Control-Words:
+
+J has all common control-structures and -words, however, they can only
+be used within explicit functions (explicit definitions or DDs). They
+are not idiomatic J and hinder new users from learning to think in array
+programming style. Nevertheless, some problems are simpler to solve this
+way.
+
+- Assert: *All atoms* have to be `1`.
+  ```J
+  {{
+    assert. 'aa'='aa'   NB. dyad = compares corresponding atoms: 1 1
+    assert. 'aa'='ab'   NB. error because not all 1s: 1 0
+  }}''
+  ```
+- Conditionals: *First atom* must not be `0`.
+  ```J
+  {{ if. 0 1 do.        NB. first atom is 0 -> false
+    echo 'if block'
+  elseif. 1 0 do.       NB. first atom is not 0 -> true
+    echo 'elseif block'
+  elseif. 1 do.         NB. only considered if no previous block ran
+    echo 'elseif 2 block'
+  else.                 NB. runs if no previous block ran
+    echo 'else-block'
+  end. }}''
+
+  NB. therefore be careful with tests such as:
+  {{ if 'bar' = 'baz' do. echo 'true' else. echo 'false' end. }}''
+  ```
+- Select: ... first boxes unboxed arguments to `select.`, `fcase.`
+  or`case.` then compares whether one of the boxes passed to `select.`
+  matches one of the boxes passed to a `case.` or ` fcase.` statement
+  and executes the respective block. After the evaluation of an `fcase.`
+  block the following `fcase.` or `case.` block is executed
+  unconditionally (fallthrough). The evaluation of a `case.` block
+  execution jumps to `end.`. An empty `case.` condition always matches.
+  ```J
+  match =: {{           NB. =: is a global assignment
+  select. y
+  case. 'baz' do. echo 'does not match ''bar'' due to both being boxed'
+  case. 'bar' do. echo 'after case. jumps to end.'
+  case. 1 2 3 do. echo 'due to the boxing only matches the list 1 2 3'
+  case. 1; 2; 3 do. echo 'box it yourself to get the desired cases'
+  case. 4;5 do. echo 'one select.-box matching one f/case.-box suffices'
+  fcase. 'fizz' do. echo 'after fcase. always executes next f/case.'
+  fcase. 'buzz' do. echo 'fcase. stacks dont have to start at the top.'
+  case. 'nomatch' do. echo 'no match but triggered by preceding fcase.'
+  case. do. echo '... empty case. always matches'
+  end. }}
+
+  echo '---'
+  match 'bar'
+  match 1 2 3
+  match 1
+  match <2              NB. won't get boxed a second time
+  match 4; 6
+  match 4; 4            NB. despite several matches only runs block once
+  match 'fizz'
+  match 'buzz'
+  match 'shouldn''t match but...'
+  ```
+- While loops: Only run if *first atom* is not `0`.
+  ```J
+  {{
+    foo =: 3
+    while.
+      (foo > 0), 0      NB. dyad > true if x greater than y
+    do.
+      echo foo =: foo -1
+    end.
+  }} ''
+  ```
+- Whilst loops: are while loops that always *run at least once*.
+  ```J
+  {{ whilst. 0 1 do.
+    echo 'runs at least once'
+  end. }} ''
+  ```
+- For (-each) loops: There are no classic for loops. Iterating over a
+  list of integers can mimic one. If a for-loop does not terminate early
+  its element-holding variable is set to an empty list and its
+  index-holding variable to the length of the list. If it terminates
+  early the last state is kept.
+  ```J
+  {{
+    for. 1 2 do.
+      echo 'runs once per item. Neither item nor index are available...'
+    end.
+  }} ''
+
+  fn =: {{
+    foo =: 'for_<foo>. hides global <foo>[_index]. with local versions'
+    NB. see: namespaces for more info about local/global assignments
+    foo_index =. 'for_<foo>. modifies local <foo>[_index]'
+    for_foo. 'abc' do.
+      echo foo; foo_index
+      if. y do.
+        early =. 'yes'
+        break.
+      else.
+        early =. 'no'
+        continue.   NB. does not terminate loop just current iteration!
+      end.
+      echo 'never runs'
+    end.
+    echo 'terminated early?'; early; 'foo:'; foo; 'foo_index:';foo_index
+  }}
+  fn 1
+  fn 0
+  echo 'value of global foo:'; foo NB. unchanged
+  ```
+- Return statements: Exit function early. Pass a return-value as *left*
+  argument!
+  ```J
+  {{                    NB. functions return last computed value
+    <'foo'
+    <'bar'
+  }} ''
+  {{
+    <'foo'
+    return.             NB. exits early and returns last computed value
+    <'bar'
+  }} ''
+  {{
+    <'foo'
+    <'fizz' return.     NB. or given left arg (parens not necessary??)
+    <'bar'
+  }}''
+  ```
+- Throw, Catch: TODO
+- Goto: Considered Harmful - Edsger Dijkstra
 
 #### Rank:
 
