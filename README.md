@@ -152,9 +152,10 @@ lines as a string - until the next line containing `)` as its only
 printable character.
 
 ```J
-echo (0 : 300) + 1          NB. a noun, in particular: a number
-
-echo '>', (0 : 0), '<'      NB. pre-, and append strings to defined noun
+NB. nouns
+0 : 'string'            NB. creates noun with value 'string'
+1 + 0 : 100             NB. creates and uses noun 100 (the number)
+echo '>', (0 : 0), '<'  NB. creates noun from next lines and uses it
 A Multiline string.
 Make sure to put a space between the left arg and : because otherwise it
 is parsed as one of the functions _9: to 0: to 9: and _: as well as __:
