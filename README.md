@@ -452,12 +452,12 @@ A frame is the shape in which to assemble some values, for example
 after iterating over and deriving values from those iterated elements.
 
 As already discussed, a verb's rank selects rank-amount of dimensions
-from (the back of) the shape to operate on. The frame of the result is
-the leading dimensions that weren't selected. To get the final shape
-append the verb's result's shape to the frame. If there are multiple
-frames (for example with dyads) they have to agree, meaning the shorter
-one has to *be the start of the longer one*; the result uses the longer
-one.
+from (the back (or the front for negative ranks) of) the shape to
+operate on. The **frame of the result is the leading dimensions that
+weren't selected**. To get the final result's shape append the verb's
+result's shape to the frame. If there are multiple frames (for example
+with dyads) they have to agree, meaning the shorter one has to *be the
+start of the longer one*; and the result uses the longer one.
 
 ```J
 empty =: 3 : '1'    NB. always returns 1 (a scalars thus empty shape)
