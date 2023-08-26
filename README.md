@@ -502,11 +502,11 @@ The following examples use different nouns; just note the shapes:
 
 #### Padding:
 
-Incompatible values can still be put into the same structure by using boxes.
-When they are of the same type, lower dimensional values can also be
-padded to match the highest dimensional value making the shapes
+Incompatible values can still be put into the same structure by using
+boxes. When they are of the same type, lower dimensional values can also
+be padded to match the highest dimensional value making the shapes
 compatible and thus the boxes can be omitted. This is different from
-reshaping! 
+reshaping!
 
 When unboxing values are padded automatically. Behind the scenes this
 happens all the time when assembling subresults into a frame.
