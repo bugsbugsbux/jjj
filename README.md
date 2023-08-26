@@ -162,18 +162,18 @@ is parsed as one of the functions __: or _9: to 0: or 1: to 9: or _:
 that ignore their args and always return their (negative) digit/infinity
 )
 
-1 (4 : 'x + y') 2          NB. a one-line dyad
-
-fn =: 3 : 0                 NB. an ambivalent verb
-    echo 'Type 3 (verb) starts with the body of a monad, optionally'
-    echo 'followed by the body of a dyad, separated from the monad by :'
-    echo 'that has to be the only printable character on a line in'
-    echo 'multiline definitions. This only runs when called as a monad.'
-    :
-    echo 'This body only runs when the verb is called dyadically.'
-    echo 'Note that all verbs only take noun arguments and must return'
-    echo 'a noun, otherwise a syntax error is thrown...'
+NB. verbs
+1 (4 : 'x + y') 2       NB. creates and uses a dyad
+neg =: 3 : '-y'         NB. =: assigns (here a monad) to global name
+fn =: 3 : 0             NB. creates an (ambivalent) multiline verb
+  echo 'First the body of a monad, then optionally the body of a dyad'
+  echo 'separated by a line containing : as its only printable symbol'
+  :
+  (3 :'multiline explicit-defs cannot be nested but may contain') 0
+  echo 'one-line explicit-defs or (multiline) DDs (see below)'
 )
+fn 1
+1 fn 2
 
 percent =: 1 : 0            NB. this adverb returns a noun
     (": m * 100), '%'       NB. monad ": formats argument as string
