@@ -175,8 +175,10 @@ fn =: 3 : 0             NB. creates an (ambivalent) multiline verb
 fn 1
 1 fn 2
 
-percent =: 1 : 0            NB. this adverb returns a noun
-    (": m * 100), '%'       NB. monad ": formats argument as string
+NB. adverb representing number in percents
+echo 0.01 (1 : '(": u * 100), ''%'' ')
+percent =: 1 : 0        NB. same as multiline definition
+  (": m * 100), '%'     NB. using m to indicate left arg is noun
 )
 echo 0.7 percent
 
