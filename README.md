@@ -6,6 +6,9 @@ code { background:#dddddd; }
 </style>
 -->
 
+- Status: Work in Progress
+- J versions: 9.4.2,
+
 Found anything wrong? File an issue at
 <https://github.com/herrvonvoid/jjj/issues>.
 
