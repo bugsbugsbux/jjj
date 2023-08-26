@@ -410,11 +410,14 @@ i. 2 3 4            NB. generates an integer sequence in the given shape
 <"_1 i.1 2 3 4      NB. looks the same but is rank 4 so _1 means axis 3
 ```
 
-The result also depends on the verb! For example sum is "insert plus",
-thus it adds the elements one dimension lower than the argument's rank:
+The result also depends on what the verb does! For example to compute
+the sum the dyad plus is applied between the elements of its argument;
+therefore a verb sum effectively applies the relevant operation on a
+lower dimension than its rank is:
 ```J
-+/"1 i. 2 2         NB. sum of rows (plus between row-elements=atom)
-+/"2 i. 2 2         NB. column-sum (plus between table-elements=rows)
++/ 1 2 3            NB. receives a list but adds atoms: 1 + 2 + 3
++/"1 i. 2 2         NB. sum of rows (plus between row-elements=atoms=0)
++/"2 i. 2 2         NB. column-sum (plus between table-elements=rows=1)
 ```
 
 When using a dyad it combines the selected parts of the left argument
