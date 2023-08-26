@@ -210,7 +210,9 @@ from the argument-variable-names used:
 - otherwise if `x` is used a dyad or ambivalent verb is created.
 
 A type may also be forced by appending `)` and one of the letters
-`n`oun, `a`dverb, `c`onjunction, `m`onad or `d`yad.
+`n`oun, `a`dverb, `c`onjunction, `m`onad or `d`yad to the opening
+braces.
+
 ```J
 echo {{)nhello world}}, '!'
 
