@@ -36,11 +36,11 @@ Important links:
 
 J was first released in 1990 as a successor to APL, an alternative
 mathematical notation that is computer-executable and works well with
-array data. Most notably J switches from APL's custom symbol-set to
-ASCII only, calling basic builtins by a single symbol or a symbol with
-appended dot or colon, and giving distinct meaning to single symbols
-that usually appear in pairs like various braces and quotes (`[]"{}`
-etc).
+multi-dimensional array data. Most notably J switches from APL's custom
+symbol-set to ASCII only, calling basic builtins by a single symbol or a
+symbol with appended dot or colon, and giving distinct meaning to single
+symbols that usually appear in pairs like various braces and quotes
+(`[]"{}` etc).
 
 #### Comments:
 
