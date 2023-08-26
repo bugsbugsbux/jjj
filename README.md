@@ -1111,8 +1111,8 @@ following verbs:
 
 The following verbs inherited from the z-locale are used to import code:
 
-- `load`: Runs the specified file or shortname (list shortnames with
-  `scripts''`).
+- `load`: Runs the specified file or shortname (list available
+  shortnames with `scripts''`).
 - `loadd`: Like `load` but displays the lines before executing them.
 - `require`: Like `load` but files that were already loaded won't be
   loaded again.
