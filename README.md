@@ -126,12 +126,14 @@ which would also be processed before the first verb evaluates!
 ```
 
 The last example showed that `+/x` is not the same as `+x` but rather
-`x1 + x2 + x3 ...`. This is because `/` is an adverb (a modifier that
-takes one argument to the *left*) that produces a new verb that inserts
-the original verb between all elements of the new verb's arguments.
+`x1 + x2 + x3 ...`. This is because `/` is an *adverb* (a modifier that
+takes one argument to the *left*): It creates a new function that
+inserts the original argument `+` between all elements of its own
+argument `1 2 3`.
 
-Conjunctions only differ insofar as they take two arguments. An often
-used conjunction is `:` which defines new entities like functions.
+*Conjunctions* only differ insofar as they (meaning the original
+modifier not the returned entities) take two arguments. The `:`
+conjunction is commonly used to define new entities:
 
 #### Defining entities (functions, nouns) by Explicit Definition:
 
