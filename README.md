@@ -739,7 +739,7 @@ Variable-names may only contain
 - underscores (except leading, trailing or double).
 
 Assignments return their values, but the interpreter doesn't display
-them, so often monads `[` or `]` (return their argument unachanged) are
+them, so often monads `[` or `]` (return their argument unchanged) are
 used to prefix assignments.
 
 ```J
