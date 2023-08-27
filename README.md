@@ -14,19 +14,29 @@ Found anything wrong? File an issue at
 
 # Understanding J
 
-An introduction to the J programming language that gets to the point. It
-is intended for those with (some) programming experience, but others
+An introduction to the J programming language that gets to the point.
+
+It is intended for those with (some) programming experience, but others
 should be mostly fine after looking up some basic programming terms like
 function, argument, class, instance, inheritance, statement, expression,
 etc.
 
-This is not a reference: Read the whole thing and try the examples.
-Abbreviations and covered builtins are listed in the appendix.
+Don't treat this as a reference: Section titles do not introduce an
+exhaustive explanation of a certain topic, but serve to give this
+document a rough structure. Individual sections are not intended to be
+read in isolation from the others and assume the knowledge of previous
+sections.
+
+Try the examples and read the comments!
+
+Abbreviations and covered builtins are listed in the appendix with a
+short description.
 
 Important links:
 
 - Project Homepage: <https://jsoftware.com>
-- Try J online: <https://jsoftware.github.io/j-playground/bin/html2/>
+- Online J interpreter:
+  <https://jsoftware.github.io/j-playground/bin/html2/>
 - **All builtin operators**, with links to their wiki pages:
   <https://code.jsoftware.com/wiki/NuVoc>
 - Good old wiki:
