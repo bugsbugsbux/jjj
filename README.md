@@ -174,7 +174,7 @@ that ignore their args and always return their (negative) digit/infinity
 
 NB. verbs
 1 (4 : 'x + y') 2       NB. creates and uses a dyad
-neg =: 3 : '-y'         NB. =: assigns (here a monad) to global name
+neg =: 3 : '-y'         NB. =: assigns (here a monad) to a global name
 fn =: 3 : 0             NB. creates an (ambivalent) multiline verb
   echo 'First the body of a monad, then optionally the body of a dyad'
   echo 'separated by a line containing : as its only printable symbol'
@@ -186,7 +186,7 @@ fn 1
 1 fn 2
 
 NB. adverb representing number in percents
-echo 0.01 (1 : '(": u * 100), ''%'' ')
+echo 0.01 (1 : '( ": u * 100), ''%'' ')
 percent =: 1 : 0        NB. same as multiline definition
   (": m * 100), '%'     NB. using m to indicate left arg is noun
 )
@@ -205,9 +205,9 @@ As demonstrated, explicit definitions specify the type to create as a
 number. This pattern of selecting functionality with a numeric index is
 sort of J's guilty pleasure. In most cases you'd look the functions up
 in the docs and assign an alias to often used ones; in fact, J already
-comes with a set of aliases (and other helpers). List them with
+comes with a set of aliases (and other helpers): list them with
 `names_z_''`. New users should definitely look over the docs for `!:`
-and `o.` for once.
+and `o.` to see what's available.
 
 #### Direct definitions:
 
