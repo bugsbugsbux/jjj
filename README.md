@@ -383,7 +383,7 @@ way.
   list of integers can mimic one. If a for-loop does not terminate early
   its element-holding variable is set to an empty list and its
   index-holding variable to the length of the list. If it terminates
-  early the last state is kept.
+  early their last states are kept.
   ```J
   {{
     for. 1 2 do.
@@ -580,7 +580,8 @@ NB. this example (that creates y by y matrices) shows:
 
 #### Evaluation:
 
-The examples should already have given most of these rules away:
+The examples should have given away almost all of these rules
+implicitly:
 
 - Evaluation works right to left! A reader should do the same.
   ```J
