@@ -783,20 +783,19 @@ fn =: {{
 fn 3
 ```
 
-Variables create subexpressions instead of simply standing in for a
-value; imagine they expand to their parenthesized value:
+Variables create subexpressions just like parentheses do; imagine they
+expand to their parenthesized value:
 ```J
-N =: 2              NB. N is not the number 2 but a subexpr returning 2
-N + 10              NB. Here it doesn't matter, but if N wasn't the...
-1 N 3               NB. ...subexpression but the number this would be ok
+N =: 2
+1 N 3               NB. error: implicit joins are not allowed
 
-< - 1 2 3           NB. How about creating an alias for this action?
-negated_box =: < -
-negated_box 1 2 3   NB. Suddenly the result is different because this:
-(< -) 1 2 3         NB. subexpression is a train and not (< - 1 2 3)
+- + 1 2 3           NB. how about creating an alias for this action?
+action =: - +
+action 1 2 3        NB. not the same result! its a subexpression:
+(- +) 1 2 3         NB. this subexpression creates a hook (train)
 ```
 
-Each name lives in a namespace also called a locale: 
+Each name lives in a namespace also called a locale:
 
 #### Namespaces
 
