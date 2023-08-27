@@ -721,7 +721,7 @@ with `` `:``
 - ` ''                  NB. gerund with only 1 element
 
 (-`-) `:0 (_1 0 1)      NB. m`:0 applies each verb in m separately
-(-_1 0 1) ,: (-_1 0 1)  NB. equivalent (,: creates 2-element array)
+(-_1 0 1) ,: (-_1 0 1)  NB. equivalent (dyad ,: creates 2-element array)
 
 (-`-) `:3 (_1 0 1)      NB. inserts all verbs between all elements
 _1 - - 0 - - 1          NB. equivalent
