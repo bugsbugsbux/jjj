@@ -526,8 +526,8 @@ verb-rank                   frame, selected shape           shape
 ```
 
 ```J
-] x234 =: 2 3 4 $ 3
-] x23 =: 2 3 $ 1 1 1 2 2 2
+echo x234 =: 2 3 4 $ 3
+echo x23 =: 2 3 $ 1 1 1 2 2 2
 x234 +"0 0 x23
 ```
 
