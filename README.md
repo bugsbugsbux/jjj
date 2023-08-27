@@ -1129,17 +1129,20 @@ dyad            ,       join lists
 dyad            +       addition
 monad           +       complex conjugate
 adverb          /       puts verb between elements of new verb's arg/s
-conjunction     :       define entities, separate monad and dyad bodies
+conjunction     :       define entities
+syntax          )       end multiline explicit definition
 monad           echo    output message
 ambivalent      __: _9: ... 0: ... 9: _: ignore arg/s and return digit
+assignment      =:      assign to global namespace
+syntax          :       separate monadic and dyadic bodies
 monad           ":      convert to displayable byte array
 dyad            *       multiplication
-monad           names   show names defined in current namespace
+monad           names   pretty print names defined in current namespace
 (conjunction    !:)     access lots of system functions
 (dyad           o.)     access to circle functions (sin, cos, ...)
-assignment      =:      assign to global namespace
-assignment      =.      try assigning to local namespace else to global
-dyad            =       compare per element
+syntax          {{      opens a direct definition
+syntax          {{)n    open direct definition of type n (or a, c, m, d)
+syntax          }}      close DD
 monad           $       get shape
 monad           #       get length
 dyad            $       reshape array
@@ -1147,33 +1150,36 @@ monad           <       box
 monad           >       unbox/open
 noun            a:      empty box
 dyad            ;       join as boxes
-adverb          u b. 0  show ranks of verb u
+dyad            =       compares corresponding atoms
+dyad            >       is x greater than y?
+assignment      =.      try assigning to local namespace else to global
+adverb          b. 0    show ranks of its verb
 conjunction     "       set ranks of verb
 monad           i.      get integer sequence in shape of argument
 adverb          ~       swap arguments or copy right arg to left side
-monad           [       return argument unchanged
-monad           ]       return argument unchanged
 dyad            %       division
 ambivalent      [:      x?([: B A)y becomes (B x?Ay)
 conjunction     `       make list of verbs (gerund)
 conjunction     `:      execute a gerund in a certain way
 dyad            ,:      combine into an array of two elements
-adverb          f.      pull name into current namespace
+monad           [       return argument unchanged
+monad           ]       return argument unchanged
+monad           conl    boxed list of namespaces
 monad           coname  get name of current namespace
-monad           clear   remove all names defined in namespace
-monad           copath  ancestors of namespace
-monad           nl      boxed list of names defined in current namespace
-monad           conl    list namespaces
 monad           cocurrent   switch to namespace
-monad           erase   remove given names from current namespace
+monad           nl      boxed list of names defined in current namespace
+monad           clear   remove names defined in given/'base' namespace
+monad           copath  ancestors of *given* namespace
+adverb          f.      pull name into current namespace
+monad           erase   remove given names from *their* namespace
 monad           conew   create new instance of class
-dyad            conew   create new instance and pass y as args to create
-monad           coclass switch to namespace
-dyad            copath  set ancestors of namespace
-monad           copath  show ancestors of namespace
-monad           coinsert    prepend ancestors of current namespace
+monad           cocreate    creates new namespace, numeric if empty y
+dyad            conew   create new instance and pass x as args to create
 monad           codestroy   remove current namespace
 monad           coerase remove namespace
+monad           coclass switch to namespace
+dyad            copath  set ancestors of namespace
+monad           coinsert    prepend ancestors of current namespace
 dyad            {       index into array
 dyad            {::     index into boxed structure
 monad           ,       flatten array; scalar becomes list
