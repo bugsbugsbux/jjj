@@ -142,7 +142,7 @@ inserts the original argument `+` between all elements of its own
 argument `1 2 3`.
 
 *Conjunctions* only differ insofar as they (meaning the original
-modifier not the returned entities) take two arguments. The `:`
+modifiers not the returned entities) take two arguments. The `:`
 conjunction is commonly used to define new entities:
 
 #### Defining entities (functions, nouns) by Explicit-Definition:
