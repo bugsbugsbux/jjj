@@ -330,15 +330,15 @@ way.
   NB. therefore be careful with tests such as:
   {{ if 'bar' = 'baz' do. echo 'true' else. echo 'false' end. }}''
   ```
-- Select: ... first boxes unboxed arguments to `select.`, `fcase.`
+- Select: It first boxes unboxed arguments to `select.`, `fcase.`
   or`case.` then compares whether one of the boxes passed to `select.`
-  matches one of the boxes passed to a `case.` or ` fcase.` statement
-  and executes the respective block. After the evaluation of an `fcase.`
-  block the following `fcase.` or `case.` block is executed
-  unconditionally (fallthrough). The evaluation of a `case.` block
-  execution jumps to `end.`. An empty `case.` condition always matches.
+  is the same as a box passed to a `case.` or ` fcase.` statement and
+  executes the respective block. An empty `case.` condition always
+  matches. After the evaluation of a `case.` block execution jumps to
+  `end.`, while after executing an `fcase.` (fallthrough) block the
+  following `case.` or `fcase.` runs unconditionally.
   ```J
-  match =: {{           NB. =: is a global assignment
+  match =: {{
   select. y
   case. 'baz' do. echo 'does not match ''bar'' due to both being boxed'
   case. 'bar' do. echo 'after case. jumps to end.'
