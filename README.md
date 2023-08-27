@@ -583,20 +583,23 @@ NB. this example (that creates y by y matrices) shows:
 The examples should have given away almost all of these rules
 implicitly:
 
-- Evaluation works right to left! A reader should do the same.
+- Evaluation works right to left and in two steps:
+
+  1. Evaluate modifiers until only nouns and verbs are left,
+  2. then evaluate those.
+
+  Right to left does not simply mean reading the words in reverse order
+  but to find the rightmost verb or modifier (depending on step you're
+  in), then determining its arguments and replacing all of that with its
+  evaluation result. This repeats until the line is processed entirely.
   ```J
-  3 - 2 - 1         NB. 2
-  +/ 3 2 1          NB. don't read this as 3 + 2 + 1 but 1 + 2 + 3
-  -/ 3 2 1          NB. 2; when (x f y) is not (y f x) it's obvious
-  - +/ 3 2 1        NB. result of +/ becomes right arg of -
-  - 1 2 3 + 4 5 6   NB. + takes the array to its left as left arg
+  - -/ 1 2 3        NB. 1. modifiers: find rightmost: / it's arg is -
+  - 1 - 2 - 3       NB. 1a. result -fn 1 2 3 but expressed as its effect
+  - 1 - _1          NB. 2. verbs: rightmost - has args 2 and 3 result _1
+  - 2               NB. rightmost verb - has args 1 and _1 result 2
+  _2                NB. rightmost verb - only has right arg: 2 result _2
+
   0 1 + - 2 3       NB. this is (0 1 + (- 2 3))
-  ```
-- Parentheses form subexpressions, that finish before the parent.
-  ```J
-  (3-2) - 1         NB. 0
-  0 1 (+) 2 3       NB. the subexpression gets arguments (0 1) and (2 3)
-  0 1 (+ -) 2 3     NB. same here but this is a train (see: below)!
   ```
 - No mathematical operator precedence, just right to left evaluation and
   parentheses.
@@ -604,24 +607,33 @@ implicitly:
   2 * 3 + 4         NB. 14
   (2 * 3) + 4       NB. 10
   ```
-- First all modifiers are evaluated until only nouns and verbs are left.
+- Parentheses form subexpressions, that complete before the parent.
   ```J
-  -/ 1 2 3          NB. modifier first replaces args with fn that does:
-  1 - 2 - 3         NB. 2; no more modifiers found -> verbs evaluate
+  (3-2) - 1         NB. subexpr completes first and returns result: 1
+
+  1 (2) 3           NB. if this was not an error (2) were the number 2
+  1, (2), 3         NB. but it is a subexpr not a noun thus , is needed
+
+  (- +) 1 2 3       NB. (-+) is not simply -+ but creates a (see:) train
+  - + 1 2 3         NB. trains are not equivalent to unparentesized expr
   ```
-- Note that even after processing all modifiers the statement/expression
-  might still not simply run right to left when there is a subexpression
-  that forms a train (see below).
-- Consecutive modifiers are processed left to right:
+- *Consecutive* modifiers are processed left to right:
   ```J
   1 - ~ 3           NB. adverb ~ swaps the args of the verb it creates
   -~ 3              NB. or copies the right arg to the left
 
   -/ 1 2            NB. (1 - 2) = _1
   -~/1 2            NB. (1 -~ 2) = (2 - 1) = 1
-  NB. 1. creates this verb ^^
-  NB. 2. creates this   ^^^^^^^^ by inserting the (new) verb
-  NB. 3. result evaluates like this^^^^^^^
+  NB. First, creates this  ^^ new verb (not a train).
+  NB. Then creates this ^^^^^^^^ by inserting the (new) verb.
+  NB. Evaluating adverb ~ produces ^^^^^^^.
+  NB. Finally only nouns and verbs are left and produce the result: 1
+  ```
+- Nouns are evaluated immediately, verbs only when called:
+  ```J
+  mynoun =: unknown + 1         NB. error
+  myverb =: 3 : 'unknown + 1'   NB. ok because not yet evaluated
+  myverb''                      NB. error
   ```
 
 #### Trains:
