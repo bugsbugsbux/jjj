@@ -678,11 +678,11 @@ Train:              Expands to:                     Note:
   (      B A) y     =                  y B (  A y) first is last -> hook
 ```
 
-Using my own terminology: A train consists of operators (the odd
-numbered verbs counting from right) that operate on the train's
-arguments, and combinators (the even numbered verbs counting from right)
-that are dyads combining the result of everything to their right with
-the result of the operator to their left.
+Using my own terminology: A train consists of *operators* (the odd
+numbered verbs counting from right) that *operate* on the train's
+arguments, and *combinators* (the even numbered verbs counting from
+right) that are dyads *combining* the result of everything to their
+right with the result of the operator to their left.
 
 As said before, a hook's last combinator uses an argument of the train
 to replace its missing left operator. When the train is dyadic, another
@@ -753,8 +753,8 @@ foo; bar
 ```
 
 Unknown variables are assumed to be verbs because nouns are evaluated
-*immediately* when defined, so their variable parts have to exist
-beforehand. Verbs, however, are only evaluated when *used*, so unknown
+immediately when defined, so their variable parts have to exist
+beforehand. Verbs, however, are only evaluated when used, so unknown
 parts at the time of definition are ok. This also allows functions to
 reference themselves!
 ```J
@@ -824,7 +824,7 @@ fn1 ''
 echo var2           NB. show that it's really gone again
 ```
 
-Control-structures do not have their own namespaces. for_name. loops
+Control-structures do *not* have their own namespaces. for_name-loops
 always use the local scope to create/update the loop variables.
 ```J
 foo =: 'global'
