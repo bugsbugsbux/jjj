@@ -12,7 +12,7 @@ code { background:#dddddd; }
 Found anything wrong? File an issue at
 <https://github.com/herrvonvoid/jjj/issues>.
 
-# An overview of J
+# Understanding J
 
 An introduction to the J programming language that gets to the point. It
 is intended for those with (some) programming experience, but others
