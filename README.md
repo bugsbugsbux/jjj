@@ -96,7 +96,7 @@ Strings are lists of characters:
 *Nouns* are data values and basically what was covered until now.
 *Gerunds*, *arrays* and *boxes* are also nouns but they are more like
 details to what was already covered. Classes and their instances are not
-nouns: you cannot reference them directly. Functions aren't nouns
+nouns: they cannot be referenced directly. Functions aren't nouns
 either.
 
 #### Functions:
@@ -203,9 +203,9 @@ swap =: 2 : 'y v u x'
 
 As demonstrated, explicit definitions specify the type to create as a
 number. This pattern of selecting functionality with a numeric index is
-sort of J's guilty pleasure. In most cases you'd look the functions up
-in the docs and assign an alias to often used ones; in fact, J already
-comes with a set of aliases (and other helpers): list them with
+sort of J's guilty pleasure. In most cases one would look up the
+functions in the docs and assign an alias to often used ones; in fact, J
+already comes with a set of aliases (and other helpers): list them with
 `names_z_''`. New users should definitely look over the docs for `!:`
 and `o.` to see what's available.
 
@@ -589,9 +589,10 @@ implicitly:
   2. then evaluate those.
 
   Right to left does not simply mean reading the words in reverse order
-  but to find the rightmost verb or modifier (depending on step you're
-  in), then determining its arguments and replacing all of that with its
-  evaluation result. This repeats until the line is processed entirely.
+  but to find the rightmost verb or modifier (depending on current
+  step), then determining its arguments and replacing all of that with
+  its evaluation result. This repeats until the line is processed
+  entirely.
   ```J
   - -/ 1 2 3        NB. 1. modifiers: find rightmost: / it's arg is -
   - 1 - 2 - 3       NB. 1a. result -fn 1 2 3 but expressed as its effect
