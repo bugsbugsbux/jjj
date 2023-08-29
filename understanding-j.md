@@ -466,8 +466,8 @@ therefore a verb sum effectively applies the relevant operation on a
 lower dimension than its rank is:
 ```J
 +/ 1 2 3            NB. receives a list but adds atoms: 1 + 2 + 3
-+/"1 i. 2 2         NB. sum of rows (plus between row-elements=atoms=0)
-+/"2 i. 2 2         NB. column-sum (plus between table-elements=rows=1)
++/"1 i. 2 2         NB. sum of rows (plus between row-elements =atoms=0)
++/"2 i. 2 2         NB. column-sum (plus between table-elements =rows=1)
 ```
 
 When using a dyad it combines the selected parts of the left argument
@@ -475,7 +475,7 @@ with the selected parts of the right argument. Only the same shape (of
 the selection made by the rank) or a scalar work!
 ```J
 -b.0                NB. function - always works on atoms by default
-4 5 6 - 1 2 3       NB. x-atoms and y-atoms combined with dyad -
+4 5 6 - 1 2 3       NB. respective x-atoms and y-atoms combined with -
 4 5 6 - 1           NB. a scalar is reused for every element...
 3 4 5 6 - 1 2       NB. error; every other shape is incompatible
 ```
