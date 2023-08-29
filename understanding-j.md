@@ -481,20 +481,17 @@ shape (of the selection made by the rank) or a scalar work!
 3 4 5 6 - 1 2       NB. error; every other shape is incompatible
 ```
 
-Explicitly defined verbs are of ranks `_ _ _`.
+Explicitly defined verbs are of ranks `_ _ _`. Change the rank to the
+desired one afterwards but before assigning the verb to a name:
 ```J
-fn1 =: 3 : 'echo y'
-fn1 b.0
+fn =: 3 : 'echo y'
+fn b.0
+fn 1 2 3            NB. default
 
-NB. apply desired rank before assignment to set it as default rank:
-fn2 =: (3 :'echo y') "0
-fn2 b.0
-fn3 =: {{echo y}}"0
-fn3 b.0
-
-fn1 1 2 3
-fn2 1 2 3
-fn3 1 2 3
+fn "(0) 1 2 3       NB. desired
+fn =: 3 :'echo y'"0 NB. set desired rank
+fn b.0
+fn 1 2 3            NB. now desired rank works by default
 ```
 
 #### Frames:
