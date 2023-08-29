@@ -28,7 +28,7 @@ document a rough structure. Individual sections are not intended to be
 read in isolation from the others and assume the knowledge of previous
 sections.
 
-Try the examples and read the comments!
+**Run the examples and read the comments!**
 
 Abbreviations and covered builtins are listed in the appendix with a
 short description.
