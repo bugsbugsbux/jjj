@@ -3,6 +3,7 @@
 <style>
 pre { background: #dddddd; padding: 1em; overflow: auto; }
 code { background:#dddddd; }
+blockquote { border-left: #dddddd 0.5em solid; padding: 0.5em; }
 </style>
 -->
 
@@ -14,7 +15,7 @@ Found anything wrong? File an issue at
 
 # Understanding J
 
-An introduction to the J programming language that gets to the point.
+> An introduction to the J programming language that gets to the point.
 
 It is intended for those with (some) programming experience, but others
 should be mostly fine after looking up some basic programming terms like
