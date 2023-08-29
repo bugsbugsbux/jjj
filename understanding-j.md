@@ -471,8 +471,8 @@ lower dimension than its rank is:
 ```
 
 When using a dyad it combines the selected parts of the left argument
-with the selected parts of the right argument. Only the same shape (of
-the selection made by the rank) or a scalar work!
+with the respective selected parts of the right argument. Only the same
+shape (of the selection made by the rank) or a scalar work!
 ```J
 -b.0                NB. function - always works on atoms by default
 4 5 6 - 1 2 3       NB. respective x-atoms and y-atoms combined with -
