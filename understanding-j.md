@@ -436,62 +436,74 @@ way.
 
 #### Rank:
 
-**Rank (sg) of nouns** was already covered above. **Functions have ranks
-(pl)** too: they determine on which dimension (nesting-level) of their
-arguments they operate and can be changed allowing to apply a function
-to any array.
+**Verbs have ranks** (pl) that, contrary to the rank (sg) of nouns, that
+was already covered, may be changed without changing the verb itself and
+allow to easily adapt a verb to work with arrays of any rank. This is
+because they **alter how supplied arguments are passed to the verb,
+looping over the selected parts** of the supplied arguments.
 
-The three ranks (monadic, dyadic left, dyadic right) can be shown with
-the adverb `b.0`. The "rank conjunction" `"` assigns new ranks. Rank 0
-works on atoms, rank infinity on the highest dimension; a negative rank
-works on n dimensions lower than the rank of the argument.
+The three ranks of a verb can be shown with adverb `b.0` and stand for
+the dimension of the **monadic-, dyadic left- and dyadic right
+argument** to work on. A positive number counts dimensions from the
+bottom (dimension 0: atoms), a negative one from the top (highest
+possible: dimension _).
+
 ```J
-< b.0               NB. the default ranks of < are (_ 0 0)
-<"(_) b.0           NB. "_ assigns infinity to all ranks: (_ _ _)
-<"(2 1) b.0         NB. 1st to left 2nd to monadic & right rank: (1 2 1)
-<"(0 1 2) b.0       NB. to respective rank: (0 1 2)
+<         b.0       NB. get ranks of < (_ 0 0)
+<"(0 1 2) b.0       NB. monadic, dyadic-left, -right rank respectively
+<"(_)     b.0       NB. assign arg to all 3 ranks: (_ _ _)
+<"(2 1)   b.0       NB. assign left rank, right rank (&monadic): (1 2 1)
+```
 
-i. 2 3 4            NB. generates an integer sequence in the given shape
-<"_ i. 2 3 4        NB. on the whole (_) array do box
-< i. 2 3 4          NB. same because the default monadic rank of < is _
-<"0 i.2 3 4         NB. on atoms (dimension/axis 0) do box (<)
-<"1 i.2 3 4         NB. on lists (dimension/axis 1) do box (<)
-<"2 i.2 3 4         NB. on tables (dimension/axis 2) do box (<)
-<"_1 i.2 3 4        NB. same because noun rank is 3 and _1 means axis 2
+```J
+     i.2 3 4        NB. sequence of integers from 0 in given shape
+<"_  i.2 3 4        NB. call monad < on the whole array
+<    i.2 3 4        NB. same since default monadic rank of < is _
+<"0  i.2 3 4        NB. call monad < on each atom (= dim/axis 0)
+<"1  i.2 3 4        NB. call monad < on each list of the arg (= dim 1)
+<"2  i.2 3 4        NB. call monad < on each table in the arg (= dim 2)
+<"_1 i.2 3 4        NB. same because noun rank is 3 so _1 means axis 2
 <"_1 i.1 2 3 4      NB. looks the same but is rank 4 so _1 means axis 3
 ```
 
-The result also depends on what the verb does! For example to compute
-the sum the dyad plus is applied between the elements of its argument;
-therefore a verb sum effectively applies the relevant operation on a
-lower dimension than its rank is:
+A dyad combines the selected parts of the left argument with
+the respective selected parts of the right argument pairwise. Thus,
+selections have to be of the same shape or one has to be a scalar that
+will be reused.
+
 ```J
-+/ 1 2 3            NB. receives a list but adds atoms: 1 + 2 + 3
-+/"1 i. 2 2         NB. sum of rows (plus between row-elements =atoms=0)
-+/"2 i. 2 2         NB. column-sum (plus between table-elements =rows=1)
+-b.0                NB. applies to atoms = dimension 0
+1 2 3 + 4 5 6       NB. same shape: corresponding args combined
+1 2 3 + 1           NB. scalar is reused as needed
+1 + 1 2 3           NB. same
+1 2 + 3 4 5         NB. error: incompatible shapes
+
+,b.0                NB. default ranks are _ _ _
+'AB' ,     'CD'     NB. combines the whole args
+'AB' ,"0   'CD'     NB. combines corresponding atoms
+'AB' ,"0 1 'CD'     NB. combines dim-0-elems with dim-1-elems
+'AB' ,"1 0 'CD'     NB. here y-lines with x-atoms
 ```
 
-When using a dyad it combines the selected parts of the left argument
-with the respective selected parts of the right argument. Only the same
-shape (of the selection made by the rank) or a scalar work!
+Compare this to what adverb `/` does: Instead of pairing up the
+selections it pairs up each element of the left selection with each
+element of the right selection.
 ```J
--b.0                NB. function - always works on atoms by default
-4 5 6 - 1 2 3       NB. respective x-atoms and y-atoms combined with -
-4 5 6 - 1           NB. a scalar is reused for every element...
-3 4 5 6 - 1 2       NB. error; every other shape is incompatible
+'AB' ,     / 'CD'   NB. here equivalent to ,"_/ and ,"1/
+'AB' ,"0   / 'CD'   NB. each atom with each atom
+'AB' ,"0 1 / 'CD'   NB. each atom with each line
+'AB' ,"1 0 / 'CD'   NB. each line with each atom
 ```
 
-Explicitly defined verbs are of ranks `_ _ _`. Change the rank to the
-desired one afterwards but before assigning the verb to a name:
+Explicitly defined (includes DDs) verbs are of ranks `_ _ _`.
 ```J
-fn =: 3 : 'echo y'
+fn =: {{echo y}}
 fn b.0
-fn 1 2 3            NB. default
+fn 1 2 3
 
-fn "(0) 1 2 3       NB. desired
-fn =: 3 :'echo y'"0 NB. set desired rank
+fn =: {{echo y}} "0
 fn b.0
-fn 1 2 3            NB. now desired rank works by default
+fn 1 2 3
 ```
 
 #### Frames:
