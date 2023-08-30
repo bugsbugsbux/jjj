@@ -1,9 +1,20 @@
 <!--
 <head><meta http-equiv="refresh" content="5"/></head>
 <style>
-pre { background: #dddddd; padding: 1em; overflow: auto; }
-code { background:#dddddd; }
-blockquote { border-left: #dddddd 0.5em solid; padding: 0.5em; }
+pre {
+    background: #dddddd;
+    padding: 1em;
+    overflow: auto;
+    border-radius: 0.3em;
+}
+code {
+    background: #dddddd;
+    border-radius: 0.3em;
+}
+blockquote {
+    border-left: #dddddd 0.5em solid;
+    padding: 0.5em;
+}
 </style>
 -->
 
