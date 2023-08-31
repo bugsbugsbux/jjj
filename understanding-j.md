@@ -500,7 +500,7 @@ Compare this to what adverb `/` does: Instead of pairing up the
 selections it pairs up each element of the left selection with each
 element of the right selection.
 ```J
-'AB' ,     / 'CD'   NB. here equivalent to ,"_/ and ,"1/
+'AB' ,     / 'CD'   NB. here equivalent to ,"_/ or ,"1/
 'AB' ,"0   / 'CD'   NB. each atom with each atom
 'AB' ,"0 1 / 'CD'   NB. each atom with each line
 'AB' ,"1 0 / 'CD'   NB. each line with each atom
