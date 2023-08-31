@@ -657,7 +657,7 @@ implicitly:
   ```
 - Nouns are evaluated immediately, verbs only when called:
   ```J
-  mynoun =: unknown + 1         NB. error
+  mynoun =: unknown + 1         NB. error; evaluates expr to get noun
   myverb =: 3 : 'unknown + 1'   NB. ok because not yet evaluated
   myverb''                      NB. error
   ```
