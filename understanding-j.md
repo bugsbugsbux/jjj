@@ -644,12 +644,16 @@ implicitly:
   1 - ~ 3           NB. adverb ~ swaps the args of the verb it creates
   -~ 3              NB. or copies the right arg to the left
 
-  -/ 1 2            NB. (1 - 2) = _1
-  -~/1 2            NB. (1 -~ 2) = (2 - 1) = 1
-  NB. First, creates this  ^^ new verb (not a train).
-  NB. Then creates this ^^^^^^^^ by inserting the (new) verb.
-  NB. Evaluating adverb ~ produces ^^^^^^^.
-  NB. Finally only nouns and verbs are left and produce the result: 1
+  join0 =: ,"0      NB. join atoms; technically already has a modifier "
+  'AB' join0 'CD'   NB. but let's treat this as just some rank 0 verb
+
+  'AB' join0 ~ / 'CD'
+  NB. first creates a function invoking join0 with swapped args
+  NB. then combines each x- with each y-element using this new function
+
+  'AB' join0 / ~ 'CD'
+  NB. first creates a function that combines each x- with each y-element
+  NB. using dyad join0; then swaps the args to this new function
   ```
 - Nouns are evaluated immediately, verbs only when called:
   ```J
