@@ -120,12 +120,12 @@ arguments on both sides of a function it is called dyadic (such verbs
 are *dyads*) otherwise the function is monadic (and such verbs are
 called *monads*; not related to the haskell term).
 ```J
--                   NB. fn (here minus) without arg does not execute
-- 1                 NB. monad (1 arg, but may be list)
+  -                 NB. fn (here minus) without arg does not execute
+  - 1               NB. monad (1 arg, but may be list)
 1 -                 NB. error: monads take their arg from the right only
 1 - 2               NB. dyad (2 args, may be lists)
 
-- 1 2               NB. monad with list argument
+    - 1 2           NB. monad with list argument
 0 1 , 2 3           NB. the dyad , joins lists
 ```
 Note that the monadic and dyadic case here are two distinct functions:
