@@ -461,9 +461,9 @@ possible: dimension _).
 
 ```J
 <         b.0       NB. get ranks of < (_ 0 0)
-<"(0 1 2) b.0       NB. monadic, dyadic-left, -right rank respectively
-<"(_)     b.0       NB. assign arg to all 3 ranks: (_ _ _)
-<"(2 1)   b.0       NB. assign left rank, right rank (&monadic): (1 2 1)
+<"1       b.0       NB. set all ranks (for current invocation only!)
+<"1 2     b.0       NB. set dyadic ranks: monadic copies dyadic right
+<"1 2 3   b.0       NB. explicit values for all ranks
 ```
 
 ```J
