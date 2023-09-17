@@ -290,20 +290,28 @@ $ 2 1 $ 10 20       NB. shape
 2 2 $ 'abc'         NB. don't forget that strings are arrays too!
 ```
 
-#### Boxes:
+#### Boxes, Trees:
 
 The container-type box is useful to get around the restrictions of
 arrays: A boxed value always appears as scalar of type box; therefore
 any values, each in their own box, can be put into the same array!
+
+A box not containing another box may be called **leaf** when talking
+about **trees**, structures consisting of nested boxes. J comes with
+special functions to simplify working with trees, such as `{::` to index
+them (see: indexing).
 
 ```J
 <3                  NB. monad < puts the value passed as arg into a box
 ><3                 NB. monad > opens/unboxes the outer box of a value
 <''                 NB. an empty box is just a boxed empty array
 a:                  NB. equivalent; called "ace", a noun
+
 1 ; 3               NB. dyad ; joins args as boxes
 1 ; <3              NB. it removes 1 boxing level from its right arg
-(<1); <3            NB. but not from its left arg
+(<1); <3            NB. but not from its left arg; therefore
+(<1),<( (<2),<<3 )  NB. building trees with , helps seeing nesting level
+
 1 2 , 'abc'         NB. error: different types and lengths
 1 2 ; 'abc'         NB. ok because ; boxes the values first
 (<1 2) , <'abc'     NB. here we manually boxed the values first -> ok
