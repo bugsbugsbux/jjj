@@ -105,11 +105,16 @@ Strings are lists of characters:
 
 #### Nouns:
 
-*Nouns* are data values and basically what was covered until now.
-*Gerunds*, *arrays* and *boxes* are also nouns but they are more like
-details to what was already covered. Classes and their instances are not
-nouns: they cannot be referenced directly. Functions aren't nouns
-either.
+*Nouns* are data values such as the ones covered until now. *Boxes*,
+which will be covered later, are nouns too. Lists are actually just a
+basic case of *arrays* which can be thought of as nested lists.
+
+Classes and their instances aren't nouns: they cannot be referenced
+directly; but their name can be saved as a string.
+
+Functions aren't nouns either; but by putting them into a special kind
+of list, *gerunds*, they can effectively be made one (also covered
+below).
 
 #### Functions:
 
@@ -287,11 +292,12 @@ $ 2 1 $ 10 20       NB. shape
 
 #### Boxes:
 
-To get around the restrictions of arrays, values can be boxed: The
-box pretends to be a scalar and hides its contents, which need to be
-unboxed before working with them.
+The container-type box is useful to get around the restrictions of
+arrays: A boxed value always appears as scalar of type box; therefore
+any values, each in their own box, can be put into the same array!
+
 ```J
-<3                  NB. monad < puts its arg in a box
+<3                  NB. monad < puts the value passed as arg into a box
 ><3                 NB. monad > opens/unboxes the outer box of a value
 <''                 NB. an empty box is just a boxed empty array
 a:                  NB. equivalent; called "ace", a noun
@@ -308,9 +314,6 @@ NB. comparison of boxed values
 (<'bar') = <'bar'
 'bar' = <'bar'
 ```
-
-The boxing state of a noun is the third of the three descriptive
-properties of a value: type, shape (and thus rank), boxed?.
 
 #### (Explicit) Control-Structures and Control-Words:
 
@@ -737,9 +740,9 @@ x (  D [: B A) y    =       x D (        B (  A y)) fork ([:BA) -> monad
 
 #### Gerunds:
 
-Gerunds are a special kind of **array containing functions**, thus
-create a noun from a function. They can be applied in different ways
-with `` `:``
+Gerunds are a special kind of **array that contains** (the boxed
+definitions of) **functions**, thus create a noun from a function. They
+can be applied in different ways with `` `:``
 ```J
 + , -                   NB. error cannot join two functions
 + ; -                   NB. error cannot box-join two functions
