@@ -767,7 +767,7 @@ _1 - - 0 - - 1          NB. equivalent
 (- -) _1 0 1            NB. equivalent (see: trains)
 ```
 
-#### Names
+#### Names:
 
 Variable-names may only contain
 
@@ -834,7 +834,7 @@ action 1 2 3        NB. not the same result! its a subexpression:
 
 Each name lives in a namespace also called a locale:
 
-#### Namespaces
+#### Namespaces:
 
 Every function has its own local scope, that is an **unnamed
 namespace** that cannot be inherited, thus a function defined within
@@ -940,7 +940,7 @@ echo__ns 'inherited echo from "z", the default parent'
 copath ns           NB. show "mynamespace" inherits from "z"
 ```
 
-#### Classes, OOP
+#### Classes, OOP:
 
 In J, classes are simply namespaces whose instances (also namespaces)
 inherit them. As assigning to inherited names just creates an own
@@ -1176,7 +1176,7 @@ The following verbs inherited from the z-locale are used to import code:
 - `require`: Like `load` but files that were already loaded won't be
   loaded again.
 
-## Appendix
+## Appendix:
 
 #### Covered builtins:
 ```
