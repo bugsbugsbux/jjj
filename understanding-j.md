@@ -24,6 +24,8 @@ blockquote {
 Found anything wrong? File an issue at
 <https://github.com/herrvonvoid/jjj/issues>.
 
+---
+
 # Understanding J
 
 > An introduction to the J programming language that gets to the point.
@@ -53,6 +55,8 @@ Important links:
   <https://code.jsoftware.com/wiki/NuVoc>
 - Good old wiki:
   <https://www.jsoftware.com/help/dictionary/contents.htm>
+
+---
 
 #### History:
 
