@@ -584,6 +584,12 @@ verb-ranks  frame, selected frame, selected shape           shape
 The following examples use different nouns; just note the shapes:
 "0 0        2 3 4 | ''    1 3 4 | ''        error: incompatibe frames
 "_ _           '' | 2 3 4    '' | 1 3 4     error: incompatibe args
+
+While in the above examples the verb-result-shape seems to be
+predictable from the input shapes, this is not the case! Take for
+example dyad ; which always returns shape (2): ;/"1 0 ~ i.3 3
+"0 0           '' | 3 3      '' | 3 3       2               3 3 2
+"1 0            3 | 3       3 3 | ''        2               3 3 2
 ```
 
 #### Padding:
