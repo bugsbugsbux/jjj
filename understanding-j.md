@@ -521,7 +521,8 @@ element of the right selection.
 'AB' ,"1 0 / 'CD'   NB. each line with each atom
 ```
 
-Explicitly defined (includes DDs) verbs are of ranks `_ _ _`.
+Explicitly defined (includes DDs) verbs are of ranks `_ _ _`, but may be
+set to a different rank before assignment.
 ```J
 fn =: {{echo y}}
 fn b.0
