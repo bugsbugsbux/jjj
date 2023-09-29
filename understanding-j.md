@@ -462,75 +462,138 @@ way.
 
 #### Rank:
 
-**Verbs have ranks** (pl) that, contrary to the rank (sg) of nouns, that
-was already covered, may be changed without changing the verb itself and
-allow to easily adapt a verb to work with arrays of any rank. This is
-because they **alter how supplied arguments are passed to the verb,
-looping over the selected parts** of the supplied arguments.
-
-The three ranks of a verb can be shown with adverb `b.0` and stand for
-the dimension of the **monadic-, dyadic left- and dyadic right
-argument** to work on. A positive number counts dimensions from the
-bottom (dimension 0: atoms), a negative one from the top (highest
-possible: dimension _).
+The **rank of a noun is the length of its shape**. Note that the shape
+of a scalar is an empty list, thus a scalar's rank is 0.
 
 ```J
-<         b.0       NB. get ranks of < (_ 0 0)
-<"1       b.0       NB. set all ranks (for current invocation only!)
-<"1 2     b.0       NB. set dyadic ranks: monadic copies dyadic right
-<"1 2 3   b.0       NB. explicit values for all ranks
+] 123               NB. monads ] or [ return their argument unchanged
+] foo =: i.2 3 4    NB. monad i. creates number sequence in given shape
+$ foo               NB. shape of foo
+#$foo               NB. length of shape of foo; aka rank
 ```
 
+Every **verb defines a maximum allowed rank for its arguments**; this is
+called the "rank of a verb". As a verb may have a monadic and a dyadic
+version and a dyad has two arguments, "the" rank of a verb is actually a
+list of the three ranks in the following order: monadic, dyadic-left and
+dyadic-right rank.
+
 ```J
-     i.2 3 4        NB. sequence of integers from 0 in given shape
-<"_  i.2 3 4        NB. call monad < on the whole array
-<    i.2 3 4        NB. same since default monadic rank of < is _
-<"0  i.2 3 4        NB. call monad < on each atom (= dim/axis 0)
-<"1  i.2 3 4        NB. call monad < on each list of the arg (= dim 1)
-<"2  i.2 3 4        NB. call monad < on each table in the arg (= dim 2)
-<"_1 i.2 3 4        NB. same because noun rank is 3 so _1 means axis 2
-<"_1 i.1 2 3 4      NB. looks the same but is rank 4 so _1 means axis 3
+; b.0               NB. show ranks of ; which works on entire argument/s
+< b.0               NB. monad takes whole arg but dyad takes atoms only
+fn "1 2 3 b.0       NB. set and show the three ranks of verb fn
+fn "1 2   b.0       NB. set and show the left and right ranks of verb fn
+fn "_     b.0       NB. show that this sets all ranks to same value
+{{echo 'hi'}} b.0   NB. default ranks of new verbs are all infinity
+</ b.0              NB. same when created by modifiers; compare to <b.0
 ```
 
-A dyad combines the selected parts of the left argument with
-the respective selected parts of the right argument pairwise. Thus,
-selections have to be of the same shape or one has to be a scalar that
-will be reused.
+If an argument has a higher rank than is allowed it is broken into
+pieces of this rank called "cells". The verb then operates on each of
+this cells individually and finally all results are returned.
 
 ```J
--b.0                NB. applies to atoms = dimension 0
-1 2 3 + 4 5 6       NB. same shape: corresponding args combined
-1 2 3 + 1           NB. scalar is reused as needed
-1 + 1 2 3           NB. same
-1 2 + 3 4 5         NB. error: incompatible shapes
+- 1 2 3             NB. monad - (rank 0) breaks list into atoms
 
-,b.0                NB. default ranks are _ _ _
-'AB' ,     'CD'     NB. combines the whole args
-'AB' ,"0   'CD'     NB. combines corresponding atoms
-'AB' ,"0 1 'CD'     NB. combines dim-0-elems with dim-1-elems
-'AB' ,"1 0 'CD'     NB. here y-lines with x-atoms
+<"0 i.2 3           NB. max allowed rank 0: breaks arg into atoms
+<"1 i.2 3           NB. max allowed rank 1: breaks arg into lines
+<"2 i.2 3           NB. max allowed rank 2: breaks arg into tables
 ```
 
-Compare this to what adverb `/` does: Instead of pairing up the
-selections it pairs up each element of the left selection with each
-element of the right selection.
+Dyads operate on two arguments at the same time, so there have to be
+rules how to match them up when the original arguments are broken into
+cells: Corresponding cells are paired -- that is, the first cell from
+the left with the first cell from the right, the second with the second,
+and so on. Dyads do not pair each left with every right cell, which is
+what applying adverb `/` to a dyad does, even though sometimes it looks
+like it because: Usually an error is thrown when there are different
+numbers of cells on each side, but not when a side has only one single
+cell: it is then paired with every cell of the other side.
 ```J
-'AB' ,     / 'CD'   NB. here equivalent to ,"_/ or ,"1/
-'AB' ,"0   / 'CD'   NB. each atom with each atom
-'AB' ,"0 1 / 'CD'   NB. each atom with each line
-'AB' ,"1 0 / 'CD'   NB. each line with each atom
+10 20 30 - 1 2 3    NB. corresponding 1st-1st,2nd-2nd,...
+10 20 30 - 1 2      NB. error: no partner for 3rd cell
+10 20 30 - 1        NB. each left with the single right cell
+1 - 10 20 30        NB. each right with the single left cell
+1-/ 10 20 30        NB. here it looks the same as without the /
+10 20 30-/ 1 2      NB. but here it does not
 ```
 
-Explicitly defined (includes DDs) verbs are of ranks `_ _ _`, but may be
-set to a different rank before assignment.
+When a dyad has different maximum ranks for its left and right
+arguments, it first breaks both arguments into cells of the higher
+allowed rank and pairs the cells up accordingly. Then it breaks the cell
+of each pair from the side with the lower allowed rank into pieces of
+this rank and processes each of these new cells with the unbroken cell
+from the other side.
 ```J
-fn =: {{echo y}}
-fn b.0
-fn 1 2 3
+'lower higher' =: 1 2
 
-fn =: {{echo y}} "0
-fn b.0
-fn 1 2 3
+] l234 =.   0 + i.2 3 4
+] r234 =. 100 + i.2 3 4
+
+l234 ;"(lower,higher) r234              NB. show result
+
+NB. verbose recreation of *this* example:
+{{
+for_pair. l234 ;"higher r234 do.        NB. pair by higher-allowed rank
+    left =. > {. pair                   NB. unbox first element
+    right =. > {: pair                  NB. unbox last element
+
+    subresults =. i.0 2
+    for_lcell. ]"lower left do.         NB. each lower-allowed-rank cell
+        res =. lcell ; right            NB. with higher-allowed-rank one
+        subresults =. subresults, res
+    end.
+
+    if. pair_index = 0 do.
+        results=. subresults
+    elseif. pair_index = 1 do.
+        results=. results ,: subresults NB. combine as two elements
+    else.
+        results=. results, subresults   NB. append
+    end.
+end.
+}}''
+
+NB. some more examples
+(i.2 2) ;"1 1 (i.2 3)
+(i.2 2) ;"1 2 (i.2 3)
+(i.2 2) ;"2 1 (i.2 3)
+```
+
+In an oversimplified way, verb rank selects a dimension to work on. It
+counts up to the given rank from the lowest dimension and stops early if
+the arrays has no more dimensions. If the verb rank is negative it
+counts down from the highest dimension. Negative rank could also be seen
+as selecting the frame (see: next chapter).
+
+```J
+<"_2 i.2 3 4    NB. argument rank 3 minus 2 is target rank 1 (lines)
+<"_1 i.2 3 4    NB. argument rank 3 minus 1 is target rank 2 (tables)
+<"_0 i.2 3 4    NB. there is no negative zero
+<"_11 i.2 3 4   NB. bottoms out at 0 (atoms)
+fn =: <"_1      NB. actually sets a negative rank
+fn i.3
+fn i.3 3
+fn b.0          NB. but it is now shown
+```
+
+Rank, even the default one, should always be considered as the
+application of a modifier -- and therefore as creating a new function
+which handles the invocation of the verb with the correct arguments. It
+is not simply a property of the verb that could be altered at will.
+Because of this verb rank can never be increased: Every rank-conjunction
+can only work with the arguments it receives (which might only be what a
+previous rank-operator passed to it anymore) and therefore can only
+further constrain the rank.
+```J
+]tbl =: i.2 2
+< tbl               NB. should be imagined as <"_ because rank is _ 0 0
+<"1 "2 tbl          NB. "2 passes tables to "1 which further tightens it
+<"2 "1 tbl          NB. "1 passes lists to "2 which passes them on to <
+
+NB. sequence of rank-conj is not the same as the minimum values:
+tbl ;"0 1 tbl       NB. pair atoms with lines
+tbl ;"1 1 "0 2 tbl  NB. for each atom-table pair: pair atom with lines
 ```
 
 #### Frames:
@@ -1223,17 +1286,20 @@ dyad            ;       join as boxes
 dyad            =       compares corresponding atoms
 dyad            >       is x greater than y?
 assignment      =.      try assigning to local namespace else to global
-adverb          b. 0    show ranks of its verb
-conjunction     "       set ranks of verb
 monad           i.      get integer sequence in shape of argument
+monad           [       return argument unchanged
+monad           ]       return argument unchanged
+conjunction     "       set ranks of verb
+adverb          b. 0    show ranks of its verb
+adverb          /       puts verb between elements of new verb's arg/s
+monad           {.      first element
+monad           {:      last element
 adverb          ~       swap arguments or copy right arg to left side
 dyad            %       division
 ambivalent      [:      x?([: B A)y becomes (B x?Ay)
 conjunction     `       make list of verbs (gerund)
 conjunction     `:      execute a gerund in a certain way
 dyad            ,:      combine into an array of two elements
-monad           [       return argument unchanged
-monad           ]       return argument unchanged
 monad           conl    boxed list of namespaces
 monad           coname  get name of current namespace
 monad           cocurrent   switch to namespace
@@ -1255,8 +1321,6 @@ dyad            {::     index into boxed structure
 monad           ,       flatten array; scalar becomes list
 adverb          }       return copy of array with replaced elements
 dyad            #       repeat curresponding elements x-times
-monad           {:      last element
-monad           {.      first element
 dyad            {.      first x elements
 monad           }:      except last element
 monad           }.      except first element
@@ -1277,6 +1341,7 @@ monad           require like load but only if was not loaded already
 - n                 ... right arg of modifier, indicates it is a noun
 - (pl)              ... plural
 - (sg)              ... singular
+- aka               ... also known as
 - arg/s             ... argument/s
 - bc                ... because
 - char/s            ... character/s
