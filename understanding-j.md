@@ -651,7 +651,7 @@ The following examples use different nouns; just note the shapes:
 
 While in the above examples the verb-result-shape seems to be
 predictable from the input shapes, this is not the case! Take for
-example dyad ; which always returns shape (2): ;/"1 0 ~ i.3 3
+example dyad ; which always returns shape (2): (i.3 3) ;/"1 0 i.3 3
 "0 0           '' | 3 3      '' | 3 3       2               3 3 2
 "1 0            3 | 3       3 3 | ''        2               3 3 2
 ```
