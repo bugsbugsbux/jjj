@@ -710,10 +710,10 @@ NB. this example (that creates y by y matrices) shows:
 (3 : '1 + i.y,y' "0) 1 2 3
 ```
 
-#### Evaluation:
+#### Evaluation Rules:
 
-The examples should have given away almost all of these rules
-implicitly:
+After reading the previous sections the following rules should not be
+surprising:
 
 - Evaluation works right to left and in two steps:
 
