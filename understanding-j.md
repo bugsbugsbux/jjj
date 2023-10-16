@@ -629,12 +629,12 @@ A frame is the shape in which to assemble some values, for example
 after iterating over and deriving values from those iterated elements.
 
 As already discussed, a verb's rank selects rank-amount of dimensions
-from (the back (or the front for negative ranks) of) the shape to
-operate on. The **frame of the result is the leading dimensions that
-weren't selected**. To get the final result's shape append the verb's
-result's shape to the frame. If there are multiple frames (for example
-with dyads) they have to agree, meaning the shorter one has to *be the
-start of the longer one*; and the result uses the longer one.
+from (the back (or the front for negative ranks) of) the list of
+dimensions (shape). The **frame of the result is the leading dimensions
+that weren't selected**. To get the final result's shape append the
+verb's result's shape to the frame. If there are multiple frames (dyads)
+they have to agree, meaning the shorter one has to *be the start of the
+longer one*; and the result uses the longer one.
 
 ```J
 empty =: 3 : '1'    NB. always returns 1 (a scalars thus empty shape)
@@ -687,12 +687,11 @@ example dyad ; which always returns shape (2): (i.3 3) ;/"1 0 i.3 3
 
 Incompatible values can still be put into the same structure by using
 boxes. When they are of the same type, lower dimensional values can also
-be padded to match the highest dimensional value making the shapes
-compatible and thus the boxes can be omitted. This is different from
-reshaping!
+be padded to match the shape of the higher dimensional value and thus
+the boxes can be omitted. This is different from reshaping!
 
-When unboxing values are padded automatically. Behind the scenes this
-happens all the time when assembling subresults into a frame.
+Unboxing automatically padds values. Behind the scenes this happens all
+the time when assembling subresults into a frame.
 
 ```J
  1; 2 2
