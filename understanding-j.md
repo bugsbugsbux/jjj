@@ -272,9 +272,9 @@ NB. ^^ predefined variable containing newline string
 #### Arrays:
 
 **An array is a ((list of) list/s of) value/s.** Thus even single values
-(*scalars*/*atoms*) are actually arrays ("0 lists of 1 element"). All
-elements must have the same type, and on the same nesting-level
-(*dimension*/*axis*) every element has to have the same length.
+(*scalars*/*atoms*) are actually arrays. All elements must have the same
+type, and on the same nesting-level (*dimension*/*axis*) every element
+has to have the same length.
 
 Therefore an array can be described by its type and *shape*, which is
 the list of the lengths of elements on each nesting-level. The length of
