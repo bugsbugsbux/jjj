@@ -138,7 +138,7 @@ called *monads*; not related to the haskell term).
 0 1 , 2 3           NB. the dyad , joins lists
 ```
 Note that the monadic and dyadic case here are two distinct functions:
-negate and subtract. They share a name (the symbol `-`) and a
+negate-number and subtract. They share a name (the symbol `-`) and a
 definition: the function `-` is *ambivalent*. A function does not have
 to have both cases.
 
