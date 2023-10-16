@@ -164,7 +164,31 @@ argument `1 2 3`.
 
 *Conjunctions* only differ insofar as they (meaning the original
 modifiers not the returned entities) take two arguments. The `:`
-conjunction is commonly used to define new entities:
+conjunction is commonly used to define new entities (see: defining
+entities).
+
+#### Assignments:
+
+Assignments use the operators `=:` (global) and `=.` (function-local).
+They return their values, but the interpreter does not display them, so
+often monads `[` or `]`, which return their argument unchanged, are used
+as prefix. When assigning to multiple variables the return value is
+still the original argument.
+```J
+foo =: 1            NB. return value of assignment not shown
+[ foo =: foo + 1    NB. global assignment
+] foo =. foo + 1    NB. local assignment if in function otherwise global
+```
+
+It is possible to assign multiple values at the same time, but the value
+returned is the unchanged original argument.
+```J
+'foo bar' =: 1 2    NB names as space joined strings
+foo
+bar
+# 'foo bar' =: 3 4  NB. returns unchanged arg; thus length is 2
+'foo bar' =: 1 2 3  NB length error: number of names must match elements
+```
 
 #### Defining entities (functions, nouns) by Explicit-Definition:
 
@@ -195,7 +219,7 @@ that ignore their args and always return their (negative) digit/infinity
 
 NB. verbs
 1 (4 : 'x + y') 2       NB. creates and uses a dyad
-neg =: 3 : '-y'         NB. =: assigns (here a monad) to a global name
+neg =: 3 : '-y'
 fn =: 3 : 0             NB. creates an (ambivalent) multiline verb
   echo 'First the body of a monad, then optionally the body of a dyad'
   echo 'separated by a line containing : as its only printable symbol'
@@ -319,6 +343,10 @@ a:                  NB. equivalent; called "ace", a noun
 1 2 , 'abc'         NB. error: different types and lengths
 1 2 ; 'abc'         NB. ok because ; boxes the values first
 (<1 2) , <'abc'     NB. here we manually boxed the values first -> ok
+
+NB. multi assignments unpack top-level boxes:
+]'foo bar' =: 0 1;2 NB. removes one boxing level but returns original
+foo, bar
 
 NB. comparison of boxed values
 'bar' = 'baz'
@@ -466,7 +494,6 @@ The **rank of a noun is the length of its shape**. Note that the shape
 of a scalar is an empty list, thus a scalar's rank is 0.
 
 ```J
-] 123               NB. monads ] or [ return their argument unchanged
 ] foo =: i.2 3 4    NB. monad i. creates number sequence in given shape
 $ foo               NB. shape of foo
 #$foo               NB. length of shape of foo; aka rank
@@ -849,18 +876,14 @@ Variable-names may only contain
 - numbers (but not as first character) and
 - underscores (except leading, trailing or double).
 
-Assignments return their values, but the interpreter doesn't display
-them, so often monads `[` or `]` (return their argument unchanged) are
-used to prefix assignments.
-
 ```J
-foo =: 1            NB. assignment's return-value not shown
-[ foo =: foo + 1    NB. monads [ and ] return their arg/s unchanged
-] foo =: foo + 1    NB. that's a common pattern to show assignment value
-'foo bar' =: 1 2    NB. same lengths required
-foo; bar
-]'foo bar' =: 0 1;2 NB. removes one boxing level but returns original
-foo; bar
+valid_name1 =: 'only ascii'
+VALID_NAME1 =: 'case sensitive, '
+VALID_NAME1, valid_name1
+
+_invalid =: 1
+2bad =: 2
+err_ =: 3
 ```
 
 Unknown variables are assumed to be verbs because nouns are evaluated
