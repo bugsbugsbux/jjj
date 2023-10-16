@@ -156,8 +156,8 @@ which would also be processed before the first verb evaluates!
 +/ 1 2 3            NB. 6 because: 1 + 2 + 3 is 6
 ```
 
-The last example showed that `+/x` is not the same as `+x` but rather
-`x1 + x2 + x3 ...`. This is because `/` is an *adverb* (a modifier that
+The last example showed that `+/y` is not the same as `+y` but rather
+`y1 + y2 + y3 ...`. This is because `/` is an *adverb* (a modifier that
 takes one argument to the *left*): It creates a new function that
 inserts the original argument `+` between all elements of its own
 argument `1 2 3`.
