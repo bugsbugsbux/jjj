@@ -511,7 +511,7 @@ dyadic-right rank.
 fn "1 2 3 b.0       NB. set and show the three ranks of verb fn
 fn "1 2   b.0       NB. set and show the left and right ranks of verb fn
 fn "_     b.0       NB. show that this sets all ranks to same value
-{{echo 'hi'}} b.0   NB. default ranks of new verbs are all infinity
+{{'new verb'}} b.0  NB. default ranks of new verbs are all infinity
 </ b.0              NB. same when created by modifiers; compare to <b.0
 ```
 
