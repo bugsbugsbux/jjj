@@ -43,8 +43,7 @@ sections.
 
 **Run the examples and read the comments!**
 
-Abbreviations and covered builtins are listed in the appendix with a
-short description.
+Covered builtins are listed in the appendix with a short description.
 
 Important links:
 
