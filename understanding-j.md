@@ -488,15 +488,18 @@ way.
 - Throw, Catch: TODO
 - Goto: Considered Harmful - Edsger Dijkstra
 
-#### Rank:
+#### Ranks and Frames:
 
 The **rank of a noun is the length of its shape**. Note that the shape
-of a scalar is an empty list, thus a scalar's rank is 0.
+of a scalar/atom is an empty list, thus a scalar's rank is 0; as well as
+that the number of elements on the lowest dimension (atoms) is the last
+number in the shape:
 
 ```J
 ] foo =: i.2 3 4    NB. monad i. creates number sequence in given shape
 $ foo               NB. shape of foo
 #$foo               NB. length of shape of foo; aka rank
+]bar =: i.4 3 2     NB. has the reverse shape of foo
 ```
 
 Every **verb defines a maximum allowed rank for its arguments**; this is
@@ -515,8 +518,8 @@ fn "_     b.0       NB. show that this sets all ranks to same value
 </ b.0              NB. same when created by modifiers; compare to <b.0
 ```
 
-If an argument has a higher rank than is allowed it is broken into
-pieces of this rank called "cells". The verb then operates on each of
+If an argument has a **higher rank than is allowed it is broken into
+pieces of this rank called "cells"**. The verb then operates on each of
 this cells individually and finally all results are returned.
 
 ```J
@@ -527,17 +530,42 @@ this cells individually and finally all results are returned.
 <"2 i.2 3           NB. max allowed rank 2: breaks arg into tables
 ```
 
-Dyads operate on two arguments at the same time, so there have to be
-rules how to match them up when the original arguments are broken into
-cells: Corresponding cells are paired -- that is, the first cell from
-the left with the first cell from the right, the second with the second,
-and so on. Dyads do not pair each left with every right cell, which is
-what applying adverb `/` to a dyad does, even though sometimes it looks
-like it because: Usually an error is thrown when there are different
-numbers of cells on each side, but not when a side has only one single
-cell: it is then paired with every cell of the other side.
+Deducing the shape of the cells in these examples is simple and
+comparing them with the shape of the original argument reveals that the
+shape of cells is a (possibly empty) suffix of the argument's shape and
+has the length of the rank of the verb. The example operating on atoms
+also showed that the final shape is not simply a (one-dimensional) list
+of the individual results: Rather, it is the individual results arranged
+in a so called **"frame", which is the (possibly empty) leading part of
+the argument's shape, that was not used to determine the shape of the
+cells**.
+
+```
+arg-shape   verb-rank   frame   result-shapes   final-shape
+2 3 4           0       2 3 4       ''          2 3 4,''
+2 3 4           1       2 3         ''          2 3,''
+2 3 4           _       ''          ''          '',''
+2 3 4           2       2           2           2,2
+
+]a =: i.2 3 4
+<"0 a
+<"1 a
+<"_ a
+{{ y;y }}"2 a
+```
+
+While dyads follow essentially the same rules, as they process two cells
+at the same time, these have to be paired up according to some rules:
+Generally, every left argument is paired with the right argument that
+corresponds to it by index. If this is not possible an error is thrown.
+Therefore, dyads do not pair each left with every right cell, which is
+what applying adverb `/` to a dyad does -- even though sometimes it
+looks like it due to the following exception: When there is a single
+cell on a side, it is paired with every cell from the other side
+(individually).
+
 ```J
-10 20 30 - 1 2 3    NB. corresponding 1st-1st,2nd-2nd,...
+10 20 30 - 1 2 3    NB. corresponding: 1st-1st,2nd-2nd,...
 10 20 30 - 1 2      NB. error: no partner for 3rd cell
 10 20 30 - 1        NB. each left with the single right cell
 1 - 10 20 30        NB. each right with the single left cell
@@ -545,142 +573,67 @@ cell: it is then paired with every cell of the other side.
 10 20 30-/ 1 2      NB. but here it does not
 ```
 
-When a dyad has different maximum ranks for its left and right
-arguments, it first breaks both arguments into cells of the higher
-allowed rank and pairs the cells up accordingly. Then it breaks the cell
-of each pair from the side with the lower allowed rank into pieces of
-this rank and processes each of these new cells with the unbroken cell
-from the other side.
+Dyads, too, arrange the individual results in a frame determined by the
+argument; however, as there are two arguments, both of them need to
+*start* with the same frame.
+
 ```J
-'lower higher' =: 1 2
-
-] l234 =.   0 + i.2 3 4
-] r234 =. 100 + i.2 3 4
-
-l234 ;"(lower,higher) r234              NB. show result
-
-NB. verbose recreation of *this* example:
-{{
-for_pair. l234 ;"higher r234 do.        NB. pair by higher-allowed rank
-    left =. > {. pair                   NB. unbox first element
-    right =. > {: pair                  NB. unbox last element
-
-    subresults =. i.0 2
-    for_lcell. ]"lower left do.         NB. each lower-allowed-rank cell
-        res =. lcell ; right            NB. with higher-allowed-rank one
-        subresults =. subresults, res
-    end.
-
-    if. pair_index = 0 do.
-        results=. subresults
-    elseif. pair_index = 1 do.
-        results=. results ,: subresults NB. combine as two elements
-    else.
-        results=. results, subresults   NB. append
-    end.
-end.
-}}''
-
-NB. some more examples
-(i.2 2) ;"1 1 (i.2 3)
-(i.2 2) ;"1 2 (i.2 3)
-(i.2 2) ;"2 1 (i.2 3)
+(i.2 2) ;"1 (i.2 3) NB. ok: frames are: 2 and 2
+(i.3 2) ;"1 (i.2 3) NB. error: frames are: 3 and 2
+(i.2 3 4);"1(i.2 3) NB. ok: frames are 2 3 and 2
+(i.3) ;"1 (i.2 3)   NB. ok: frames '' and 2 (ok because (1$2)='',2 )
+(i.1 3);"1 (i.2 3)  NB. error: frames 1 and 2
 ```
 
-In an oversimplified way, verb rank selects a dimension to work on. It
-counts up to the given rank from the lowest dimension and stops early if
-the arrays has no more dimensions. If the verb rank is negative it
-counts down from the highest dimension. Negative rank could also be seen
-as selecting the frame (see: next chapter).
+When one frame is longer than the other, the shorter frame is also used
+to group the cells of *both* arguments: On the side of the shorter frame
+these groups will always contain a single cell, which is then paired
+with each cell from the corresponding group on the other side
+individually. Finally, the results of each group are arranged by the
+difference of the frames, while the groups are arranged by the shorter
+(common) frame.
 
 ```J
-<"_2 i.2 3 4    NB. argument rank 3 minus 2 is target rank 1 (lines)
-<"_1 i.2 3 4    NB. argument rank 3 minus 1 is target rank 2 (tables)
-<"_0 i.2 3 4    NB. there is no negative zero
-<"_11 i.2 3 4   NB. bottoms out at 0 (atoms)
-fn =: <"_1      NB. actually sets a negative rank
+(i.2 3 4) ;"1 2 (i.2 3 4)   NB. frames: 2 3 and 2
+(i.2 3) ;"1 1 (i.2 3 4)     NB. frames: 2 and 2 3
+1 2 +"0 0 i.2 3             NB. frames: 2 and 2 3
+```
+
+Positive verb-ranks, such as the ones used until now, select
+verb-rank-amount of trailing dimensions to be used as cells for the verb
+to operate on. Negative ranks, however, select leading dimensions, or in
+other words, the frame.
+
+```J
+<"_2 i.2 3 4    NB. frameshape: 2 3 cellshape: 4
+<"_1 i.2 3 4    NB. frameshape: 2 cellshape: 3 4
+<"_0 i.2 3 4    NB. there is no negative zero -> select 0-cells (atoms)
+<"_11 i.2 3 4   NB. abs val of neg rank higher than arg rank: 0-cells
+
+fn =: <"_1      NB. actually sets a negative rank...
 fn i.3
 fn i.3 3
-fn b.0          NB. but it is now shown
+fn b.0          NB. ...but it is NOT SHOWN
 ```
 
 Rank, even the default one, should always be considered as the
 application of a modifier -- and therefore as creating a new function
 which handles the invocation of the verb with the correct arguments. It
 is not simply a property of the verb that could be altered at will.
-Because of this verb rank can never be increased: Every rank-conjunction
-can only work with the arguments it receives (which might only be what a
-previous rank-operator passed to it anymore) and therefore can only
-further constrain the rank.
+Because of this, verb rank can never be increased: Every
+rank-conjunction can only work with the arguments it receives (possibly
+by a previous rank-operator) and therefore can only further constrain
+the rank.
+
 ```J
 ]tbl =: i.2 2
 < tbl               NB. should be imagined as <"_ because rank is _ 0 0
-<"1 "2 tbl          NB. "2 passes tables to "1 which further tightens it
-<"2 "1 tbl          NB. "1 passes lists to "2 which passes them on to <
+<"1 "2 tbl          NB. "2 passes tables to "1 which calls < with lists
+<"2 "1 tbl          NB. "1 passes lists to "2 which passes (them) to <
 
 NB. sequence of rank-conj is not the same as the minimum values:
 tbl ;"0 1 tbl       NB. pair atoms with lines
-tbl ;"1 1 "0 2 tbl  NB. for each atom-table pair: pair atom with lines
-```
-
-#### Frames:
-
-A frame is the shape in which to assemble some values, for example
-after iterating over and deriving values from those iterated elements.
-
-As already discussed, a verb's rank selects rank-amount of dimensions
-from (the back (or the front for negative ranks) of) the list of
-dimensions (shape). The **frame of the result is the leading dimensions
-that weren't selected**. To get the final result's shape append the
-verb's result's shape to the frame. If there are multiple frames (dyads)
-they have to agree, meaning the shorter one has to *be the start of the
-longer one*; and the result uses the longer one.
-
-```J
-empty =: 3 : '1'    NB. always returns 1 (a scalars thus empty shape)
-two =: 3 : '1 2'    NB. always returns list 1 2 (shape 2)
-```
-The following examples use the above verb definitions.
-```
-                            arg-shape       verb-result-    final
-verb-rank                   frame, selected shape           shape
----------   EXAMPLES:       ===== ------    ============    ----
-"_          empty   i.3      '' | 3         ''              ''
-"0          empty"0 i.3       3 | ''        ''              3
-"_          two  "_ i.3      '' | 3         2               2
-"0          two  "0 i.3       3 | ''        2               3 2
-"1          two"1 i.2 3       2 | 3         2               2 2
-```
-
-```J
-echo x234 =: 2 3 4 $ 3
-echo x23 =: 2 3 $ 1 1 1 2 2 2
-x234 +"0 0 x23
-```
-
-Replace the rank-conjunction in the last expression with the ones from
-the following table:
-```
-            left-arg-shape  right-arg-shape verb-results-   final
-verb-ranks  frame, selected frame, selected shape           shape
-----------  =====  ------   ====  ------    ============    --------
-"0 0        2 3 4 | ''      2 3 | ''        ''              2 3 4
-"1 0          2 3 | 4       2 3 | ''        4               2 3 4
-"0 1        2 3 4 | ''        2 | 3         3               2 3 4 3
-"1 1          2 3 | 4         2 | 3         error: incompatible args
-"2 0            2 | 3 4     2 3 | ''        3 4             2 3 3 4
-"2 1            2 | 3 4       2 | 3         3 4             2 3 4
-"_ _           '' | 2 3 4    '' | 2 3       2 3 4           2 3 4
-
-The following examples use different nouns; just note the shapes:
-"0 0        2 3 4 | ''    1 3 4 | ''        error: incompatibe frames
-"_ _           '' | 2 3 4    '' | 1 3 4     error: incompatibe args
-
-While in the above examples the verb-result-shape seems to be
-predictable from the input shapes, this is not the case! Take for
-example dyad ; which always returns shape (2): (i.3 3) ;/"1 0 i.3 3
-"0 0           '' | 3 3      '' | 3 3       2               3 3 2
-"1 0            3 | 3       3 3 | ''        2               3 3 2
+tbl ;"1 1 "0 2 tbl  NB. for each atom-table pair: pair (atom) with line
 ```
 
 #### Padding:
