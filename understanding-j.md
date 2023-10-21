@@ -1231,23 +1231,28 @@ The following verbs inherited from the z-locale are used to import code:
 ```
 comment         NB.     comment rest of line
 noun            _       infinity, but as number-prefix: negative sign
-monad           -       negate
+syntax          ()      subexpressions are parenthesized
+syntax          ''      string (which is a *list* of literals)
+monad           -       negate-number (use -. (not) to negate booleans)
 dyad            -       subtract
 dyad            ,       join lists
 dyad            +       addition
 monad           +       complex conjugate
 adverb          /       puts verb between elements of new verb's arg/s
 conjunction     :       define entities
+assignment      =:      assign to global namespace
+assignment      =.      try assigning to local namespace else to global
+monad           [       return argument unchanged
+monad           ]       return argument unchanged
 syntax          )       end multiline explicit definition
 monad           echo    output message
 ambivalent      __: _9: ... 0: ... 9: _: ignore arg/s and return digit
-assignment      =:      assign to global namespace
 syntax          :       separate monadic and dyadic bodies
 monad           ":      convert to displayable byte array
 dyad            *       multiplication
 monad           names   pretty print names defined in current namespace
-(conjunction    !:)     access lots of system functions
-(dyad           o.)     access to circle functions (sin, cos, ...)
+(conjunction    !:     access lots of system functions                 )
+(dyad           o.      access to circle functions (sin, cos, ...)     )
 syntax          {{      opens a direct definition
 syntax          {{)n    open direct definition of type n (or a, c, m, d)
 syntax          }}      close DD
@@ -1260,15 +1265,9 @@ noun            a:      empty box
 dyad            ;       join as boxes
 dyad            =       compares corresponding atoms
 dyad            >       is x greater than y?
-assignment      =.      try assigning to local namespace else to global
 monad           i.      get integer sequence in shape of argument
-monad           [       return argument unchanged
-monad           ]       return argument unchanged
-conjunction     "       set ranks of verb
 adverb          b. 0    show ranks of its verb
-adverb          /       puts verb between elements of new verb's arg/s
-monad           {.      first element
-monad           {:      last element
+conjunction     "       change ranks of verb
 adverb          ~       swap arguments or copy right arg to left side
 dyad            %       division
 ambivalent      [:      x?([: B A)y becomes (B x?Ay)
@@ -1296,6 +1295,8 @@ dyad            {::     index into boxed structure
 monad           ,       flatten array; scalar becomes list
 adverb          }       return copy of array with replaced elements
 dyad            #       repeat curresponding elements x-times
+monad           {:      last element
+monad           {.      first element
 dyad            {.      first x elements
 monad           }:      except last element
 monad           }.      except first element
