@@ -1306,26 +1306,3 @@ monad           scripts show shortnames
 monad           loadd   like load but print each line before executing
 monad           require like load but only if was not loaded already
 ```
-
-#### Abbreviations:
-
-- x                 ... left arg (in modifiers: of created entity)
-- y                 ... right arg (in modifiers: of created entity)
-- u                 ... left arg of modifier, indicates it is a verb
-- v                 ... right arg of modifier, indicates it is a verb
-- m                 ... left arg of modifier, indicates it is a noun
-- n                 ... right arg of modifier, indicates it is a noun
-- (pl)              ... plural
-- (sg)              ... singular
-- aka               ... also known as
-- arg/s             ... argument/s
-- bc                ... because
-- char/s            ... character/s
-- dim/s             ... dimension/s
-- docs              ... documentation
-- elem/s            ... element/s
-- esc               ... escape
-- excl              ... excluding
-- fn                ... function
-- ns                ... namespace
-- var/s             ... variable/s
