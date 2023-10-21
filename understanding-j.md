@@ -530,14 +530,14 @@ this cells individually and finally all results are returned.
 <"2 i.2 3           NB. max allowed rank 2: breaks arg into tables
 ```
 
-Deducing the shape of the cells in these examples is simple and
-comparing them with the shape of the original argument reveals that the
-shape of cells is a (possibly empty) suffix of the argument's shape and
-has the length of the rank of the verb. The example operating on atoms
-also showed that the final shape is not simply a (one-dimensional) list
-of the individual results: Rather, it is the individual results arranged
-in a so called **"frame", which is the (possibly empty) leading part of
-the argument's shape, that was not used to determine the shape of the
+Deducing the shape of the cells in these examples is simple; comparing
+them with the shape of the original argument reveals that the shape of
+cells is a (possibly empty) suffix of the argument's shape and has the
+length of the rank of the verb. The example operating on atoms also
+showed that the final shape is not simply a (one-dimensional) list of
+the individual results: Rather, it is the individual results arranged in
+a so called **"frame", which is the (possibly empty) leading part of the
+argument's shape, that was not used to determine the shape of the
 cells**.
 
 ```
