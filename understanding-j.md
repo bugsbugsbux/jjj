@@ -573,15 +573,16 @@ cell on a side, it is paired with every cell from the other side
 ```
 
 Dyads, too, arrange the individual results in a frame determined by the
-argument; however, as there are two arguments, both of them need to
-*start* with the same frame.
+argument. However, as there are two arguments and thus two frames, these
+may not contradict each other, which they do not when they are equal
+or one simply omits the last elements of the other:
 
 ```J
-(i.2 2) ;"1 (i.2 3) NB. ok: frames are: 2 and 2
-(i.3 2) ;"1 (i.2 3) NB. error: frames are: 3 and 2
+(i.2 2) ;"1 (i.2 3) NB. ok: frames are 2 and 2
+(i.2 2) ;"0 (i.2 3) NB. error: frames are 2 2 and 2 3
 (i.2 3 4);"1(i.2 3) NB. ok: frames are 2 3 and 2
-(i.3) ;"1 (i.2 3)   NB. ok: frames '' and 2 (ok because (1$2)='',2 )
-(i.1 3);"1 (i.2 3)  NB. error: frames 1 and 2
+(i.1 3) ;"1 (i.2 3) NB. error: frames are 1 and 2
+(i.3) ;"1 0 (i.2 3) NB. ok: frames are '' and 2 3 (which equals '',2 3)
 ```
 
 When one frame is longer than the other, the shorter frame is also used
