@@ -643,7 +643,7 @@ boxes. When they are of the same type, lower dimensional values can also
 be padded to match the shape of the higher dimensional value and thus
 the boxes can be omitted. This is different from reshaping!
 
-Unboxing automatically padds values. Behind the scenes this happens all
+Unboxing automatically pads values. Behind the scenes this happens all
 the time when assembling subresults into a frame.
 
 ```J
