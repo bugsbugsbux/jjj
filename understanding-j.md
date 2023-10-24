@@ -1382,7 +1382,35 @@ monad           >       unbox/open
 noun            a:      empty box
 dyad            ;       join as boxes
 dyad            =       compares corresponding atoms
+syntax          assert. error if not all 1s
+syntax          if.     if block ends a do.
+syntax          do.     ends a condition block
+syntax          elseif. else-if block ends at do.
+syntax          else.   else block ends at end.
+syntax          end.    ends a control structure
+syntax          select. target value/s to match against; ends at f/case.
+syntax          case.   test value/s to match target; ends at do.
+syntax          fcase.  like case. but invoces next f/case.; ends at do.
 dyad            >       is x greater than y?
+syntax          while.  checks condition before every loop; ends at do.
+syntax          whilst. like while. but runs at least once; ends at do.
+syntax          for.    loop once for each item in clause; ends at do.
+syntax          for_var. like for. but sets var to item
+syntax          return. return last value or *left* arg
+verb            9!:8    returns list of default error messages
+verb            dberr   return last error's number
+verb            dberm   return last error's message
+verb            dbsig   equivalent to (13!:8)
+verb            13!:8   raise error y; optional: custom message x
+syntax          try.    handle errors in block; ends at catch/d/t.
+syntax          catch.  handle normal errors (not error 55 = throw.s)
+verb            dbr     disable (arg 0) or enable (1) debugging mode
+verb            dbq     query debugging mode state
+verb            dbs     shows debug stack
+verb            dbnxt   continue program on next line
+syntax          catchd. replacement for catch. pauses when debugging
+syntax          throw.  exit fn, goes up callstack until finds catcht.
+syntax          catcht. handles error 55 (throw.s) in *called* functions
 monad           i.      get integer sequence in shape of argument
 adverb          b. 0    show ranks of its verb
 conjunction     "       change ranks of verb
