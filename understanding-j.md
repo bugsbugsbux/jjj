@@ -499,7 +499,9 @@ element in the list of default error messages returned by `9!:8''`.
 `dberr` queries the last error's number and `dberm` gets its message.
 
 To raise an error its number is passed to `dbsig` which optionally
-accepts a custom error message as left argument.
+accepts a custom error message as left argument. (Show the correct
+function name instead of "dbsig" in the message by using `(13!:8)`
+directly).
 
 ```J
 getinfo =: {{
