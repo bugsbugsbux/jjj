@@ -220,11 +220,11 @@ NB. verbs
 1 (4 : 'x + y') 2       NB. creates and uses a dyad
 neg =: 3 : '-y'
 fn =: 3 : 0             NB. creates an (ambivalent) multiline verb
-  echo 'First the body of a monad, then optionally the body of a dyad'
-  echo 'separated by a line containing : as its only printable symbol'
-  :
-  (3 :'multiline explicit-defs cannot be nested but may contain') 0
-  echo 'one-line explicit-defs or (multiline) DDs (see below)'
+    echo 'First the body of a monad, then optionally the body of a dyad'
+    echo 'separated by a line containing : as its only printable symbol'
+    :
+    (3 :'multiline explicit-defs cannot be nested but may contain') 0
+    echo 'one-line explicit-defs or (multiline) DDs (see below)'
 )
 fn 1
 1 fn 2
@@ -232,7 +232,7 @@ fn 1
 NB. adverb representing number in percents
 echo 0.01 (1 : '( ": u * 100), ''%'' ')
 percent =: 1 : 0        NB. same as multiline definition
-  (": m * 100), '%'     NB. using m to indicate left arg is noun
+    (": m * 100), '%'   NB. using m to indicate left arg is noun
 )
 echo 0.7 percent
 
@@ -277,8 +277,8 @@ braces.
 echo {{)nDD-nouns are always strings}}, '!'
 
 {{
-  echo 'Multiline DDs may contain other multiline DDs. For example:'
-  echo 'Note:', {{)n NB. usually this comment would create an error:
+    echo 'Multiline DDs may contain other multiline DDs. For example:'
+    echo 'Note:', {{)n NB. usually this comment would create an error:
 Typed multiline DDs must not have any additional printable characters on
 the first line. However, multiline DD-nouns (such as this), may start on
 the opening line, but: must end with the closing braces as the first 2
@@ -287,10 +287,10 @@ not end the noun because it starts with whitespace but the next does!
 }}, LF, ' After the closing }} all DDs may continue the expression.'
 NB. ^^ predefined variable containing newline string
 
-  :
-  echo 'Apart from that, DD-bodies are much like explicit definitions.'
+    :
+    echo 'Apart from that, DD-bodies are like explicit definitions.'
 
-  }} 'call as monad'    NB. non-noun-DD's }} don't have to start a line
+    }} 'call as monad'  NB. non-noun-DD's }} don't have to start a line
 ```
 
 #### Arrays:
@@ -366,20 +366,20 @@ way.
 - Assert: *All atoms* have to be `1`.
   ```J
   {{
-    assert. 'aa'='aa'   NB. dyad = compares corresponding atoms: 1 1
-    assert. 'aa'='ab'   NB. error because not all 1s: 1 0
+      assert. 'aa'='aa' NB. dyad = compares corresponding atoms: 1 1
+      assert. 'aa'='ab' NB. error because not all 1s: 1 0
   }}''
   ```
 - Conditionals: *First atom* must not be `0`.
   ```J
   {{ if. 0 1 do.        NB. first atom is 0 -> false
-    echo 'if block'
+      echo 'if block'
   elseif. 1 0 do.       NB. first atom is not 0 -> true
-    echo 'elseif block'
+      echo 'elseif block'
   elseif. 1 do.         NB. only considered if no previous block ran
-    echo 'elseif 2 block'
+      echo 'elseif 2 block'
   else.                 NB. runs if no previous block ran
-    echo 'else-block'
+      echo 'else-block'
   end. }}''
 
   NB. therefore be careful with tests such as:
@@ -420,18 +420,18 @@ way.
 - While loops: Only run if *first atom* is not `0`.
   ```J
   {{
-    foo =: 3
-    while.
-      (foo > 0), 0      NB. dyad > true if x greater than y
-    do.
-      echo foo =: foo -1
-    end.
+      foo =: 3
+      while.
+          (foo > 0), 0  NB. dyad > true if x greater than y
+      do.
+          echo foo =: foo -1
+      end.
   }} ''
   ```
 - Whilst loops: are while loops that always *run at least once*.
   ```J
   {{ whilst. 0 1 do.
-    echo 'runs at least once'
+      echo 'runs at least once'
   end. }} ''
   ```
 - For (-each) loops: There are no classic for loops. Iterating over a
@@ -471,18 +471,18 @@ way.
   argument!
   ```J
   {{                    NB. functions return last computed value
-    <'foo'
-    <'bar'
+      <'foo'
+      <'bar'
   }} ''
   {{
-    <'foo'
-    return.             NB. exits early and returns last computed value
-    <'bar'
+      <'foo'
+      return.           NB. exits early and returns last computed value
+      <'bar'
   }} ''
   {{
-    <'foo'
-    <'fizz' return.     NB. or given left arg (parens not necessary??)
-    <'bar'
+      <'foo'
+      <'fizz' return.   NB. or given left arg (parens not necessary??)
+      <'bar'
   }}''
   ```
 - Goto: Considered Harmful - Edsger Dijkstra
@@ -1049,14 +1049,14 @@ in the inherited namespace/s, which for new named namespaces is "z"
 conl ''             NB. shows available named namespaces
 coname ''           NB. shows currently used named namespace (=global)
 cocurrent <'base'   NB. switches global namespace to namespace "base"
-  nl ''             NB. shows all names defined in global namespace
-  nl 3              NB. show defined names of type: 0 1 2 or 3 (verbs)
-  clear ''          NB. rm all names from given namespace or "base"
-  nl ''
+    nl ''           NB. shows all names defined in global namespace
+    nl 3            NB. show defined names of type: 0 1 2 or 3 (verbs)
+    clear ''        NB. rm all names from given namespace or "base"
+    nl ''
   echo'hello world' NB. echo not defined -> where does it come from?
-  copath <'base'    NB. shows list of namespaces "base" inherits: "z"
+    copath <'base'  NB. shows list of namespaces "base" inherits: "z"
 cocurrent <'z'      NB. make "z" the current=global namespace
-  nl ''             NB. contains echo; use names'' for pretty display
+    nl ''           NB. contains echo; use names'' for pretty display
 cocurrent 'base'    NB. switch back
 ```
 
