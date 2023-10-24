@@ -290,7 +290,7 @@ NB. ^^ predefined variable containing newline string
     :
     echo 'Apart from that, DD-bodies are like explicit definitions.'
 
-    }} 'call as monad'  NB. non-noun-DD's }} don't have to start a line
+}} 'call as monad'  NB. non-noun-DD's }} don't have to start a line
 ```
 
 #### Arrays:
@@ -1369,7 +1369,7 @@ syntax          :       separate monadic and dyadic bodies
 monad           ":      convert to displayable byte array
 dyad            *       multiplication
 monad           names   pretty print names defined in current namespace
-(conjunction    !:     access lots of system functions                 )
+(conjunction    !:      access lots of system functions                )
 (dyad           o.      access to circle functions (sin, cos, ...)     )
 syntax          {{      opens a direct definition
 syntax          {{)n    open direct definition of type n (or a, c, m, d)
