@@ -1053,7 +1053,7 @@ cocurrent <'base'   NB. switches global namespace to namespace "base"
     nl 3            NB. show defined names of type: 0 1 2 or 3 (verbs)
     clear ''        NB. rm all names from given namespace or "base"
     nl ''
-  echo'hello world' NB. echo not defined -> where does it come from?
+    echo'hi world'  NB. echo not defined -> where does it come from?
     copath <'base'  NB. shows list of namespaces "base" inherits: "z"
 cocurrent <'z'      NB. make "z" the current=global namespace
     nl ''           NB. contains echo; use names'' for pretty display
