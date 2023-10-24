@@ -229,7 +229,7 @@ fn =: 3 : 0             NB. creates an (ambivalent) multiline verb
 fn 1
 1 fn 2
 
-NB. adverb representing number in percents
+NB. adverb representing number in percents (": formats arg as string)
 echo 0.01 (1 : '( ": u * 100), ''%'' ')
 percent =: 1 : 0        NB. same as multiline definition
     (": m * 100), '%'   NB. using m to indicate left arg is noun
