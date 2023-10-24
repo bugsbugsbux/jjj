@@ -251,7 +251,8 @@ sort of J's guilty pleasure. In most cases one would look up the
 functions in the docs and assign an alias to often used ones; in fact, J
 already comes with a set of aliases (and other helpers): list them with
 `names_z_''`. New users should definitely look over the docs for `!:`
-and `o.` to see what's available.
+(foreign function index) and `o.` (circle functions) to see what's
+available.
 
 #### Direct definitions:
 
