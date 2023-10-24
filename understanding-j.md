@@ -54,6 +54,8 @@ Important links:
   <https://code.jsoftware.com/wiki/NuVoc>
 - Good old wiki:
   <https://www.jsoftware.com/help/dictionary/contents.htm>
+- Cheatsheet/Reference Card (not for beginners):
+  <https://code.jsoftware.com/wiki/File:B.A4.pdf>
 
 ---
 
