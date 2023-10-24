@@ -485,8 +485,123 @@ way.
     <'bar'
   }}''
   ```
-- Throw, Catch: TODO
 - Goto: Considered Harmful - Edsger Dijkstra
+- Error handling: see: Errors
+
+#### Errors:
+
+Verbs related to errors and debugging can be found in section 13 of
+the foreign function index (`13!: n`) but there are default aliases,
+which will be used below.
+
+Errors have a number and a message, which defaults to (err - 1)th
+element in the list of default error messages returned by `9!:8''`.
+`dberr` queries the last error's number and `dberm` gets its message.
+
+To raise an error its number is passed to `dbsig` which optionally
+accepts a custom error message as left argument.
+
+```J
+getinfo =: {{
+    echo 'An error occurred...'
+    echo 'Its number is: ', ": dberr ''
+    echo 'And its message is:', LF, ": dberm '' }}
+might_fail =: {{
+    if. y do.
+        echo 'success'
+    else.
+        echo 'failure'
+        'my custom message' dbsig 100     NB. raise an error
+    end. }}
+namedfn =: {{
+    try.
+        might_fail y
+    catch. getinfo''
+    end.
+    echo 'after try-catch' }}
+
+namedfn 0
+```
+
+When J runs in debug mode, which can be en/disabled with a boolean
+argument to `dbr`, and queried with `dbq`, errors in *named* functions
+pause execution and messages contain a bit more information; the
+program state can then be investigated and altered.
+
+```J
+dbr 1               NB. turn on debugging
+namedfn 0           NB. more info but does not pause because handled
+
+namedfn =: {{
+    try. might_fail y
+    catchd.         NB. pause on error
+        echo 'adding catchd. clause pauses execution if debugging is on'
+        echo 'catchd. block only executes if:'
+        echo '  * debugging is off and'
+        echo '  * there is no catch. block'
+    catch.
+        echo 'catch. block only executes if there is no catchd. block'
+        getinfo''
+    end.
+    echo 'after try-catch' }}
+namedfn 0           NB. pauses, does not run any catch./catchd. blocks
+dbs ''              NB. inspect stack
+dbnxt ''            NB. continue program
+
+NB. dbq'' does not inform about whether execution is currently paused
+NB. but only whether debug mode is on or not. currently it is:
+dbq ''
+
+dbr 0               NB. turn off debugging
+namedfn 0           NB. doesn't pause, runs catch. block
+
+namedfn =: {{
+    try. might_fail y
+    catchd. echo 'not debugging and no catch thus catchd. block may run'
+    end.
+    echo 'after try-catch' }}
+namedfn 0
+```
+
+J has a `throw.` keyword which is equivalent to raising error 55 with
+`dbsig` and behaves differently from other errors: `throw.`ing
+immediately exits the current function and goes up the callstack until
+it finds a caller which used a `try.` block with a `catcht.` clause,
+which is then executed. If no `catcht.` is found an "uncaught throw."
+error is raised.
+
+```J
+NB. normal errors look for catch./catchd. in same try. statement
+inner =: {{
+    try. dbsig 14   NB. no left arg -> default message
+    catch. echo 'inner function''s catch. block'
+    end.
+    echo 'inner fn done' }}
+outer =: {{
+    try. inner ''
+    catch. echo 'outer function''s catch. block'
+    end.
+    echo 'outer fn done' }}
+outer ''
+
+NB. throw. looks for catcht. in *caller* (or its callers)
+inner =: {{
+    try.
+        echo 'throwing up...'
+        throw.
+    catch. echo 'inner function''s catch.'
+    catcht. echo 'inner function''s catcht.'
+    end.
+    echo 'inner fn done' }}
+outer ''
+outer =: {{
+    try. inner''
+    catch. echo 'outer function''s catch. block'
+    catcht. echo 'outer function''s catcht.'
+    end.
+    echo 'outer fn done' }}
+outer ''
+```
 
 #### Ranks and Frames:
 
