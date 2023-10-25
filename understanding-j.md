@@ -64,10 +64,10 @@ Important links:
 J was first released in 1990 as a successor to APL, an alternative
 mathematical notation that is computer-executable and works well with
 multi-dimensional array data. Most notably J switches from APL's custom
-symbol-set to ASCII only, calling basic builtins by a single symbol or a
-symbol with appended dot or colon, and giving distinct meaning to single
-symbols that usually appear in pairs like various braces and quotes
-(`[]"{}` etc).
+symbol-set to ASCII only, calling most basic builtins by a single symbol
+or a symbol with appended dot or colon, and giving distinct meaning to
+single symbols that usually appear in pairs like various braces and
+quotes (`[]"{}` etc).
 
 #### Comments:
 
@@ -1478,7 +1478,7 @@ dyad            {.      first x elements
 monad           }:      except last element
 monad           }.      except first element
 dyad            }.      except first x elements
-monad           load    executes file or shortname (alias for a file)
+monad           load    executes file or shortname (alias for some file)
 monad           scripts show shortnames
 monad           loadd   like load but print each line before executing
 monad           require like load but only if was not loaded already
