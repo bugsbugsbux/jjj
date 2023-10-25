@@ -1325,8 +1325,8 @@ additional left argument specifying the replacement/s:
 
 orig =: 'immediate reassigment modifies in-place (prevents copy)'
 copy =: orig        NB. creates copy instead of pointing to same object
-orig=: 'I' 0 }orig  NB. reassigning to same name modifies in-place BUT:
-orig ,: copy        NB. 'copy' unchanged despite orig changed in-place
+orig=: 'I' 0 }orig  NB. reassigning to same name is in-place (efficient)
+> orig ; copy       NB. show that copy is indeed unchanged
 ```
 
 To be able to write index getters that work for any array `}` accepts a
@@ -1448,7 +1448,6 @@ dyad            %       division
 ambivalent      [:      x?([: B A)y becomes (B x?Ay)
 conjunction     `       make list of verbs (gerund)
 conjunction     `:      execute a gerund in a certain way
-dyad            ,:      combine into an array of two elements
 monad           %       1 divided by y
 monad           <:      y-1
 monad           >:      y+1
