@@ -921,23 +921,50 @@ x (  D [: B A) y    =       x D (        B (  A y)) fork ([:BA) -> monad
 
 #### Gerunds:
 
-Gerunds are a special kind of **array that contains** (the boxed
-definitions of) **functions**, thus create a noun from a function. They
-can be applied in different ways with `` `:``
+A gerund is a special kind of **array that contains** (the boxed
+definition of) **verbs**, thus creates a noun from verb/s. They
+can be applied in different ways with `` `:``.
 ```J
-+ , -                   NB. error cannot join two functions
-+ ; -                   NB. error cannot box-join two functions
-+ ` -                   NB. ok: ` creates a boxed list of functions
-- ` ''                  NB. gerund with only 1 element
++ ` -                   NB. creates list of two verbs: + and -
+- ` ''                  NB. this gerund only has one element: -
+# +`-                   NB. length of the noun, which is a list of verbs
 
-(-`-) `:0 (_1 0 1)      NB. m`:0 applies each verb in m separately
-(-_1 0 1) ,: (-_1 0 1)  NB. equivalent (dyad ,: creates 2-element array)
+NB. monad % is equivalent to 1%y
+% 2
 
-(-`-) `:3 (_1 0 1)      NB. inserts all verbs between all elements
-_1 - - 0 - - 1          NB. equivalent
+gerund =: +/ ` % ` #
 
-(-`-) `:6 (_1 0 1)      NB. creates a train
-(- -) _1 0 1            NB. equivalent (see: trains)
+NB. (m`:0) applies each verb in m separately
+gerund`:(0) 1 2 3 4     NB. equivalent to:
+>(+/1 2 3 4);(%1 2 3 4);(#1 2 3 4)
+
+NB. (m`:6) creates a train from the verbs in m
+gerund`:(6) 1 2 3 4
+(+/ % #) 1 2 3 4        NB. equivalent; (computes the average)
+
+gerund `:(3) 1 2 3 4 5  NB. used as cyclic gerund with monadic adverb /
+1 +/ 2 % 3 # 4 +/ 5     NB. equivalent, see: cyclic gerunds
+```
+
+##### Cyclic Gerunds:
+
+Many modifiers which apply their verb multiple times may instead take a
+list of verbs, from which to take one per needed application of a verb.
+If there are too few verbs in the list, it is simply looped over again
+as often as needed.
+
+```J
++/ 1 2 3 4 5        NB. modifier / uses its verb multiple times
+1 + 2 + 3 + 4 + 5   NB. equivalent
+gerund / 1 2 3 4 5  NB. uses the verbs from gerund sequentially instead
+1 +/ 2 % 3 # 4 +/ 5 NB. equivalent
+
+NB. monads >: and <: increment or decrement their arg by 1, respectively
+<: 1 2 3
+>: 1 2 3
+
+NB. The rank operator " applies its verb to each cell(-pair)
+<:`>: "1 (5 3 $ 1)
 ```
 
 #### Names:
@@ -1422,6 +1449,9 @@ ambivalent      [:      x?([: B A)y becomes (B x?Ay)
 conjunction     `       make list of verbs (gerund)
 conjunction     `:      execute a gerund in a certain way
 dyad            ,:      combine into an array of two elements
+monad           %       1 divided by y
+monad           <:      y-1
+monad           >:      y+1
 monad           conl    boxed list of namespaces
 monad           coname  get name of current namespace
 monad           cocurrent   switch to namespace
