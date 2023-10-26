@@ -164,9 +164,16 @@ inserts the original argument `+` between all elements of its own
 argument `1 2 3`.
 
 *Conjunctions* only differ insofar as they (meaning the original
-modifiers not the returned entities) take two arguments. The `:`
-conjunction is commonly used to define new entities (see: defining
-entities).
+modifiers not the returned entities) take two arguments. For example `&`
+takes a dyad and a noun and creates a new verb which always uses the
+given noun as one of its arguments and the argument to the newly created
+monad as the other argument:
+```J
+two_to_the =: 2&^   NB. convert dyad ^ with left arg 2 to a monad
+two_to_the 0 1 2 3
+to_the_two =: ^&2   NB. convert dyad ^ with right arg 2 to a monad
+to_the_two 0 1 2 3
+```
 
 #### Assignments:
 
@@ -1386,11 +1393,13 @@ dyad            ,       join lists
 dyad            +       addition
 monad           +       complex conjugate
 adverb          /       puts verb between elements of new verb's arg/s
-conjunction     :       define entities
+conjunction     m&v     convert dyad v to monadic verb with x fixed to m
+conjunction     u&n     convert dyad u to monadic verb with y fixed to n
 assignment      =:      assign to global namespace
 assignment      =.      try assigning to local namespace else to global
 monad           [       return argument unchanged
 monad           ]       return argument unchanged
+conjunction     :       define entities
 syntax          )       end multiline explicit definition
 monad           echo    output message
 ambivalent      __: _9: ... 0: ... 9: _: ignore arg/s and return digit
