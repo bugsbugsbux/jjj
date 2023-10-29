@@ -1017,7 +1017,7 @@ foo ''              NB. ok
 fn =: {{
     if. y > 0 do.
         echo y
-        fn y-1       NB. calling own name -> recursion
+        fn y-1      NB. calling own name -> recursion
     end.
 }}
 fn 3
