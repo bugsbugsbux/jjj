@@ -191,11 +191,11 @@ foo =: 1            NB. return value of assignment not shown
 It is possible to assign multiple values at the same time, but the value
 returned is the unchanged original argument.
 ```J
-'foo bar' =: 1 2    NB names as space joined strings
+'foo bar' =: 1 2    NB. names as space joined strings
 foo
 bar
 # 'foo bar' =: 3 4  NB. returns unchanged arg; thus length is 2
-'foo bar' =: 1 2 3  NB length error: number of names must match elements
+'foo bar' =: 1 2 3  NB. error: same number of names as elements required
 ```
 
 #### Defining entities (functions, nouns) by Explicit-Definition:
