@@ -191,10 +191,13 @@ foo =: 1            NB. return value of assignment not shown
 It is possible to assign multiple values at the same time, but the value
 returned is the unchanged original argument.
 ```J
-'foo bar' =: 1 2    NB. names as space joined strings
+'foo bar' =: 'val'  NB. names as space joined strings
 foo
 bar
-# 'foo bar' =: 3 4  NB. returns unchanged arg; thus length is 2
+baz=:'foo bar'=:3 4 NB. multi assignment returns unchanged arg
+baz                 NB. thus baz received the original arg
+foo                 NB. but foo got first
+bar                 NB. and bar got second value
 'foo bar' =: 1 2 3  NB. error: same number of names as elements required
 ```
 
