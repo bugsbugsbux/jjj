@@ -186,6 +186,10 @@ still the original argument.
 foo =: 1            NB. return value of assignment not shown
 [ foo =: foo + 1    NB. global assignment
 ] foo =. foo + 1    NB. local assignment if in function otherwise global
+
+NB. btw the dyadic versions return either the left or the right arg:
+0 [ 1
+0 ] 1
 ```
 
 It is possible to assign multiple values at the same time, but the value
