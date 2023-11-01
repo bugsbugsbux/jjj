@@ -1334,8 +1334,9 @@ _ (1) } i.2 3       NB. noun-indices access the unflattened array
 _ 1: } i. 2 3       NB. indices from functions are for flattened arrays
 
 1 0 2 # 'abc'       NB. dyad # copies corresponding element in y x-times
+, i.2 2             NB. monad , flattens an array
 fn =. 4 : 0
-    Y =. , y        NB. monad , flattens an array
+    Y =. , y        NB. flattened y
     bitmask =. Y<x  NB. where element less than replacement...
     bitmask # i. #Y NB. ...keep, else drop index from flat-indices list
 )
