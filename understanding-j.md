@@ -1508,16 +1508,17 @@ monad           coclass switch to namespace
 dyad            copath  set ancestors of namespace
 monad           coinsert    prepend ancestors of current namespace
 dyad            {       index into array
-dyad            {::     index into boxed structure
-monad           ,       flatten array; scalar becomes list
 adverb          }       return copy of array with replaced elements
 dyad            #       repeat curresponding elements x-times
+monad           ,       flatten array; scalar becomes list
 monad           {:      last element
 monad           {.      first element
-dyad            {.      first x elements
+dyad            {.      first/last x elements
 monad           }:      except last element
 monad           }.      except first element
-dyad            }.      except first x elements
+dyad            }.      except first/last x elements
+dyad            {::     index into boxed structure
+conjunction     @.      index gerund m
 monad           load    executes file or shortname (alias for some file)
 monad           scripts show shortnames
 monad           loadd   like load but print each line before executing
