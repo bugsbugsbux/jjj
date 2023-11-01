@@ -1302,6 +1302,7 @@ verb was applied to).
 { b.0                   NB. show ranks of {
 ] a =: i. 4 4
 0 { a                   NB. first
+0 {"1 a                 NB. "1 provides lines and loops -> first col
 _1 { a                  NB. count from back
 0 0 { a                 NB. separate selections starting at same level
 (<0 0) { a              NB. top-level boxes contain paths
@@ -1328,9 +1329,7 @@ works with paths because it will wrap lists of numbers in a box first.
 (0; (<(<<1))) {:: a     NB. excluding stuff etc works as it would with {
 ```
 
-Back to functions that do not have access to box contents:
-
-To replace elements use the `}` adverb that is used like `{` with an
+To **replace elements** use the `}` adverb that is used like `{` with an
 additional left argument specifying the replacement/s:
 ```J
 (2) 1 } 1 200 3
@@ -1344,10 +1343,9 @@ orig=: 'I' 0 }orig  NB. reassigning to same name is in-place (efficient)
 ```
 
 To be able to write index getters that work for any array `}` accepts a
-dyadic function as left argument. This function takes the replacement
-and original-array as left and right arguments (respectively) and
-returns the indices *of a flattened version of the array* at which to
-replace values.
+dyad as left argument: It takes the replacement/s as left and the
+original array as right argument and returns the indices *of a flattened
+version of the array* at which to replace values.
 ```J
 _ (1) } i.2 3       NB. noun-indices access the unflattened array
 _ 1: } i. 2 3       NB. indices from functions are for flattened arrays
@@ -1362,18 +1360,22 @@ fn =. 4 : 0
 0 fn } 2 2 3 $ foo
 ```
 
-Ranges can be conveniently specified with (combinations of) the
+**Ranges** can be conveniently specified with (combinations of) the
 following verbs:
 ```J
 ] digits =: i.10
     {: digits       NB. last            (no dyadic version)
     {. digits       NB. first
   3 {. digits       NB. first 3
+ _3 {. digits       NB. last 3
 2 1 {. 3 3 $ digits NB. first 1 of first 2
     }: digits       NB. drop last     (no dyadic version)
     }. digits       NB. drop first
   3 }. digits       NB. drop first 3
+ _3 }. digits       NB. drop last 3
 1 2 }. 3 3 $ digits NB. drop first 1 then first 2 (reshaping dropped 9)
+
+3}. 7{. digits      NB. range from (incl) 3 to (excl) 7
 ```
 
 #### Importing code:
