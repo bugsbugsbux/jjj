@@ -1312,23 +1312,6 @@ _1 { a                  NB. count from back
 (<(<a:),(<<_2)) { a     NB. exclude per axis (excl none = select all)
 ```
 
-`{::` is like `{` but *opens its results* and uses *each path to
-continue indexing into the previous result* instead of returning to the
-starting level and producing more result values. The final *result is
-not opened if* it is not a single box or the *last path's last part is a
-list* (monad `,` can be used to promote a scalar to rank 1). `{::` only
-works with paths because it will wrap lists of numbers in a box first.
-```J
-]a =: 1 2 3; 4 5 6; 7 8 9
-(1;1) { a               NB. paths start at same level
-(1;1) {:: a             NB. paths continue indexing previous result
-]a =: <<"0 i.3 3
-(0;1 1) {:: a           NB. final scalar box result is opened, except:
-(0;(<1;,1)) {:: a       NB. last path's last part is a list due to ,y
-(0; 1) {:: a            NB. not opened because result isn't a scalar box
-(0; (<(<<1))) {:: a     NB. excluding stuff etc works as it would with {
-```
-
 To **replace elements** use the `}` adverb that is used like `{` with an
 additional left argument specifying the replacement/s:
 ```J
@@ -1376,6 +1359,44 @@ following verbs:
 1 2 }. 3 3 $ digits NB. drop first 1 then first 2 (reshaping dropped 9)
 
 3}. 7{. digits      NB. range from (incl) 3 to (excl) 7
+```
+
+##### Indexing boxes:
+
+`{::` is like `{` but *opens its results* and uses *each path to
+continue indexing into the previous result* instead of returning to the
+starting level and producing more result values. The final *result is
+not opened if* it is not a single box or the *last path's last part is a
+list* (monad `,` can be used to promote a scalar to rank 1). `{::` only
+works with paths because it will wrap lists of numbers in a box first.
+```J
+]a =: 1 2 3; 4 5 6; 7 8 9
+(1;1) { a               NB. paths start at same level
+(1;1) {:: a             NB. paths continue indexing previous result
+]a =: <<"0 i.3 3
+(0;1 1) {:: a           NB. final scalar box result is opened, except:
+(0;(<1;,1)) {:: a       NB. last path's last part is a list due to ,y
+(0; 1) {:: a            NB. not opened because result isn't a scalar box
+(0; (<(<<1))) {:: a     NB. excluding stuff etc works as it would with {
+```
+
+##### Indexing gerunds:
+
+As gerunds (see: gerunds) are simply lists of boxed verb-definitions,
+they could be indexed like any other list; however, this would not
+return an executable verb! Conjunction `@.` takes an index as right
+argument and returns the corresponding verb from the gerund on the left
+in executable form. Selecting multiple verbs returns a train (see:
+trains) and parentheses can be set by boxing the indices accordingly.
+(See also: idiomatic flow control > conditional application)
+```J
+gerund =: +/ ` % ` # ` -
+div =: gerund @. 1
+div
+1 div 2
+from_mean =: gerund @. (< _1 ; 0 1 2)
+from_mean
+from_mean 1 2 3 4
 ```
 
 #### Importing code:
