@@ -935,9 +935,9 @@ x (  D [: B A) y    =       x D (        B (  A y)) fork ([:BA) -> monad
 
 #### Gerunds:
 
-A gerund is a special kind of **array that contains** (the boxed
-definition of) **verbs**, thus creates a noun from verb/s. They
-can be applied in different ways with `` `:``.
+A gerund is a **list containing** (the boxed definitions of) **verbs**,
+thus creates a noun from verb/s. It can be created with conjunction
+`` ``` and applied in different ways with `` `:``. (see also: indexing)
 ```J
 + ` -                   NB. creates list of two verbs: + and -
 - ` ''                  NB. this gerund only has one element: -
