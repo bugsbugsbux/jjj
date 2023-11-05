@@ -169,10 +169,9 @@ takes a dyad and a noun and creates a new verb which always uses the
 given noun as one of its arguments and the argument to the newly created
 monad as the other argument:
 ```J
-two_to_the =: 2&^   NB. convert dyad ^ with left arg 2 to a monad
-two_to_the 0 1 2 3
-to_the_two =: ^&2   NB. convert dyad ^ with right arg 2 to a monad
-to_the_two 0 1 2 3
+2 ^ 3               NB. dyad ^ is power: "two to the three"
+2&^ 0 1 2 3         NB. convert dyad ^ with left arg 2 to a monad
+^&(2) 0 1 2 3       NB. convert dyad ^ with right arg 2 to a monad
 ```
 
 #### Assignments:
@@ -1426,6 +1425,7 @@ monad           +       complex conjugate
 adverb          /       puts verb between elements of new verb's arg/s
 conjunction     m&v     convert dyad v to monadic verb with x fixed to m
 conjunction     u&n     convert dyad u to monadic verb with y fixed to n
+dyad            ^       power: x to the y
 assignment      =:      assign to global namespace
 assignment      =.      try assigning to local namespace else to global
 monad           [       return argument unchanged
