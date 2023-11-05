@@ -1388,7 +1388,7 @@ return an executable verb! Conjunction `@.` takes an index as right
 argument and returns the corresponding verb from the gerund on the left
 in executable form. Selecting multiple verbs returns a train (see:
 trains) and parentheses can be set by boxing the indices accordingly.
-(See also: idiomatic flow control > conditional application)
+(See also: conditional application)
 ```J
 gerund =: +/ ` % ` # ` -
 div =: gerund @. 1
@@ -1397,6 +1397,145 @@ div
 from_mean =: gerund @. (< _1 ; 0 1 2)
 from_mean
 from_mean 1 2 3 4
+```
+
+#### Idiomatic flow control:
+
+The control-structures described above (see: explicit control-structures
+and control-words) can be replaced with more idiomatic versions which
+also work outside of explicit functions.
+
+Note: Experimenting with the code in this section can easily result in
+non-terminating ("infinite") loops! To abort them either kill the
+process, which looses the session data, or call `break''` in another J
+session. When running J from the terminal you can hit ctrl-c to break.
+
+##### Repeated application:
+
+To apply a verb a certain amount of times (each time on the previous
+result), either dyadically apply the result of creating a monad from a
+dyad with `&` or use conjunction `^:`:
+```J
+arg =: 100
+< < < arg           NB. "applying a verb (here <) 3x"
+3 -&1 arg           NB. apply resulting monad 3x
+-&1 ^:3 arg         NB. apply given monad 3x
+
+'x' ,^:3 'y'        NB. bind left arg of dyad (here 'x'&,) then apply 3x
+```
+
+Conjunction `^:` may take a verb instead of an explicit amount of
+repetitions, which is called with the argument/s of the construct. Note:
+A left argument is first bound to the repeating verb to create a monad!
+```J
+printer =: {{ echo 'printing ticket for 1 ', >x }}
+make_tickets =: printer ^: {{
+    if. x = <'child' do.
+        +/ 18 > y
+    else. +/ y > 17
+    end.
+}}
+ages =: 36 42 9 13 71
+(<'child') make_tickets ages    NB. calls (<'child')&printer repeatedly
+(<'adult') make_tickets ages    NB. calls (<'adult')&printer repeatedly
+```
+
+Run a verb **until its result stops changing** (that is consecutive
+iterations return the same result) by using infinity as repetition
+count:
+```J
+dec_bottom0 =: {{
+    if. 0 > new =. y-x do.
+        0 [ echo 'subresult: ', ": 0
+    else. new [ echo 'subresult: ', ": new
+    end.
+}} "0
+
+1&dec_bottom0 ^:(_) 5
+_ (1&dec_bottom0) 5
+NB. - ^:(_) 5       NB. wont terminate: consecutive results never same
+```
+
+Running the **same loop different amounts of times** is simply done by
+providing a list of repetition counts. This can be used to return
+subresults (which are unboxed!):
+```J
+3 (-&1) arg         NB. 3x ...
+1 2 3 (-&1) arg     NB. ... with subresults
+-&1 ^:(1 2 3) arg   NB. same
+
+NB. not same, despite result:
+(-&1 ^:1 arg), (-&1 ^:2 arg), (-&1 ^:3 arg)
+
+NB. to better illustrate why it is not the same:
+(1&dec_bottom0 ^:(1) 5),(1&dec_bottom0 ^:(2) 5),(1&dec_bottom0 ^:(3) 5)
+1&dec_bottom0 ^:(1 2 3) 5
+```
+
+Providing the repetition count as a box is a recognized pattern to
+**capture the subresults**. A box is interpreted as `i.>n`-repetitions
+(except when the boxed value is empty or infinity, which both create an
+infinite loop). Therefore, the construct only loops up to n-1 times and
+includes the original argument as first result! Consequently subresults
+must have the same type as the original argument.
+```J
+3 (-&1) arg         NB. 3x ...
+1 2 3 (-&1) arg     NB. ... with subresults
+(<3) -&1 arg        NB. ... interpreted as 0 1 2 (=i.3) repetitions
+-&1 ^:(<3) arg      NB. equivalent
+
+1&dec_bottom0 ^:(<_) 5
+a: (1&dec_bottom0) 5
+```
+
+##### Conditional application:
+
+A **simple conditional** either executes a branch or doesn't. In other
+words: a verb is executed `1` or `0` times. Replacing the number of
+repetitions with a boolean-expression is enough to create a conditional
+because J's booleans are simply the numbers `0` and `1`:
+```J
+NB. children (<18) only pay 75%
+price =: 15
+ages =: 36 42 9 13 71
+(18 > ages) 0.75&* price        NB. bool_expr bound_arg_action arg
+*&0.75 ^:(18 > ages) price      NB. action ^: bool_expr arg
+```
+
+**Multiple branches** can be expressed with a gerund and passed as left
+argument to conjunction `@.` (see: indexing gerunds), which calls the
+selected branch with the given argument/s. The noun index as right
+argument to `@.` may be replaced by a verb to generate it; this is also
+called with the argument/s to the construct:
+
+```J
+NB. note that it's important whether the verbs are monads or dyads:
+{{price}} ` {{price*0.75}} @. (18>]) "0 ages        NB. noun indexing
+{{price}} ` {{price*0.75}} @. {{18>y}} "0 ages      NB. called as monads
+price [ ` {{x*0.75}} @. (4 :'18>y') "0 ages         NB. called as dyads
+ages ] ` (4 :'y*0.75') @. {{18 > x}} "0 price       NB. swapped args
+
+NB. more branches: ages >70 pay 70%, <18 pay 50%    NB. adding booleans:
+price {{x*0.5}} ` [ ` {{x*0.7}} @. (4 :'(>&70 + >&17) y') "0 ages
+```
+
+##### Conditional repetition:
+
+To create **while-loops** an infinite loop can be combined with a
+conditional: once the condition fails its argument is returned
+unchanged, thus reused in the next iteration and again returned which
+then ends the loop, due to consecutive non-unique results.
+
+```J
+1&dec_bottom0 ^:(>&3)^:(_) 8
+1&dec_bottom0 ^:(>&3)^:(a:) 8
+
+NB. using a multi branch conditional:
+{{ y[ echo 'done'}} ` {{ res[ echo res=. y-1}} @. (>&3) ^:(a:) 8
+
+NB. here the condition is never true -> returns unchanged arg
+1&dec_bottom0 _1    NB. but here it's never even called:
+1&dec_bottom0 ^:(>&3)^:(a:) _1
 ```
 
 #### Importing code:
