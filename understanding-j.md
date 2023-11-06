@@ -1539,6 +1539,26 @@ NB. here the condition is never true -> returns unchanged arg
 1&dec_bottom0 ^:(>&3)^:(a:) _1
 ```
 
+### Idiomatic Error Handling:
+
+Conjunction `::` (required leading space) allows to provide an
+alternative verb in case left verb fails (called with same arguments):
+```J
+try =: {{echo 'Hello, ', y, '!'}}
+except =: {{echo (": y), ' does not seem to be a string...'}}
+try :: except 'Foo'
+try :: except 123
+1 try :: except 2       NB. handler for dyad must have dyadic version
+except =: {{)d
+    except f. ''        NB. avoid recursion by localizing variable first
+    :
+    'Error: not a dyad'
+}}
+1 try :: except 2
+
+try :: 'Handler may be a noun to return on failue!' 123
+```
+
 ## Importing Code:
 
 The following verbs inherited from the z-locale are used to import code:
