@@ -59,7 +59,7 @@ Important links:
 
 ---
 
-#### History:
+## History:
 
 J was first released in 1990 as a successor to APL, an alternative
 mathematical notation that is computer-executable and works well with
@@ -69,13 +69,13 @@ or a symbol with appended dot or colon, and giving distinct meaning to
 single symbols that usually appear in pairs like various braces and
 quotes (`[]"{}` etc).
 
-#### Comments:
+## Comments:
 
 ```J
 NB. comments the rest of the line (latin: nota bene).
 ```
 
-#### Numbers:
+## Numbers:
 
 J has many number-notations; the most important are:
 ```J
@@ -88,7 +88,7 @@ __                  NB. negative infinity
 16bcoffee           NB. base-16 number
 ```
 
-#### Lists, Booleans:
+## Lists, Booleans:
 
 Simply put elements next to each other:
 ```J
@@ -97,7 +97,7 @@ Simply put elements next to each other:
 (0 1) (2 3)         NB. error: can't implicitly join lists
 ```
 
-#### Strings:
+## Strings:
 
 ```J
 'i''m a string: always single-quoted, only '' is special'
@@ -108,7 +108,7 @@ Strings are lists of characters:
 ''                  NB. empty string is empty list
 ```
 
-#### Nouns:
+## Nouns:
 
 *Nouns* are data values such as the ones covered until now. *Boxes*,
 which will be covered later, are nouns too. Lists are actually just a
@@ -121,7 +121,7 @@ Functions aren't nouns either; but by putting them into a special kind
 of list, *gerunds*, they can effectively be made one (also covered
 below).
 
-#### Functions:
+## Functions:
 
 **Verbs** are functions that take nouns as their argument/s and return
 nouns. A verb has access to its left argument via the local variable `x`
@@ -174,7 +174,7 @@ monad as the other argument:
 ^&(2) 0 1 2 3       NB. convert dyad ^ with right arg 2 to a monad
 ```
 
-#### Assignments:
+## Assignments:
 
 Assignments use the operators `=:` (global) and `=.` (function-local).
 They return their values, but the interpreter does not display them, so
@@ -204,7 +204,7 @@ bar                 NB. and bar got second value
 'foo bar' =: 1 2 3  NB. error: same number of names as elements required
 ```
 
-#### Defining entities (functions, nouns) by Explicit-Definition:
+## Defining Entities (Functions, Nouns) by Explicit-Definition:
 
 Explicit-definitions are created with the `:` conjunction that returns
 an entity of the type indicated by the integer to its left:
@@ -258,7 +258,7 @@ swap =: 2 : 'y v u x'
 1 + swap - 2
 ```
 
-#### Index functions, helpers:
+## Index-Functions, Helpers:
 
 As demonstrated, explicit definitions specify the type to create as a
 number. This pattern of selecting functionality with a numeric index is
@@ -269,7 +269,7 @@ already comes with a set of aliases (and other helpers): list them with
 (foreign function index) and `o.` (circle functions) to see what's
 available.
 
-#### Direct definitions:
+## Direct Definitions:
 
 Direct definitions, *DD*s for short, are another way to write explicit
 definitions. They are wrapped in double-braces and assume their type
@@ -308,7 +308,7 @@ NB. ^^ predefined variable containing newline string
     }} 'call as monad'  NB. non-noun-DD's }} don't have to start a line
 ```
 
-#### Arrays:
+## Arrays:
 
 **An array is a ((list of) list/s of) value/s.** Thus even single values
 (*scalars*/*atoms*) are actually arrays. All elements must have the same
@@ -333,7 +333,7 @@ $ 2 1 $ 10 20       NB. shape
 2 2 $ 'abc'         NB. don't forget that strings are arrays too!
 ```
 
-#### Boxes, Trees:
+## Boxes, Trees:
 
 The container-type box is useful to get around the restrictions of
 arrays: A boxed value always appears as scalar of type box; therefore
@@ -370,7 +370,7 @@ NB. comparison of boxed values
 'bar' = <'bar'
 ```
 
-#### (Explicit) Control-Structures and Control-Words:
+## (Explicit) Control-Structures and Control-Words:
 
 J has all common control-structures and -words, however, they can only
 be used within explicit functions (explicit definitions or DDs). They
@@ -504,7 +504,7 @@ this way.
 - Goto: Considered Harmful - Edsger Dijkstra
 - Error handling: see: Errors
 
-#### Errors:
+## Errors:
 
 Verbs related to errors and debugging can be found in section 13 of
 the foreign function index (`13!: n`) but there are default aliases,
@@ -621,7 +621,7 @@ outer =: {{
 outer ''
 ```
 
-#### Ranks and Frames:
+## Ranks and Frames:
 
 The **rank of a noun is the length of its shape**. Note that the shape
 of a scalar/atom is an empty list, thus a scalar's rank is 0; as well as
@@ -770,7 +770,7 @@ tbl ;"0 1 tbl       NB. pair atoms with lines
 tbl ;"1 1 "0 2 tbl  NB. for each atom-table pair: pair (atom) with line
 ```
 
-#### Padding:
+## Padding:
 
 Incompatible values can still be put into the same structure by using
 boxes. When they are of the same type, lower dimensional values can also
@@ -797,7 +797,7 @@ NB. this example (that creates y by y matrices) shows:
 (3 : '1 + i.y,y' "0) 1 2 3
 ```
 
-#### Evaluation Rules:
+## Evaluation Rules:
 
 After reading the previous sections the following rules should not be
 surprising:
@@ -860,7 +860,7 @@ surprising:
   myverb''                      NB. error
   ```
 
-#### Trains:
+## Trains:
 
 ```
       x? (E? D    C  B  A) y
@@ -933,7 +933,7 @@ x (E D [: B A) y    = (x E y) D (        B (x A y)) fork ([:BA) -> monad
 x (  D [: B A) y    =       x D (        B (  A y)) fork ([:BA) -> monad
 ```
 
-#### Gerunds:
+## Gerunds:
 
 A gerund is a **list containing** (the boxed definitions of) **verbs**,
 thus creates a noun from verb/s. It can be created with conjunction
@@ -960,7 +960,7 @@ gerund `:(3) 1 2 3 4 5  NB. used as cyclic gerund with monadic adverb /
 1 +/ 2 % 3 # 4 +/ 5     NB. equivalent, see: cyclic gerunds
 ```
 
-##### Cyclic Gerunds:
+### Cyclic Gerunds:
 
 Many modifiers which apply their verb multiple times may instead take a
 list of verbs, from which to take one per needed application of a verb.
@@ -981,7 +981,7 @@ NB. The rank operator " applies its verb to each cell(-pair)
 <:`>: "1 (5 3 $ 1)
 ```
 
-#### Names:
+## Names:
 
 Variable-names may only contain
 
@@ -1044,7 +1044,7 @@ action 1 2 3        NB. not the same result! its a subexpression:
 
 Each name lives in a namespace also called a locale:
 
-#### Namespaces:
+## Namespaces:
 
 Every function has its own local scope, that is an **unnamed
 namespace** that cannot be inherited, thus a function defined within
@@ -1150,7 +1150,7 @@ echo__ns 'inherited echo from "z", the default parent'
 copath ns           NB. show "mynamespace" inherits from "z"
 ```
 
-#### Classes, OOP:
+## Classes, OOP:
 
 In J, classes are simply namespaces whose instances (also namespaces)
 inherit them. As assigning to inherited names just creates an own
@@ -1269,7 +1269,7 @@ cocurrent 'base'
     }}''
 ```
 
-#### Indexing:
+## Indexing:
 
 How indices work in J:
 
@@ -1362,7 +1362,7 @@ following verbs:
 3}. 7{. digits      NB. range from (incl) 3 to (excl) 7
 ```
 
-##### Indexing boxes:
+### Indexing Boxes:
 
 `{::` is like `{` but *opens its results* and uses *each path to
 continue indexing into the previous result* instead of returning to the
@@ -1381,7 +1381,7 @@ works with paths because it will wrap lists of numbers in a box first.
 (0; (<(<<1))) {:: a     NB. excluding stuff etc works as it would with {
 ```
 
-##### Indexing gerunds:
+### Indexing Gerunds:
 
 As gerunds (see: gerunds) are simply lists of boxed verb-definitions,
 they could be indexed like any other list; however, this would not
@@ -1400,7 +1400,7 @@ from_mean
 from_mean 1 2 3 4
 ```
 
-#### Idiomatic Replacements for Explicit Control-Structures:
+## Idiomatic Replacements for Explicit Control-Structures:
 
 The control-structures described above (see: explicit control-structures
 and control-words) can be replaced with more idiomatic versions which
@@ -1411,7 +1411,7 @@ non-terminating ("infinite") loops! To abort them either kill the
 process, which looses the session data, or call `break''` in another J
 session. When running J from the terminal you can hit ctrl-c to break.
 
-##### Repeated application:
+### Repeated Application:
 
 To apply a verb a certain amount of times (each time on the previous
 result), either dyadically apply the result of creating a monad from a
@@ -1489,7 +1489,7 @@ must have the same type as the original argument.
 a: (1&dec_bottom0) 5
 ```
 
-##### Conditional application:
+### Conditional Application:
 
 A **simple conditional** either executes a branch or doesn't. In other
 words: a verb is executed `1` or `0` times. Replacing the number of
@@ -1520,7 +1520,7 @@ NB. more branches: ages >70 pay 70%, <18 pay 50%    NB. adding booleans:
 price {{x*0.5}} ` [ ` {{x*0.7}} @. (4 :'(>&70 + >&17) y') "0 ages
 ```
 
-##### Conditional repetition:
+### Conditional Repetition:
 
 To create **while-loops** an infinite loop can be combined with a
 conditional: once the condition fails its argument is returned
@@ -1539,7 +1539,7 @@ NB. here the condition is never true -> returns unchanged arg
 1&dec_bottom0 ^:(>&3)^:(a:) _1
 ```
 
-#### Importing code:
+## Importing Code:
 
 The following verbs inherited from the z-locale are used to import code:
 
@@ -1549,9 +1549,9 @@ The following verbs inherited from the z-locale are used to import code:
 - `require`: Like `load` but files that were already loaded won't be
   loaded again.
 
-## Appendix:
+# Appendix
 
-#### Covered builtins:
+## Covered Builtins:
 ```
 comment         NB.     comment rest of line
 noun            _       infinity, but as number-prefix: negative sign
