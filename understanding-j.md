@@ -375,8 +375,9 @@ NB. comparison of boxed values
 J has all common control-structures and -words, however, they can only
 be used within explicit functions (explicit definitions or DDs). They
 are not idiomatic J and hinder new users from learning to think in array
-programming style. Nevertheless, some problems are simpler to solve this
-way.
+programming style (see: idiomatic replacements for explicit
+control-structures). Nevertheless, some problems are simpler to solve
+this way.
 
 - Assert: *All atoms* have to be `1`.
   ```J
@@ -1399,7 +1400,7 @@ from_mean
 from_mean 1 2 3 4
 ```
 
-#### Idiomatic flow control:
+#### Idiomatic Replacements for Explicit Control-Structures:
 
 The control-structures described above (see: explicit control-structures
 and control-words) can be replaced with more idiomatic versions which
