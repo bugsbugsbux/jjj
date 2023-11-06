@@ -1559,6 +1559,62 @@ except =: {{)d
 try :: 'Handler may be a noun to return on failue!' 123
 ```
 
+## Inverse and Tacit Functions:
+
+Many (mostly monadic) builtin verbs define an **inverse function** to
+undo their effect. The inverse of this *monads* can be *shown* with
+argument `_1` to adverb `b.`.
+
+An explicit function does not have an inverse by default, but one can be
+set with conjunction `:.` (required leading space!) and is then part of
+the verb definition which becomes, as a whole, the result when querying
+the inverse.
+
+For **tacit functions** (until now referred to as alias; in other words:
+functions without a body and thus namespace, that do not refer to their
+arguments) J tries to generate an inverse automatically; it can be
+corrected by explicitly assigning one with `:.`. J tries to convert a
+simple explicit body to a (*similar*) tacit verb when `13` is used as
+function type in an explicit definition.
+
+**Repeating a negative amount of times** prompts J to repeat the inverse
+and is the intended way of explicitly calling inverses.
+
+```J
+< b._1              NB. show inverse of monad < which is monad >
+fn =: >             NB. tacit function -> J guesses inverse
+fn b._1
+fn^:(_3) 'hi'       NB. call inverse of fn 3 times
+
+NB. explicit function -> no automatic inverse generated
+fn =: {{
+    y+y
+    :
+    x+y
+}}
+fn b._1             NB. error: no inverse
+
+NB. assigning an inverse
+fn =: fn f. :. {{
+    y%2
+    :
+    x-y
+}}
+fn b._1             NB. the shown inverse is the whole definition
+NB. testing the verb
+fn 1                NB. monad
+fn^:(_1) fn 1       NB. inverse of monad
+2 fn 3              NB. dyad
+5 fn^:(_1) 2        NB. inverse of dyad
+5 fn^:(_1) 3
+
+NB. let J generate tacit verb so it guesses inverse too
+]fn =: 13 : 'y^y'
+fn b._1             NB. I didn't know that...
+fn 3
+fn^:(_1) fn 3
+```
+
 ## Importing Code:
 
 The following verbs inherited from the z-locale are used to import code:
