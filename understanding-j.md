@@ -1570,12 +1570,11 @@ set with conjunction `:.` (required leading space!) and is then part of
 the verb definition which becomes, as a whole, the result when querying
 the inverse.
 
-For **tacit functions** (until now referred to as alias; in other words:
-functions without a body and thus namespace, that do not refer to their
-arguments) J tries to generate an inverse automatically; it can be
-corrected by explicitly assigning one with `:.`. J tries to convert a
-simple explicit body to a (*similar*) tacit verb when `13` is used as
-function type in an explicit definition.
+For **tacit functions** (functions without a body and thus namespace,
+that do not refer to their arguments) J tries to generate an inverse
+automatically; it can be corrected by explicitly assigning one with
+`:.`. J tries to convert a simple explicit body to a (*similar*) tacit
+verb when `13` is used as function type in an explicit definition.
 
 **Repeating a negative amount of times** prompts J to repeat the inverse
 and is the intended way of explicitly calling inverses.
