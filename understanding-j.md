@@ -1615,6 +1615,82 @@ fn 3
 fn^:(_1) fn 3
 ```
 
+## Composition
+
+On the interactive session prompt it is easy to pipe the result of one
+verb into another verb: Simply put the second verb's name before the
+first one's. However, it seems assigning this pipeline to a name does
+not work (see: names), as it creates a train (see: trains). Instead, the
+verbs need to be *composed* with a conjunction:
+
+```J
+< (1&+) 1 2 3                 NB. box the incremented values
+pipeline =: < (1&+)           NB. creates a train
+pipeline 1 2 3                NB. thus is not expected result
+pipeline =: < @: (1&+)        NB. this however does give expected result
+pipeline 1 2 3
+```
+
+Calling a **monad on** the result of another **monad** can be done with
+either `@:` or `&:`
+```J
+NB. these are equivalent only when called monadically:
+(B @: A) y = B A y
+(B &: A) y = B A y
+```
+
+Calling a **monad on** the result of a **dyad** is done with dyadic
+`@:`:
+```J
+x (B @: A) y = B x A y
+```
+
+To call a **dyad on** the results of the **arguments individually
+processed by a monad** dyadic `&:` is used:
+```J
+x (B &: A) y = (A x) B (A y)
+```
+
+While the above conjunctions passed the entire **argument/s to the
+pipeline** the following variations pass the argument/s in chunks
+determined by the rank of the right verb:
+
+```J
+NB. again: equivalent monadically; pipeline has monadic rank of A
+(B @ A) y = (B @: A)"A y
+(B & A) y = (B @: A)"A y
+
+NB. pipeline takes dyadic ranks of A
+x (B @ A) y = x (B @: A)"A y
+
+NB. B receives arguments in pairs of individual result cells
+NB. B's dyadic ranks are the monadic ranks of A
+x (B & A) y = (A x) B"({.A b.0) (A y)
+```
+
+`&.:` and `&.` work like `&` or `&:` but **also apply the inverse** of
+the first verb as the third verb in the pipeline! If only one side needs
+processing, a 2-element gerund is used with `a:` marking the side not to
+modify:
+```J
+  (B &.: A) y  = A^:_1 B A y
+x (B &.: A) y  = A^:_1 (A x) B (A y)
+x B&.:(a:`A) y = A^:_1 x B (A y)
+x B&.:(A`a:) y = A^:_1 (A x) B y
+
+NB. the pipeline's rank/s are the mondic rank of A
+  (B &. A) y = ((B &.: A)"A) y
+x (B &. A) y = x (B &.: A)"({.A b.0) y
+
+NB. pipeline's ranks: respecitve dyadic rank of B and monadic rank of A
+x B&.(a: `A) y = x B&.:(a:`A)"((1{B b.0),{.A b.0) y
+x B&.(A `a:) y = x B&.:(A`a:)"(({.A b.0),2{B b.0) y
+```
+
+Monadic use of `&` and `&:` is discouraged, as it is not recognized as
+one of the performance optimized patterns; replace it with `@` or `@:`
+respectively.
+
 ## Importing Code:
 
 The following verbs inherited from the z-locale are used to import code:
