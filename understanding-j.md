@@ -644,11 +644,13 @@ dyadic-right rank.
 ```J
 ; b.0               NB. show ranks of ; which works on entire argument/s
 < b.0               NB. monad takes whole arg but dyad takes atoms only
+fn =: {{echo 'hi'}} NB. new verb
+fn b.0              NB. default ranks of new verbs are all infinity
+</ b.0              NB. same when created by modifiers; compare to <b.0
 fn "1 2 3 b.0       NB. set and show the three ranks of verb fn
 fn "1 2   b.0       NB. set and show the left and right ranks of verb fn
 fn "_     b.0       NB. show that this sets all ranks to same value
-{{'new verb'}} b.0  NB. default ranks of new verbs are all infinity
-</ b.0              NB. same when created by modifiers; compare to <b.0
+(fn"<)    b.0       NB. show that this copies the right verb's ranks
 ```
 
 If an argument has a **higher rank than is allowed it is broken into
