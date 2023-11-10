@@ -1625,72 +1625,103 @@ not work (see: names), as it creates a train (see: trains). Instead, the
 verbs need to be *composed* with a conjunction:
 
 ```J
-< (1&+) 1 2 3                 NB. box the incremented values
-pipeline =: < (1&+)           NB. creates a train
-pipeline 1 2 3                NB. thus is not expected result
-pipeline =: < @: (1&+)        NB. this however does give expected result
+< (1&+) 1 2 3               NB. box the incremented values
+pipeline =: < (1&+)         NB. creates a train
+pipeline 1 2 3              NB. thus is not expected result
+pipeline =: < @: (1&+)      NB. this however does give expected result:
 pipeline 1 2 3
 ```
 
-Calling a **monad on** the result of another **monad** can be done with
-either `@:` or `&:`
+Each composition conjunction exists as **two variants**: One which
+passes the whole argument/s to the pipeline (aka rank infinity) and ends
+in ":" and one whose rank (mostly) depends on the rank of the first verb
+of the pipeline, essentially applying the later verbs on each result
+returned by the first verb, instead of the collected results.
+
+This calls a **monad on** the result of another **monad**. Note that the
+usage of monadic pipelines created with `&` or `&:` is discouraged as
+they are not recognized as performance optimized patterns!
 ```J
 NB. these are equivalent only when called monadically:
 (B @: A) y = B A y
-(B &: A) y = B A y
+(B &: A) y = B A y          NB. functionally equivalent but discouraged
+NB. pipeline has monadic rank of A:
+(B @ A) y = (B @: A)"A y
+(B & A) y = (B &: A)"A y    NB. functionally equivalent but discouraged
+```
+```J
+# @:(>"0) 1;2;3             NB. length of combined results
+# @ (>"0) 1;2;3             NB. lengths of results
+NB. functionally equivalent but discouraged:
+# &:(>"0) 1;2;3
+# & (>"0) 1;2;3
 ```
 
-Calling a **monad on** the result of a **dyad** is done with dyadic
-`@:`:
+Calling a **monad on** the result of a **dyad**:
 ```J
 x (B @: A) y = B x A y
+NB. pipeline has dyadic ranks of A:
+x (B @ A) y = x (B @: A)"A y
+```
+```J
+1 2 3 < @:(,"0 0) 4 5 6
+1 2 3 < @ (,"0 0) 4 5 6
+1 2 3 < @:(,"0 1) 4 5 6
+1 2 3 < @ (,"0 1) 4 5 6
 ```
 
-To call a **dyad on** the results of the **arguments individually
-processed by a monad** dyadic `&:` is used:
+Call a **dyad on** the results of the **arguments individually
+processed by a monad** like so:
 ```J
 x (B &: A) y = (A x) B (A y)
+NB. pipeline (effectively B) has monadic rank of A (as dyadic rank):
+x (B & A) y = x (B &: A)"({.A b.0) y        NB. (A x) B"({.A b.0) (A y)
+```
+```J
+(1;2;3) ,&:(>"0) (4;5;6)
+(1;2;3) ,& (>"0) (4;5;6)
+(<"0 i.3 2) ;&:(>"1) (<"(0) 6+i.3 2)
+(<"0 i.3 2) ;& (>"1) (<"(0) 6+i.3 2)
 ```
 
-While the above conjunctions passed the entire **argument/s to the
-pipeline** the following variations pass the argument/s in chunks
-determined by the rank of the right verb:
-
+`&.:` and `&.` work like `&` and `&:` (monad on monad or dyad on
+result-pairs of arguments processed by monads) but **also apply the
+inverse** of the first verb as the third verb in the pipeline!
 ```J
-NB. again: equivalent monadically; pipeline has monadic rank of A
-(B @ A) y = (B @: A)"A y
-(B & A) y = (B @: A)"A y
-
-NB. pipeline takes dyadic ranks of A
-x (B @ A) y = x (B @: A)"A y
-
-NB. B receives arguments in pairs of individual result cells
-NB. B's dyadic ranks are the monadic ranks of A
-x (B & A) y = (A x) B"({.A b.0) (A y)
-```
-
-`&.:` and `&.` work like `&` or `&:` but **also apply the inverse** of
-the first verb as the third verb in the pipeline! If only one side needs
-processing, a 2-element gerund is used with `a:` marking the side not to
-modify:
-```J
-  (B &.: A) y  = A^:_1 B A y
-x (B &.: A) y  = A^:_1 (A x) B (A y)
-x B&.:(a:`A) y = A^:_1 x B (A y)
-x B&.:(A`a:) y = A^:_1 (A x) B y
-
-NB. the pipeline's rank/s are the mondic rank of A
-  (B &. A) y = ((B &.: A)"A) y
+  (B &.: A) y = A^:_1 B A y
+x (B &.: A) y = A^:_1 (A x) B (A y)
+NB. the pipeline's rank/s are the mondic rank of A:
+  (B &. A) y =  ((B &.: A)"A) y
 x (B &. A) y = x (B &.: A)"({.A b.0) y
+```
+```J
+(1&+) &.:> (<"0 i.2 2)
+(1&+) &. > (<"0 i.2 2)
 
-NB. pipeline's ranks: respecitve dyadic rank of B and monadic rank of A
-x B&.(a: `A) y = x B&.:(a:`A)"((1{B b.0),{.A b.0) y
-x B&.(A `a:) y = x B&.:(A`a:)"(({.A b.0),2{B b.0) y
+] Xb =: <"0 X =: 'ABCD'
+] Yb =: <"0 Y =: 'abcd'
+(<"0 'ABCD') (,"_)&.:(>"0) (<"0 'abcd')
+(<"0 'ABCD') (,"_)&. (>"0) (<"0 'abcd')
 ```
 
-Monadic use of `&` and `&:` is discouraged, as it is not recognized as
-one of the performance optimized patterns; replace it with `@` or `@:`
-respectively.
+If only one side needs processing, a 2-element gerund is used with an
+empty box marking the side not to modify; the second verb now uses its
+own monadic rank on the unprocessed side:
+```J
+x B &.:(a:`A) y = A^:_1 x B (A y)
+(x B &.:(A`a:) y = A^:_1 (A x) B y)
+NB. pipeline's ranks: respecitve dyadic rank of B and monadic rank of A:
+x B &. (a: `A) y = x B &.:(a:`A) "((1{B b.0),{.A b.0) y
+(x B &. (A `a:) y = x B &.:(A`a:) "(({.A b.0),2{B b.0) y)
+```
+```J
+X (,"_ _)&.:(a:`(>"0)) Yb
+X (,"_ _)&. (a:`(>"0)) Yb   NB. !!
+NB. The previous example was not the same as the version without gerund
+NB. because the version with gerund uses B's monadic rank (_) as one of
+NB. its dyadic ranks, while the other version only uses A's monadic rank
+X (,"0 _)&. (a:`(>"0)) Yb   NB. this behaves like without gerund
+```
 
 ## Importing Code:
 
