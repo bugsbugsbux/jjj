@@ -1715,12 +1715,17 @@ x B &. (a: `A) y = x B &.:(a:`A) "((1{B b.0),{.A b.0) y
 (x B &. (A `a:) y = x B &.:(A`a:) "(({.A b.0),2{B b.0) y)
 ```
 ```J
-X (,"_ _)&.:(a:`(>"0)) Yb
-X (,"_ _)&. (a:`(>"0)) Yb   NB. !!
+X (,"_ _ _)&.:(a:`(>"0)) Yb
+X (,"_ _ _)&. (a:`(>"0)) Yb NB. !!
 NB. The previous example was not the same as the version without gerund
-NB. because the version with gerund uses B's monadic rank (_) as one of
-NB. its dyadic ranks, while the other version only uses A's monadic rank
-X (,"0 _)&. (a:`(>"0)) Yb   NB. this behaves like without gerund
+NB. because the version with gerund uses one of B's own dyadic ranks,
+NB. while the other version only used A's monadic rank for both sides
+X (,"_ 0 _)&. (a:`(>"0)) Yb NB. this behaves like without gerund
+
+NB. when the noun to process is on the other side:
+Xb (,"_ _ _)&.:((>"0)`a:) Y
+Xb (,"_ _ _)&. ((>"0)`a:) Y
+Xb (,"_ _ 0)&. ((>"0)`a:) Y
 ```
 
 ## Importing Code:
