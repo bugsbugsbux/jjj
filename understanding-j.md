@@ -1664,8 +1664,8 @@ NB. pipeline has dyadic ranks of A:
 x (B @ A) y = x (B @: A)"A y
 ```
 ```J
-1 2 3 < @:(,"0 0) 4 5 6
-1 2 3 < @ (,"0 0) 4 5 6
+1 2 3 < @:(,"0 0) 4 5 6     NB. box collected results
+1 2 3 < @ (,"0 0) 4 5 6     NB. box each result
 1 2 3 < @:(,"0 1) 4 5 6
 1 2 3 < @ (,"0 1) 4 5 6
 ```
@@ -1678,8 +1678,8 @@ NB. pipeline (effectively B) has monadic rank of A (as dyadic rank):
 x (B & A) y = x (B &: A)"({.A b.0) y        NB. (A x) B"({.A b.0) (A y)
 ```
 ```J
-(1;2;3) ,&:(>"0) (4;5;6)
-(1;2;3) ,& (>"0) (4;5;6)
+(1;2;3) ,&:(>"0) (4;5;6)    NB. join unboxed args
+(1;2;3) ,& (>"0) (4;5;6)    NB. join atom pairs of unboxed args
 (<"0 i.3 2) ;&:(>"1) (<"(0) 6+i.3 2)
 (<"0 i.3 2) ;& (>"1) (<"(0) 6+i.3 2)
 ```
@@ -1695,8 +1695,8 @@ NB. the pipeline's rank/s are the mondic rank of A:
 x (B &. A) y = x (B &.: A)"({.A b.0) y
 ```
 ```J
-(1&+) &.:> (<"0 i.2 2)
-(1&+) &. > (<"0 i.2 2)
+(1&+) &.:(>"0) (<"0 i.2 2)  NB. unbox, increment, box collected results
+(1&+) &. (>"0) (<"0 i.2 2)  NB. unbox, increment, box each result
 
 ] Xb =: <"0 X =: 'ABCD'
 ] Yb =: <"0 Y =: 'abcd'
