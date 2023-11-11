@@ -920,19 +920,49 @@ x (  D C B A) y =       x D ((  C y) B (  A y)) operators are all monads
 x (      B A) y =                  x B (  A y)  just a hook
 ```
 
-Any left operators may be replaced with a noun to create a so called
-**NVV (noun-verb-verb) fork**, that simply uses this noun as its left
+```J
+NB. a verb like ; but which always adds a boxing level before joining
+'X Y' =: (<<'X'),(<<'Y')
+X ;  Y
+X {{ (<x),(<y) }} Y
+
+NB. try to built the verb as a train instead:
+X (< , <) Y             NB. error: a fork's operators are dyads
+X (] < , <) Y           NB. fail: the operators of hooks all work on y
+NB. let's start simpler:
+X (] <) Y               NB. some train that boxes y
+X (] <)~ Y              NB. swap args to box x instead
+NB. combine them:
+X ((]<)~ , (]<)) Y      NB. working solution!
+
+NB. another way: by using a hook right can just be < as it is monad
+X ((]<)~ <) Y           NB. problem: this combinator drops right arg
+X (((]<)~ , ]) <) Y     NB. solution: wrap in fork combining both sides
+```
+
+Any left operator may be replaced with `[:` to create a so called
+**capped fork** which converts its combinator into a monad:
+```
+x (E D [: B A) y = (x E y) D (        B (x A y)) fork ([:BA) -> monad
+x (  D [: B A) y =       x D (        B (  A y)) fork ([:BA) -> monad
+```
+```J
+NB. another way to implement above example as train: using capped forks
+X ( ([:<[) , [:<] ) Y   NB. a fork with two capped forks
+```
+
+Any left operator may be replaced with a noun to create a so called
+**NVV (noun-verb-verb) fork**, which simply uses this noun as its left
 argument:
 ```
 x (E D 1 B A) y = (x E y) D (      1 B (x A y))   left arg to B is 1
 x (  D 1 B A) y =       x D (      1 B (  A y))   left arg to B is 1
 ```
-
-Any left operators may be replaced with `[:` to create a so called
-**capped fork** that converts its combinator into a monad:
-```
-x (E D [: B A) y    = (x E y) D (        B (x A y)) fork ([:BA) -> monad
-x (  D [: B A) y    =       x D (        B (  A y)) fork ([:BA) -> monad
+```J
+hi =: 'hello' ; ]
+hi 'alice'
+hi=:'hello' ; '!' ;~ ]  NB. only left operators may be nouns ->swap args
+hi 'bob'
 ```
 
 ## Gerunds:
