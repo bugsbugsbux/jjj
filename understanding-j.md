@@ -897,11 +897,11 @@ uses an argument of the train instead: its left, or if missing its right
 one. This is called hook-rule and when it's used the whole train is
 called *a* **hook**, otherwise its *a* fork.
 ```
-Train:          Expands to:                     Note:
-  (    C B A) y =            (  C y) B (  A y)  the basic fork
-  (E D C B A) y = (  E y) D ((  C y) B (  A y)) just more forks
-  (  D C B A) y =       y D ((  C y) B (  A y)) last uses hook rule
-  (      B A) y =                  y B (  A y)  just a hook
+Train:          Expands to:                         Note:
+  (    C B A) y =            (  C y) B (  A y)      the basic fork
+  (E D C B A) y = (  E y) D ((  C y) B (  A y))     just more forks
+  (  D C B A) y =       y D ((  C y) B (  A y))     last uses hook rule
+  (      B A) y =                  y B (  A y)      just a hook
 ```
 
 Using my own terminology: A train consists of *operators* (the odd
@@ -915,15 +915,31 @@ to replace its missing left operator. When the train is dyadic, another
 peculiarity of hooks becomes evident: A hook's operators are always
 monads, ignoring the train's left argument:
 ```
-x (E D C B A) y = (x E y) D ((x C y) B (x A y)) operators are all dyads
-x (  D C B A) y =       x D ((  C y) B (  A y)) operators are all monads
-x (      B A) y =                  x B (  A y)  just a hook
+x (E D C B A) y = (x E y) D ((x C y) B (x A y))     operators are dyads
+x (  D C B A) y =       x D ((  C y) B (  A y))     operators are monads
+x (      B A) y =                  x B (  A y)      just a hook
 ```
 
+Any left operator may be replaced with a noun to create a so called
+**NVV (noun-verb-verb) fork**, which simply uses this noun as its left
+argument:
+```
+x (E D 1 B A) y = (x E y) D (      1 B (x A y))     left arg to B is 1
+x (  D 1 B A) y =       x D (      1 B (  A y))     left arg to B is 1
+```
+
+Any left operator may be replaced with `[:` to create a so called
+**capped fork** which converts its combinator into a monad:
+```
+x (E D [: B A) y = (x E y)D (        B (x A y))     fork ([:BA) -> monad
+x (  D [: B A) y =      x D (        B (  A y))     fork ([:BA) -> monad
+```
+
+Experiment with some trains:
 ```J
 NB. a verb like ; but which always adds a boxing level before joining
 'X Y' =: (<<'X'),(<<'Y')
-X ;  Y
+X ; Y
 X {{ (<x),(<y) }} Y
 
 NB. try to build the verb as a train instead:
@@ -932,33 +948,17 @@ X (] < , <) Y           NB. fail: the operators of hooks all work on y
 NB. let's start simpler:
 X (] <) Y               NB. some train that boxes y
 X (] <)~ Y              NB. swap args to box x instead
-NB. combine them:
+NB. combine them with a fork:
 X ((]<)~ , (]<)) Y      NB. working solution!
 
-NB. another way: by using a hook right can just be < as it is monad
+NB. another way: by using a hook right verb can just be < as it is monad
 X ((]<)~ <) Y           NB. problem: this combinator drops right arg
-X (((]<)~ , ]) <) Y     NB. solution: wrap in fork to combine with right
-```
+X (((]<)~ , ]) <) Y     NB. solution: use fork to combine with right arg
 
-Any left operator may be replaced with `[:` to create a so called
-**capped fork** which converts its combinator into a monad:
-```
-x (E D [: B A) y = (x E y) D (        B (x A y)) fork ([:BA) -> monad
-x (  D [: B A) y =       x D (        B (  A y)) fork ([:BA) -> monad
-```
-```J
-NB. another way to implement above example:
-X ( ([:<[) , [:<] ) Y   NB. a fork with two capped forks
-```
+NB. another way: a fork combining two capped forks
+X ( ([:<[) , [:<] ) Y
 
-Any left operator may be replaced with a noun to create a so called
-**NVV (noun-verb-verb) fork**, which simply uses this noun as its left
-argument:
-```
-x (E D 1 B A) y = (x E y) D (      1 B (x A y))   left arg to B is 1
-x (  D 1 B A) y =       x D (      1 B (  A y))   left arg to B is 1
-```
-```J
+NB. some NVV-forks:
 hi =: 'hello' ; ]
 hi 'alice'
 hi=:'hello' ; '!' ;~ ]  NB. only left operators may be nouns ->swap args
