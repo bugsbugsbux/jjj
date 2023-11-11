@@ -913,7 +913,7 @@ right with the result of the operator to their left.
 As said before, a hook's last combinator uses an argument of the train
 to replace its missing left operator. When the train is dyadic, another
 peculiarity of hooks becomes evident: A hook's operators are always
-monads:
+monads, ignoring the train's left argument:
 ```
 x (E D C B A) y = (x E y) D ((x C y) B (x A y)) operators are all dyads
 x (  D C B A) y =       x D ((  C y) B (  A y)) operators are all monads
@@ -926,7 +926,7 @@ NB. a verb like ; but which always adds a boxing level before joining
 X ;  Y
 X {{ (<x),(<y) }} Y
 
-NB. try to built the verb as a train instead:
+NB. try to build the verb as a train instead:
 X (< , <) Y             NB. error: a fork's operators are dyads
 X (] < , <) Y           NB. fail: the operators of hooks all work on y
 NB. let's start simpler:
@@ -937,7 +937,7 @@ X ((]<)~ , (]<)) Y      NB. working solution!
 
 NB. another way: by using a hook right can just be < as it is monad
 X ((]<)~ <) Y           NB. problem: this combinator drops right arg
-X (((]<)~ , ]) <) Y     NB. solution: wrap in fork combining both sides
+X (((]<)~ , ]) <) Y     NB. solution: wrap in fork to combine with right
 ```
 
 Any left operator may be replaced with `[:` to create a so called
@@ -947,7 +947,7 @@ x (E D [: B A) y = (x E y) D (        B (x A y)) fork ([:BA) -> monad
 x (  D [: B A) y =       x D (        B (  A y)) fork ([:BA) -> monad
 ```
 ```J
-NB. another way to implement above example as train: using capped forks
+NB. another way to implement above example:
 X ( ([:<[) , [:<] ) Y   NB. a fork with two capped forks
 ```
 
@@ -1070,7 +1070,7 @@ N =: 2
 
 - + 1 2 3           NB. how about creating an alias for this action?
 action =: - +
-action 1 2 3        NB. not the same result! its a subexpression:
+action 1 2 3        NB. not the same result! it's a subexpression:
 (- +) 1 2 3         NB. this subexpression creates a hook (train)
 ```
 
@@ -1811,7 +1811,7 @@ noun            a:      empty box
 dyad            ;       join as boxes
 dyad            =       compares corresponding atoms
 syntax          assert. error if not all 1s
-syntax          if.     if block ends a do.
+syntax          if.     if block ends at do.
 syntax          do.     ends a condition block
 syntax          elseif. else-if block ends at do.
 syntax          else.   else block ends at end.
