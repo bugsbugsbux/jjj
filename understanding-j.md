@@ -876,14 +876,14 @@ result <---- D <---- B         }combinators: dyads
        =======       \
     last left arg      All except the first operator may be replaced by:
  is missing in hooks        *) [: which makes the combinator a monad
-then replaced with x/y      *) noun to be used as left arg of combinator
+then replaced with x or y   *) noun to be used as left arg of combinator
 ```
 
 An **isolated sequence of verbs (in other words: multiple verbs not
 followed by a noun) creates a train**, that is a special pattern
 defining which verbs receive what arguments and execute in which order.
 The basic idea is called **fork** and best explained by the computation
-of the mean:
+of the arithmetic mean:
 ```J
 Y =: 1 2 3 4
 (+/ % #) Y          NB. a list's mean is its sum divided by its length
