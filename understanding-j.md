@@ -1716,7 +1716,8 @@ x (B & A) y = x (B &: A)"({.A b.0) y        NB. (A x) B"({.A b.0) (A y)
 
 `&.:` and `&.` work like `&` and `&:` (monad on monad or dyad on
 result-pairs of arguments processed by monads) but **also apply the
-inverse** of the first verb as the third verb in the pipeline!
+inverse** (see: inverse and tacit functions) of the first verb as the
+third verb in the pipeline!
 ```J
   (B &.: A) y = A^:_1 B A y
 x (B &.: A) y = A^:_1 (A x) B (A y)
