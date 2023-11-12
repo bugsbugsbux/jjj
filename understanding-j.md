@@ -1663,7 +1663,7 @@ fn 3
 fn^:(_1) fn 3
 ```
 
-## Composition
+## Composition:
 
 On the interactive session prompt it is easy to pipe the result of one
 verb into another verb: Simply put the second verb's name before the
