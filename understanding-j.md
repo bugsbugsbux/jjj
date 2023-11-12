@@ -1489,7 +1489,7 @@ NB. - ^:(_) 5       NB. wont terminate: consecutive results never same
 
 Running the **same loop different amounts of times** is simply done by
 providing a list of repetition counts. This can be used to return
-subresults (which are unboxed!):
+subresults (which are not boxed!):
 ```J
 3 (-&1) arg         NB. 3x ...
 1 2 3 (-&1) arg     NB. ... with subresults
