@@ -1005,12 +1005,10 @@ as often as needed.
 gerund / 1 2 3 4 5  NB. uses the verbs from gerund sequentially instead
 1 +/ 2 % 3 # 4 +/ 5 NB. equivalent
 
-NB. monads >: and <: increment or decrement their arg by 1, respectively
-<: 1 2 3
->: 1 2 3
-
 NB. The rank operator " applies its verb to each cell(-pair)
-<:`>: "1 (5 3 $ 1)
+(-&1) "0 (1 2 3 4 5)
+(+&1) "0 (1 2 3 4 5)
+(-&1)`(+&1) "0 (1 2 3 4 5)
 ```
 
 ## Names:
@@ -1849,8 +1847,6 @@ ambivalent      [:      x?([: B A)y becomes (B x?Ay)
 conjunction     `       make list of verbs (gerund)
 conjunction     `:      execute a gerund in a certain way
 monad           %       1 divided by y
-monad           <:      y-1
-monad           >:      y+1
 monad           conl    boxed list of namespaces
 monad           coname  get name of current namespace
 monad           cocurrent   switch to namespace
