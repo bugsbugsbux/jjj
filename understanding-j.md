@@ -1788,6 +1788,8 @@ assignment      =:      assign to global namespace
 assignment      =.      try assigning to local namespace else to global
 monad           [       return argument unchanged
 monad           ]       return argument unchanged
+dyad            [       return x unchanged
+dyad            ]       return y unchanged
 conjunction     :       define entities
 syntax          )       end multiline explicit definition
 monad           echo    output message
@@ -1839,11 +1841,11 @@ syntax          catchd. replacement for catch. pauses when debugging
 syntax          throw.  exit fn, goes up callstack until finds catcht.
 syntax          catcht. handles error 55 (throw.s) in *called* functions
 monad           i.      get integer sequence in shape of argument
-adverb          b. 0    show ranks of its verb
+adverb          b.      call with arg 0 to show ranks of verb
 conjunction     "       change ranks of verb
 adverb          ~       swap arguments or copy right arg to left side
 dyad            %       division
-ambivalent      [:      x?([: B A)y becomes (B x?Ay)
+syntax          [:      x?([: B A)y becomes (B x?Ay)
 conjunction     `       make list of verbs (gerund)
 conjunction     `:      execute a gerund in a certain way
 monad           %       1 divided by y
@@ -1874,7 +1876,23 @@ monad           }:      except last element
 monad           }.      except first element
 dyad            }.      except first/last x elements
 dyad            {::     index into boxed structure
-conjunction     @.      index gerund m
+conjunction     m@.n    index gerund m
+monad           break   abort exec in session with given or default tag
+conjunction     x m&v y apply monad m&v x-times
+conjunction     x u&n y apply monad u&n x-times
+conjunction     u^:n    apply u or (x&u if x given) n-times
+conjunction     u^:v    call v on arg/s to get amount of repetitions
+conjunction     m@.v    call v on arg/s to get index of verb in m to run
+conjunction     ::      if left verb throws run right verb
+adverb          b.      call with arg _1 to show inverse
+conjunction     :.      right verb is inverse of left verb
+conjunction     13 :    tries to convert function body to tacit verb
+conjunction     @:      as monad: monad>monad; as dyad: dyad>monad
+conjunction     @       like @: but calls left on each subresult
+conjunction     &:      as dyad: monads>dyad; as monad: like @:
+conjunction     &       like &: but calls left on each subresult
+conjunction     &.:     like &: but finally calls inverse of right verb
+conjunction     &.      like &.: but call left>inverse on each subresult
 monad           load    executes file or shortname (alias for some file)
 monad           scripts show shortnames
 monad           loadd   like load but print each line before executing
