@@ -1593,6 +1593,21 @@ except =: {{)d
 try :: 'Handler may be a noun to return on failue!' 123
 ```
 
+## Argument preprocessing:
+
+Conjunction `^:` can be used with a gerund to preprocess the arguments:
+```J
+  u^:g y =          u^:(  g1 y) (  g2 y)
+x u^:g y = (x g1 y) u^:(x g2 y) (x g3 y)
+```
+```J
+echo ^: (1: ` {{(": y*100), '%'}}) 0.75
+NB. convert left arg to string, apply 1x, keep right arg unchanged:
+1 2 3 ,^:({{":x}} ` 1: ` ] ) 'abc'
+NB. dyadically used but gerund only has 2 elements: use x unchanged
+'abc' ,^:(1: ` (4 :'":y')) 1 2 3
+```
+
 ## Inverse and Tacit Functions:
 
 Many (mostly monadic) builtin verbs define an **inverse function** to
