@@ -1367,7 +1367,7 @@ _ 1: } i. 2 3       NB. indices from functions are for flattened arrays
 , i.2 2             NB. monad , flattens an array
 fn =. 4 : 0
     Y =. , y        NB. flattened y
-    bitmask =. Y<x  NB. where element less than replacement...
+    bitmask =. x>Y  NB. where replacement greather than element...
     bitmask # i. #Y NB. ...keep, else drop index from flat-indices list
 )
 0 fn } 2 6 $ foo =: _4 2 9 3 8 5 _7 _2 3 1 _3 2
