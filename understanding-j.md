@@ -1452,7 +1452,10 @@ arg =: 100
 < < < arg           NB. "applying a verb (here <) 3x"
 3 -&1 arg           NB. apply resulting monad 3x
 -&1 ^:3 arg         NB. apply given monad 3x
+-&1 ^:1 arg         NB. apply 1x
+-&1 ^:0 arg         NB. applying 0x returns arg unchanged
 
+NB. dyadic application of ^: first creates a monad!
 'x' ,^:3 'y'        NB. bind left arg of dyad (here 'x'&,) then apply 3x
 ```
 
