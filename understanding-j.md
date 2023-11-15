@@ -122,6 +122,31 @@ Functions aren't nouns either; but by putting them into a special kind
 of list, *gerunds*, they can effectively be made one (also covered
 below).
 
+### Special data types:
+
+J comes with some specialized data types, which wont be covered here,
+but shall at least be mentioned:
+
+- **Symbols**: They are a specialized type of string, which is
+  immutable, treated as a single element and has optimized performance
+  with searching, sorting and comparison operations. However, only a
+  few, often used ones should be created, as they are registered in a
+  global table and cannot be removed from it anymore. More info at:
+  <https://code.jsoftware.com/wiki/Vocabulary/sco>
+  <https://www.jsoftware.com/help/dictionary/dsco.htm>
+- **Sparse arrays**: If a sizable array (for example a list; see:
+  arrays) consists of mostly the same repeated value, its size can be
+  reduced by only saving the values which are not this so called
+  sparse-element. Contrary to regular arrays, sparse arrays are
+  displayed as a table of index-value pairs of the non-sparse-elements
+  and need to be queried explicitly for their sparse-element.
+  Computations with them are envisioned as equivalent to regular arrays
+  but this is not fully implemented (for example, sparse arrays cannot
+  be boxed (see: boxes) and strings (which are arrays) cannot be
+  sparse); the results are usually sparse arrays too, however, the
+  sparse-element might differ! More info at:
+  <https://www.jsoftware.com/help/dictionary/d211.htm>
+
 ## Functions:
 
 **Verbs** are functions that take nouns as their argument/s and return
