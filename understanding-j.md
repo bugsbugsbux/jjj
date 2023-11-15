@@ -1690,6 +1690,27 @@ fn 3
 fn^:(_1) fn 3
 ```
 
+## Tacit replacements for constant functions:
+
+Functions returning the same value no matter their argument/s are called
+constant. Nice tacit constant functions for the ten digits, infinity and
+their negative variants were already introduced. Any noun can be
+converted to a constant function by calling the rank operator with
+infinity on it!
+
+```J
+explicit =: {{      NB. multiline
+    _9
+    :
+    9               NB. typo
+}}
+specialFn =: _9:    NB. only for digits, infinity and their negatives
+tacit =: _9 "_
+verbs =: explicit ` specialFn ` tacit `:0
+verbs 'as monads'
+'call' verbs 'as dyads'
+```
+
 ## Composition:
 
 On the interactive session prompt it is easy to pipe the result of one
