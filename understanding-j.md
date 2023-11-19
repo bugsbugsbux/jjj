@@ -279,9 +279,12 @@ echo 0.7 percent
 
 NB. conjunction that swaps its arguments and the args of its result
 swap =: 2 : 'y v u x'
-1 + - 2
-2 - + 1
-1 + swap - 2
+4 % 2                   NB. division
+% 2                     NB. 1 divided by y
+4 % - 2                 NB. 4 divided by negative 2
+4 - % 2                 NB. operators swapped: 4 minus a half
+2 - % 4                 NB. swap args too: 2 minus a quarter
+4 % swap - 2            NB. equivalent but done by the conjunction swap
 ```
 
 ## Index-Functions, Helpers:
@@ -1002,9 +1005,6 @@ thus creates a noun from verb/s. It can be created with conjunction
 + ` -                   NB. creates list of two verbs: + and -
 - ` ''                  NB. this gerund only has one element: -
 # +`-                   NB. length of the noun, which is a list of verbs
-
-NB. monad % is equivalent to 1%y
-% 2
 
 gerund =: +/ ` % ` #
 
@@ -1864,6 +1864,8 @@ ambivalent      __: _9: ... 0: ... 9: _: ignore arg/s and return digit
 syntax          :       separate monadic and dyadic bodies
 monad           ":      convert to displayable byte array
 dyad            *       multiplication
+dyad            %       division
+monad           %       1 divided by y
 monad           names   pretty print names defined in current namespace
 conjunction     !:      access lots of system functions
 (dyad           o.      access to circle functions (sin, cos, ...)     )
@@ -1911,11 +1913,9 @@ monad           i.      get integer sequence in shape of argument
 adverb          b.      call with arg 0 to show ranks of verb
 conjunction     "       change ranks of verb
 adverb          ~       swap arguments or copy right arg to left side
-dyad            %       division
 syntax          [:      x?([: B A)y becomes (B x?Ay)
 conjunction     `       make list of verbs (gerund)
 conjunction     `:      execute a gerund in a certain way
-monad           %       1 divided by y
 monad           conl    boxed list of namespaces
 monad           coname  get name of current namespace
 monad           cocurrent   switch to namespace
