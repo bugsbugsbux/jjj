@@ -232,8 +232,8 @@ bar                 NB. and bar got second value
 
 ## Defining Entities (Functions, Nouns) by Explicit-Definition:
 
-Explicit-definitions are created with the `:` conjunction that returns
-an entity of the type indicated by the integer to its left:
+Explicit-definitions are created with the `:` conjunction which returns
+an entity of the type indicated by the integer to its *left*:
 
 - `0` for nouns,
 - `1` for adverbs,
@@ -241,7 +241,7 @@ an entity of the type indicated by the integer to its left:
 - `3` for monadic (optionally ambivalent) verbs,
 - `4` for dyads.
 
-The entities' value is specified as the right argument and is a string
+The entities' value is specified as the *right* argument and is a string
 for functions. A value of `0` always means to read in the following
 lines as a string - until the next line containing `)` as its only
 printable character.
