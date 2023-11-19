@@ -258,21 +258,22 @@ that ignore their args and always return their (negative) digit/infinity
 )
 
 NB. verbs
-1 (4 : 'x + y') 2       NB. creates and uses a dyad
-neg =: 3 : '-y'
-fn =: 3 : 0             NB. creates an (ambivalent) multiline verb
+1 (4 : 'x + y') 2
+(3 : '-y') 1
+(3 :'3 :''1+y'' y') 1   NB. nested
+fn =: 3 : 0             NB. assign new (ambivalent) multiline verb
     echo 'First the body of a monad, then optionally the body of a dyad'
     echo 'separated by a line containing : as its only printable symbol'
     :
-    (3 :'echo ''multiline explicit-defs cannot be nested but may''') 0
-    echo 'contain one-line explicit-defs or (multiline) DDs (see below)'
+    echo 'Multiline explicit-defs cannot be nested but may contain'
+    3 :'echo''one-line explicit-defs or (multiline) DDs (see below)''' 0
 )
 fn 1
 1 fn 2
 
-NB. adverb representing number in percent (": formats arg as string)
+NB. adverb representing number in percent ( ": formats arg as string)
 echo 0.01 (1 : '( ": u * 100), ''%'' ')
-percent =: 1 : 0        NB. same as multiline definition
+percent =: 1 : 0        NB. same as a multiline definition
     (": m * 100), '%'   NB. using m to indicate left arg is noun
 )
 echo 0.7 percent
