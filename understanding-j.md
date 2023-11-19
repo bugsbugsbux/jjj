@@ -264,8 +264,8 @@ fn =: 3 : 0             NB. creates an (ambivalent) multiline verb
     echo 'First the body of a monad, then optionally the body of a dyad'
     echo 'separated by a line containing : as its only printable symbol'
     :
-    (3 :'multiline explicit-defs cannot be nested but may contain') 0
-    echo 'one-line explicit-defs or (multiline) DDs (see below)'
+    (3 :'echo ''multiline explicit-defs cannot be nested but may''') 0
+    echo 'contain one-line explicit-defs or (multiline) DDs (see below)'
 )
 fn 1
 1 fn 2
