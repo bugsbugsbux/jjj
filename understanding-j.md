@@ -306,37 +306,52 @@ Direct definitions, *DD*s for short, are another way to write explicit
 definitions. They are wrapped in double-braces and assume their type
 from the argument-variable-names used:
 
-- If variables `v` or `n` are used a conjunction,
-- otherwise if `u` or `m` are used an adverb,
-- otherwise if `x` is used a dyad or ambivalent verb is created.
+- If variables `v` or `n` are used, a *conjunction*,
+- otherwise, if `u` or `m` are used, an *adverb*,
+- otherwise, if `x` is used, a dyad or ambivalent *verb* is created.
 
 A type may also be forced by appending `)` and one of the letters
 `n`oun, `a`dverb, `c`onjunction, `m`onad or `d`yad to the opening
 braces.
 
+The following examples contain more info about DDs and should be
+compared carefully with their actual output!
+
 ```J
-1 {{x + y}} 2           NB. simple to use in-line
-{{x + y}}               NB. note the internal representation
+]fn =: {{123}}       NB. monad; internally represented as explicit-def
+echo 1 2 3 , {{123}} ''
+]fn =: {{x + y [ echo 'dyad because uses x' }}
+1 fn 2
 
-{{echo 'Hi, ', y, {{)n! I'm a monad.}} }} 'Bob'
+{{'>',{{)nstring}},{{)n123}},'<'}} 'nested; one-line string definitions'
 
-echo {{)nDD-nouns are always strings}}, '!'
+{{ echo '---'
+    echo 'untyped multiline DD'
+    echo '* may start on opening line'
+    echo '* may contain other mutliline DDs'
+    {{ NB. such as this one
+    echo '* closing line doesn''t have to start with }}'
+    echo '* may continue on closing line' }} 'like here'
+}} ''
 
-{{
-    echo 'Multiline DDs may contain other multiline DDs. For example:'
-    echo 'Note:', {{)n NB. usually this comment would create an error:
-Typed multiline DDs must not have any additional printable characters on
-the first line. However, multiline DD-nouns (such as this), may start on
-the opening line, but: must end with the closing braces as the first 2
-    }} characters (including whitespace!) of a line. Thus this line did
-not end the noun because it starts with whitespace but the next does!
-}}, LF, ' After the closing }} all DDs may continue the expression.'
-NB. ^^ predefined variable containing newline string
+{{)m NB. only comment allowed on typed opening line
+    echo '---'
+    echo 'typed multiline DD is like an untyped one except:'
+    echo '* makes sure it is of a certain type'
+    echo '* must not start on opening line (comments allowed)'
+    y NB. last value is returned
 
-    :
-    echo 'Apart from that, DD-bodies are like explicit definitions.'
-
-    }} 'call as monad'  NB. non-noun-DD's }} don't have to start a line
+}} {{)n  NB.(not a comment) except a multiline DD noun *may* do so.
+multiline DDs which define nouns:
+  * must be typed
+  * always produce a single list of characters (a string)
+  * everything (incl whitespace and comment on opening line) becomes
+    part of the string, except:
+}} , {{)n
+    the opening line if it is empty (as in this case -> no empty line)
+  * must put closing braces as first characters of line:
+    }} thus this does not end the definition, but this does:
+}} , '< * as the < indicated: always end in a newline'
 ```
 
 ## Arrays:
