@@ -378,6 +378,8 @@ $ 2 1 $ 10 20       NB. shape
 'ten', 20           NB. error: incompatible types
 10, 3.14            NB. ok: both are numbers
 2 2 $ 'abc'         NB. don't forget that strings are arrays too!
+'a',LF,'b'          NB. strings 'a' and 'b' combined with a newline
+NB. ^^ predefined variable containing newline, also useful: TAB,CR,CRLF
 ```
 
 ## Boxes, Trees:
