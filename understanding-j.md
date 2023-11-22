@@ -104,13 +104,16 @@ simply by the two numbers `1` and `0`. See also: strings
 
 ## Strings:
 
-```J
-'i''m a string: always single-quoted, only '' is special'
-```
+Strings are lists thus an empty string is commonly used as empty list
+notation. The default string type is called "literal" and is UTF-8
+encoded which means the first 128 ASCII characters work well with arrays
+as they are a single byte long. String literals are singlequoted, and
+only this character is special; it is escaped by doubling it. See also:
+string representation and unicode
 
-Strings are lists of characters:
 ```J
 ''                  NB. empty string is empty list
+'this is a string. it''s always singlequoted'
 ```
 
 ## Nouns:
