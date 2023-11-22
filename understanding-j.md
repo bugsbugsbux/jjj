@@ -91,7 +91,11 @@ __                  NB. negative infinity
 
 ## Lists, Booleans:
 
-Simply put elements next to each other:
+The notation is simple: just put elements next to each other. All
+elements must to have the same type but as an empty list has no elements
+it can be combined with any other list. True and false are represented
+simply by the two numbers `1` and `0`:
+
 ```J
 0 1                 NB. the booleans (FALSE, TRUE) in a two-element list
 0 1 2 3             NB. list with 4 elements
