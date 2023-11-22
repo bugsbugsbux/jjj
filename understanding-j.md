@@ -94,12 +94,12 @@ __                  NB. negative infinity
 The notation is simple: just put elements next to each other. All
 elements must to have the same type but as an empty list has no elements
 it can be combined with any other list. True and false are represented
-simply by the two numbers `1` and `0`:
+simply by the two numbers `1` and `0`. See also: strings
 
 ```J
-0 1                 NB. the booleans (FALSE, TRUE) in a two-element list
-0 1 2 3             NB. list with 4 elements
-(0 1) (2 3)         NB. error: can't implicitly join lists
+0 1                 NB. the booleans (truth values) in a 2-element list
+0 1 2 3 4           NB. due to context a list of numbers not booleans
+(0 1 2) (3 4)       NB. error: can't implicitly join lists, see below
 ```
 
 ## Strings:
@@ -166,7 +166,7 @@ called *monads*; not related to the haskell term).
 1 - 2               NB. dyad (2 args, may be lists)
 
     - 1 2           NB. monad with list argument
-0 1 , 2 3           NB. the dyad , joins lists
+0 1 2 , 3 4         NB. the dyad , joins lists
 ```
 Note that the monadic and dyadic case here are two distinct functions:
 negate-number and subtract. They share a name (the symbol `-`) and a
