@@ -2070,4 +2070,7 @@ monad           load    executes file or shortname (alias for some file)
 monad           scripts show shortnames
 monad           loadd   like load but print each line before executing
 monad           require like load but only if was not loaded already
+monad           u:      2&u: or 4&u:
+dyad            u:      provides access to some unicode functions
+monad           datatype    type of noun as words
 ```
