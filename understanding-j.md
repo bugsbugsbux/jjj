@@ -1861,6 +1861,87 @@ The following verbs inherited from the z-locale are used to import code:
 
 # Appendix
 
+## String Representation and Unicode:
+
+J's default **string type**, "**literal**", treats 8 bits (1 byte) as an
+atom. This works well for the first 128 ASCII characters, which are
+equivalent to their UTF-8 representation and only need a single byte to
+be stored. Other letters are represented by more bytes in UTF-8, which
+makes them hard to work with. To fix this UCS-2 encodes every letter as
+2 bytes, which can be interpreted as 1 atom by using J's type
+"**unicode**". However, when UTF-16 (UCS-2 superset) came one could not
+rely on 1 glyph being 1 "unicode" atom anymore: it may be 2. Luckily
+UCS-4, also called UTF-32, encodes every glyph with exactly 4 bytes,
+which can be treated as a single atom with J's type "**unicode4**". Be
+careful when converting to a representation with bigger atoms to use an
+operation which merges surrogate pairs (the multiple atoms representing
+a single glyph) into a single atom; when converting "unicode" to
+"unicode4" J would still understand it but it would not be valid UTF-32.
+
+The verb `u:` provides access to unicode related functionality:
+- monad `u: string` is `2 u: string`
+- monad `u: number` is `4 u: number`
+- dyad: left arg is:
+    1. truncate to 1-byte precision
+    2. extend or truncate to 2-byte precision
+    3. convert to UCP
+    4. get UCP in UCS-2 range (<65536) as "unicode"
+    5. like `1&u:` but raise error if discarding non-zero bits
+    6. from literal UTF-16: each 2 bytes become 1 atom of type "unicode"
+    7. convert (literal as UTF-8) to smallest string type needed;
+       get any UCP as "unicode"
+    8. convert to UTF-8;
+       get any UCP as UTF-8 encoded "literal"
+    9. convert string (literal as UTF-8) to type "unicode4" except when
+       all ASCII;
+       UCPs as "unicode4" (merges surrogate pairs)
+    10. convert each *atom* of string to "unicode4", therefore this
+        does not give valid UTF-32 if surrogate pairs are present (fix
+        with 9&u:);
+        get any UCP as "unicode4"
+
+```J
+2 5 $ 'helloworld'
+2 5 $ 'hellöwörld'      NB. doesn't work because:
+3 u: 'ö'                NB. ö is UTF-8 character represented by 2 atoms
+3 u: 7 u: 'ö'           NB. convert to type unicode -> 1 atom
+2 5 $ 7 u:'hellöwörld'
+2 5$ 7 u:'hell😈w😈rld' NB. doesn't work because:
+3 u: 7 u: '😈'          NB. emojis use 2 atoms in UTF-16 encoding
+3 u: 9 u: 7 u: '😈'     NB. convert to type unicode4 -> 1 atom
+3 u:10 u: 7 u: '😈'     NB. careful: 10&u: converts atoms individually:
+                        NB. the UPCs are the same but use 4 bytes each
+3 u: 9 u: 10 u:7 u:'😈' NB. use 9&u: to fix such a unicode4 string
+2 5 $ 9 u:'hell😈w😈rld'
+NB. convert each letter to UTF-8 encoded literal string and show bytes
+< @ (3&u:) @ (8&u:) "(0) 9 u:'hell😈w😈rld'
+NB. demo 7&u: converts to smallest string type needed for representation
+datatype @ (7&u:) @ (8&u:) "(0) 9 u:'hell😈w😈rld'
+datatype @ (7&u:) "(0) 9 u:'hell😈w😈rld'
+NB. demo 9&u: converts to ASCII if possible else to unicode4
+datatype @ (9&u:) @ (8&u:) "(0) 9 u:'hell😈w😈rld'
+datatype @ (9&u:) "(0) 9 u:'hell😈w😈rld'
+NB. extends or truncates to 2 byte procesion; this is not conversion!
+2 u: 9 u: '😈'          NB. throws away one byte -> different glyph
+datatype 2 u: 'a'
+
+NB. adding strings
+datatype (7 u:'a'),(9 u:'b')
+datatype (7 u:'ö'),(9 u:'a')
+datatype (7 u:'a'),(9 u:'ö')
+NB. mind surrogate pairs, use 9&u: to fix it:
+3 u: (7 u: '😈'), (9 u: '😈')
+3 u: 9 u: (7 u: '😈'), (9 u: '😈')
+
+NB. UCP to string
+4 u: 246                NB. to unicode string; ensures 1 glyph = 1 atom:
+4 u: 128520             NB. which is not true for UCPs >65535
+7 u: 128520             NB. to unicode string; might be 2 atoms
+9 u: 128520             NB. to unicode4 string
+3 u: 9 u: 55357 56840   NB. to unicode4 string, wont merge surrogates
+3 u:9 u:9 u:55357 56840 NB. use 9&u: to fix it
+```
+
 ## Covered Builtins:
 ```
 comment         NB.     comment rest of line
