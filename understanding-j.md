@@ -1863,6 +1863,10 @@ The following verbs inherited from the z-locale are used to import code:
 
 ## String Representation and Unicode:
 
+Note: For this section to display properly a font with support for emoji
+needs to be used. If in the terminal J does not accept input of
+non-ASCII characters start it with the `-noel` parameter.
+
 J's default **string type**, "**literal**", treats 8 bits (1 byte) as an
 atom. This works well for the first 128 ASCII characters, which are
 equivalent to their UTF-8 representation and only need a single byte to
