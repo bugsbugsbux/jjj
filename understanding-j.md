@@ -1220,7 +1220,7 @@ var =: 'during orig namespace'
 
 fn 'executes fn from current namespace'
 erase 'fn'
-fn 'executes fn from inheritance
+fn 'executes fn from inheritance'
 fn_z_ 'executes fn from locative'
 fn_z_ f. 'executes result of adverb (which gets fn from locative)'
 ```
