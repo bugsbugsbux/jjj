@@ -110,28 +110,43 @@ ambi 1
 
 NB. Assignment with =: writes to the (current) global namespace, while
 NB. assignment with =. writes to the namespace of the current function.
-NB. Assignments return their argument. Function-namespaces are local,
-NB. private and cannot be inherited:
-echo foo            NB. does not exist -> wont execute
-foo =: 'global'     NB. interpreter does not show assignment returnvalue
-echo foo =:'global' NB. but it can be used within an expression
-{{ NB. function scope
-    bar =. 'outer'  NB. write access to local function scope
-    {{ NB. nested function
-        echo 'foo from global scope:'
-        echo foo            NB. read access to global scope
-        foo =: 'foo'        NB. write access to global scope
-        echo 'bar from outer scope:'
-        echo bar            NB. no access to outer function's scope
-        bar =. 'inner'
-    }} '' NB. execute this unnamed function
-    echo 'bar from outer scope after nested function used a local bar:'
-    echo bar
-}} '' NB. execute this unnamed function
-echo 'global foo after function changed it:'
-echo foo
-echo 'is there a global bar after function only used local bar?'
-echo bar
+NB. Assignments return their argument unchanged. Nested functions cannot
+NB. read or write to their parent's namespace. Control-structures do not
+NB. have their own namespaces. Note that control-structures testing a
+NB. condition only inspect the first provided atom!
+echo global         NB. does not exist -> wont execute
+global =: 'foo'     NB. interpreter doesn't show assignment return value
+echo global =:'glo' NB. but it can be used within an expression
+{{                  NB. function scope:
+    echo global     NB. read global
+    global =: 'changed from parent function'
+    local =. 'local'
+
+    {{              NB. nested function's scope:
+        echo 'global ', global
+        global =: 'changed from nested function'
+        echo local  NB. no access to parent -> not found -> not executed
+        local =. 'local2'
+    }} ''           NB. provide arg to immediately execute this function
+
+    echo 'unchanged ', local
+    NB. control-structures use function scope:
+    foo =. 0
+    while. foo < 3 do. echo foo =. foo + 1 end.
+    echo 'local foo changed from 0 to'; foo
+    for. 1 2 3 do. echo 'no access to current value' end.
+    for_var. 'abc' do. echo 'loop state'; var_index; var end.
+    echo 'vars still exist thus this executes'; var_index; var
+    for_var2. 'abcdef' do.
+        if. var2 = 'b' do. continue. end.
+        NB. note how it skips outputting 'b'
+        echo 'current value: ', var2
+        if. var2 = 'd' do. break. end.
+    end.
+    echo 'loop aborted thus var2 not reset to empty'; var2_index; var2
+}} ''
+echo 'global ', global
+echo local          NB. not found in global scope -> not executed
 
 NB. Functions which may take and/or return other functions as arguments
 NB. are called modifiers. If they return a new function (most do so) it
