@@ -311,8 +311,8 @@ NB. can be tested with dyad -:
 1 <: 0 1 2          NB. greater or equal
 1 = i.2 2           NB. equals
 1 ~: i.2 2          NB. not equal
-(i.4) -: i.2 2      NB. equal in shape and each atom
 (i.2 2) -: i.2 2    NB. equal in shape and each atom
+(i.4) -: i.2 2
 -. (i.2 2) -: i.2 2 NB. not
 0 0 1 1 +. 0 1 0 1  NB. or
 0 0 1 1 *. 0 1 0 1  NB. and
