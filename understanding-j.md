@@ -1908,8 +1908,8 @@ x (B &. A) y = x (B &.: A)"({.A b.0) y
 
 ] Xb =: <"0 X =: 'ABCD'
 ] Yb =: <"0 Y =: 'abcd'
-(<"0 'ABCD') (,"_)&.:(>"0) (<"0 'abcd')
-(<"0 'ABCD') (,"_)&. (>"0) (<"0 'abcd')
+Xb (,"_)&.:(>"0) Yb
+Xb (,"_)&. (>"0) Yb
 ```
 
 If only one side needs processing, a 2-element gerund is used with an
