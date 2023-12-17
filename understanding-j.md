@@ -1891,7 +1891,7 @@ x (B & A) y = x (B &: A)"({.A b.0) y        NB. (A x) B"({.A b.0) (A y)
 (<"0 i.3 2) ;& (>"1) (<"(0) 6+i.3 2)
 ```
 
-`&.:` and `&.` work like `&` and `&:` (monad on monad or dyad on
+`&.` and `&.:` work like `&` and `&:` (monad on monad or dyad on
 result-pairs of arguments processed by monads) but **also apply the
 inverse** (see: inverse and tacit functions) of the first verb as the
 third verb in the pipeline!
