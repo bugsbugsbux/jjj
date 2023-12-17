@@ -1977,7 +1977,7 @@ The verb `u:` provides access to unicode related functionality:
 - dyad: left arg is:
     1. truncate to 1-byte precision
     2. extend or truncate to 2-byte precision
-    3. convert to UCP
+    3. convert to UCP (Unicode Code Point, a number)
     4. get UCP in UCS-2 range (<65536) as "unicode"
     5. like `1&u:` but raise error if discarding non-zero bits
     6. from literal UTF-16: each 2 bytes become 1 atom of type "unicode"
