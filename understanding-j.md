@@ -2149,6 +2149,13 @@ conjunction     x u&n y apply monad u&n x-times
 conjunction     u^:n    apply u or (x&u if x given) n-times
 conjunction     u^:v    call v on arg/s to get amount of repetitions
 conjunction     m@.v    call v on arg/s to get index of verb in m to run
+conjunction     F.      infinite fold single
+conjunction     F:      infinite fold multiple
+dyad            Z:      exit fold according to x; do nothing if y is 0
+conjunction     F..     fold single forward
+conjunction     F.:     fold single reverse
+conjunction     F:.     fold multiple forward
+conjunction     F::     fold multiple reverse
 conjunction     ::      if left verb throws run right verb
 adverb          b.      call with arg _1 to show inverse
 conjunction     :.      right verb is inverse of left verb
