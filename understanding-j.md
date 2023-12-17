@@ -1625,6 +1625,93 @@ NB. here the condition is never true -> returns unchanged arg
 1&dec_bottom0 ^:(>&3)^:(a:) _1
 ```
 
+### Looping with More Control:
+
+The 6 conjunctions `F.`, `F:`, `F..`, `F.:`, `F:.` and `F::` are
+collectively known as Fold. Usage: `x? u Fold v y`
+
+Fold creates a **loop which invokes `v` on the previous result** of `v`
+and **then allows to postprocess (even discarding) the result** with
+`u`. However, the result of `u` is never the input to `v`.
+
+If the first inflection (appended "." or ":") of Fold is "." only the
+last result is kept, while ":" combines the subresults into a final
+result (which pads subresults if necessary and thus the last result
+might differ from a Fold with a single result).
+
+`F.` and `F:` create an infinite loop which has to be exited explicitly.
+They always provide `x` (if given) unchanged as left argument to `v` and
+use `y` as a whole as initial right argument.
+
+Dyad `Z:`, which may be used in `u` and `v`, provides control over
+Fold-created loops, similar to `break.` and `continue.` in explicit
+loops. Its effect is determined by its left argument and only activated
+if the right argument is not `0`:
+
+- `_3`: Raise "fold limit"-error (thus no result) if loop already ran
+  given (as right argument) number of times. Note that `_1 Z: 1` in `v`
+  does not increment the iteration count and thus might create an
+  infinite loop which is not caught by `_3 Z: n`...
+- `_2`: Immediately exit the loop. `u` never runs or completes, thus
+  this iteration does not contribute to the overall result. Raises
+  "domain error" if overall result is empty.
+- `_1`: Immediately exit current function and start the next iteration
+  with the result of `v` if in `u` or the previous result of `v` if in
+  `v`. `u` never runs or completes, thus overall result stays unchanged.
+  Note the danger of using this in `v` of `F.` or `F:` (see: above).
+- `0`: Current iteration is not aborted, but the result of `u` is
+  discarded.
+- `1`: Exit after finishing current iteration.
+
+```J
+double =: *&2
+
+NB. raises error thus no result
+res =: {{ y [_3 Z: 3 }} F: {{ ([ echo) double y }} 1
+res
+
+NB. stop once results are greater than 20
+res =: {{ y [_2 Z: (y > 20) }} F: {{ ([ echo) double y }} 1
+res
+NB. Fold-Single only keeps last result
+res =: {{ y [_2 Z: (y > 20) }} F. {{ ([ echo) double y }} 1
+res
+
+NB. discard result if it is 8. yet, it is used as previous value
+{{ y [echo'afterwards';y [_2 Z:(y>20) [_1 Z:(y=8) }} F: {{double y}} 1
+NB. In contrast (0&Z:) doesnt abort current iteration, only discards
+NB. current result:
+{{ y [echo'afterwards';y [_2 Z:(y>20) [ 0 Z:(y=8) }} F: {{double y}} 1
+
+NB. do not use (_1 Z: 1) in v when using F. or F: as it creates an
+NB. infinite loop which is not caught by (_3 Z: n)
+NB. {{ y [_3 Z: 10}} F: {{ new [_1 Z: (new=8) [echo new=: double y}} 1
+
+NB. finish current iteration and exit loop
+{{ y [echo'afterwards';y [ 1 Z:(y=8) }} F: {{double y}} 1
+```
+
+The other fold variants use `x`, if given, as initial right argument to
+`v` and one item of `y` per iteration as left argument. The items of `y`
+are used in order if the second inflection is "." and in reverse if it
+is ":". If `x` is not given, the first/last item of `y` is used as
+initial right argument and the second/-to-last item is the first left
+argument to `v`.
+
+```J
+]Y =: 1+i.5
+  ]F:., Y           NB. forward order, not postprocessed, needs padding
+  <F:., Y           NB. postprocessed but , uses unprocessed prev result
+  <F::, Y           NB. reverse order
+0 <F:., Y           NB. forward with different first y argument
+0 <F::, Y           NB. reverse with different first y argument
+0 <F.:, Y           NB. same but only keep final result
+0 <F.., Y           NB. same but forward
+
+NB. (_1&Z:) can be used safely in v with F.. F.: F:. and F::
+0 <F:. {{x,y [ _1 Z:(x=3)}} Y
+```
+
 ### Idiomatic Error Handling:
 
 Conjunction `::` (required leading space) allows to provide an
