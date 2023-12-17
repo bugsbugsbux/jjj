@@ -1666,20 +1666,22 @@ if the right argument is not `0`:
 ```J
 double =: *&2
 
-NB. raises error thus no result
-res =: {{ y [_3 Z: 3 }} F: {{ ([ echo) double y }} 1
+NB. raises error in 5th iteration
+NB. F: and F. as dyads always use original x argument
+res =: 2 {{ y [_3 Z: 5 }} F: {{ x+y [echo x;y }} 0
 res
 
 NB. stop once results are greater than 20
+NB. F: and F. as monads apply v monadically, contrary to the other Folds
 res =: {{ y [_2 Z: (y > 20) }} F: {{ ([ echo) double y }} 1
 res
 NB. Fold-Single only keeps last result
 res =: {{ y [_2 Z: (y > 20) }} F. {{ ([ echo) double y }} 1
 res
 
-NB. discard result if it is 8. yet, it is used as previous value
+NB. discard result if it is 8; regardless, it is used as previous value
 {{ y [echo'afterwards';y [_2 Z:(y>20) [_1 Z:(y=8) }} F: {{double y}} 1
-NB. In contrast (0&Z:) doesnt abort current iteration, only discards
+NB. In contrast (0&Z:) doesn't abort current iteration, only discards
 NB. current result:
 {{ y [echo'afterwards';y [_2 Z:(y>20) [ 0 Z:(y=8) }} F: {{double y}} 1
 
