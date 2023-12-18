@@ -237,6 +237,23 @@ bar                 NB. and bar got second value
 'foo bar' =: 1 2 3  NB. error: same number of names as elements required
 ```
 
+See also: importing code
+
+## Importing Code:
+
+To run the code from some file use one of these convenient verbs:
+
+- `load`: Runs the specified file or shortname (list available
+  shortnames with `scripts''`).
+- `loadd`: Like `load` but displays the lines before executing them.
+- `require`: Like `load` but files that were already loaded won't be
+  loaded again.
+
+As these verbs, like all functions, have their own scope, assignments in
+the loaded file/s which use `=.` but target the current global scope get
+captured by the loading function's scope and thus are not available
+afterwards!
+
 ## Defining Entities (Functions, Nouns) by Explicit-Definition:
 
 Explicit-definitions are created with the `:` conjunction which returns
@@ -1937,16 +1954,6 @@ Xb (,"_ _ _)&.:((>"0)`a:) Y
 Xb (,"_ _ _)&. ((>"0)`a:) Y
 Xb (,"_ _ 0)&. ((>"0)`a:) Y
 ```
-
-## Importing Code:
-
-The following verbs inherited from the z-locale are used to import code:
-
-- `load`: Runs the specified file or shortname (list available
-  shortnames with `scripts''`).
-- `loadd`: Like `load` but displays the lines before executing them.
-- `require`: Like `load` but files that were already loaded won't be
-  loaded again.
 
 # Appendix
 
