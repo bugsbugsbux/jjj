@@ -91,7 +91,7 @@ ambi =: {{
     'dydy'          NB. the return value for the dyadic version
 }}
 ambi 1 ambi 2       NB. left one is monad, right one dyad
-2 amb ambi 1        NB. left one is dyad, right one monad
+2 ambi ambi 1       NB. left one is dyad, right one monad
 
 NB. The old function notation specifies whether it's a monad or a dyad
 NB. with the number to the left of the : (3 for monad and ambivalent,
