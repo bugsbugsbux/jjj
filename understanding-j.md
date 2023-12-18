@@ -2043,141 +2043,143 @@ NB. UCP to string
 ```
 
 ## Covered Builtins:
+
 ```
-comment         NB.     comment rest of line
-noun            _       infinity, but as number-prefix: negative sign
-syntax          ()      subexpressions are parenthesized
-syntax          ''      string (which is a *list* of literals)
-monad           -       negate-number (use -. (not) to negate booleans)
-dyad            -       subtract
-dyad            ,       join lists
-dyad            +       addition
-monad           +       complex conjugate
-adverb          /       puts verb between elements of new verb's arg/s
-conjunction     m&v     convert dyad v to monadic verb with x fixed to m
-conjunction     u&n     convert dyad u to monadic verb with y fixed to n
-dyad            ^       power: x to the y
-assignment      =:      assign to global namespace
-assignment      =.      try assigning to local namespace else to global
-monad           [       return argument unchanged
-monad           ]       return argument unchanged
-dyad            [       return x unchanged
-dyad            ]       return y unchanged
-monad           load    executes file or shortname (alias for some file)
-monad           scripts show shortnames
-monad           loadd   like load but print each line before executing
-monad           require like load but only if was not loaded already
-conjunction     :       define entities
-syntax          )       end multiline explicit definition
-monad           echo    output message
-ambivalent      __: _9: ... 0: ... 9: _: ignore arg/s and return digit
-syntax          :       separate monadic and dyadic bodies
-monad           ":      convert to displayable byte array
-dyad            *       multiplication
-dyad            %       division
-monad           %       1 divided by y
-monad           names   pretty print names defined in current namespace
-conjunction     !:      access lots of system functions
-(dyad           o.      access to circle functions (sin, cos, ...)     )
-syntax          {{      opens a direct definition
-syntax          {{)n    open direct definition of type n (or a, c, m, d)
-syntax          }}      close DD
-monad           $       get shape
-monad           #       get length
-dyad            $       reshape array
-monad           <       box
-monad           >       unbox/open
-noun            a:      empty box
-dyad            ;       join as boxes
-dyad            =       compares corresponding atoms
-syntax          assert. error if not all 1s
-syntax          if.     if block ends at do.
-syntax          do.     ends a condition block
-syntax          elseif. else-if block ends at do.
-syntax          else.   else block ends at end.
-syntax          end.    ends a control structure
-syntax          select. target value/s to match against; ends at f/case.
-syntax          case.   test value/s to match target; ends at do.
-syntax          fcase.  like case. but invoces next f/case.; ends at do.
-dyad            >       is x greater than y?
-syntax          while.  checks condition before every loop; ends at do.
-syntax          whilst. like while. but runs at least once; ends at do.
-syntax          for.    loop once for each item in clause; ends at do.
-syntax          for_var. like for. but sets var to item
-syntax          return. return last value or *left* arg
-verb            9!:8    returns list of default error messages
-verb            dberr   return last error's number
-verb            dberm   return last error's message
-verb            dbsig   equivalent to (13!:8)
-verb            13!:8   raise error y; optional: custom message x
-syntax          try.    handle errors in block; ends at catch/d/t.
-syntax          catch.  handle normal errors (not error 55 = throw.s)
-verb            dbr     disable (arg 0) or enable (1) debugging mode
-verb            dbq     query debugging mode state
-verb            dbs     shows debug stack
-verb            dbnxt   continue program on next line
-syntax          catchd. replacement for catch. pauses when debugging
-syntax          throw.  exit fn, goes up callstack until finds catcht.
-syntax          catcht. handles error 55 (throw.s) in *called* functions
-monad           i.      get integer sequence in shape of argument
-adverb          b.      call with arg 0 to show ranks of verb
-conjunction     "       change ranks of verb
-adverb          ~       swap arguments or copy right arg to left side
-syntax          [:      x?([: B A)y becomes (B x?Ay)
-conjunction     `       make list of verbs (gerund)
-conjunction     `:      execute a gerund in a certain way
-monad           conl    boxed list of namespaces
-monad           coname  get name of current namespace
-monad           cocurrent   switch to namespace
-monad           nl      boxed list of names defined in current namespace
-monad           clear   remove names defined in given/'base' namespace
-monad           copath  ancestors of *given* namespace
-adverb          f.      pull name into current namespace
-monad           erase   remove given names from *their* namespace
-monad           conew   create new instance of class
-monad           cocreate    creates new namespace, numeric if empty y
-dyad            conew   create new instance and pass x as args to create
-monad           codestroy   remove current namespace
-monad           coerase remove namespace
-monad           coclass switch to namespace
-dyad            copath  set ancestors of namespace
-monad           coinsert    prepend ancestors of current namespace
-dyad            {       index into array
-adverb          }       return copy of array with replaced elements
-dyad            #       repeat curresponding elements x-times
-monad           ,       flatten array; scalar becomes list
-monad           {:      last element
-monad           {.      first element
-dyad            {.      first/last x elements
-monad           }:      except last element
-monad           }.      except first element
-dyad            }.      except first/last x elements
-dyad            {::     index into boxed structure
-conjunction     m@.n    index gerund m
-monad           break   abort exec in session with given or default tag
-conjunction     x m&v y apply monad m&v x-times
-conjunction     x u&n y apply monad u&n x-times
-conjunction     u^:n    apply u or (x&u if x given) n-times
-conjunction     u^:v    call v on arg/s to get amount of repetitions
-conjunction     m@.v    call v on arg/s to get index of verb in m to run
-conjunction     F.      infinite fold single
-conjunction     F:      infinite fold multiple
-dyad            Z:      exit fold according to x; do nothing if y is 0
-conjunction     F..     fold single forward
-conjunction     F.:     fold single reverse
-conjunction     F:.     fold multiple forward
-conjunction     F::     fold multiple reverse
-conjunction     ::      if left verb throws run right verb
-adverb          b.      call with arg _1 to show inverse
-conjunction     :.      right verb is inverse of left verb
-conjunction     13 :    tries to convert function body to tacit verb
-conjunction     @:      as monad: monad>monad; as dyad: dyad>monad
-conjunction     @       like @: but calls left on each subresult
-conjunction     &:      as dyad: monads>dyad; as monad: like @:
-conjunction     &       like &: but calls left on each subresult
-conjunction     &.:     like &: but finally calls inverse of right verb
-conjunction     &.      like &.: but call left>inverse on each subresult
-monad           u:      2&u: or 4&u:
-dyad            u:      provides access to some unicode functions
-monad           datatype    type of noun as words
+comment     NB.         comment rest of line
+noun        _           infinity, but as number-prefix: negative sign
+syntax      ()          subexpressions are parenthesized
+syntax      ''          string (which is a *list* of literals)
+monad       -           negate-number (use -. (not) to negate booleans)
+dyad        -           subtract
+dyad        ,           join lists
+dyad        +           addition
+monad       +           complex conjugate
+adverb      /           puts verb between elements of new verb's arg/s
+conjunct    m&v         convert dyad v to monadic verb with x fixed to m
+conjunct    u&n         convert dyad u to monadic verb with y fixed to n
+dyad        ^           power: x to the y
+assignment  =:          assign to global namespace
+assignment  =.          try assigning to local namespace else to global
+monad       [           return argument unchanged
+monad       ]           return argument unchanged
+dyad        [           return x unchanged
+dyad        ]           return y unchanged
+monad       load        executes file or shortname (alias for some file)
+monad       scripts     show shortnames
+monad       loadd       like load but print each line before executing
+monad       require     like load but only if was not loaded already
+conjunct    :           define entities
+syntax      )           end multiline explicit definition
+monad       echo        output message
+ambivalent  __: _9: ... 0: ... 9: _: ignore arg/s and return digit
+syntax      :           separate monadic and dyadic bodies
+monad       ":          convert to displayable byte array
+dyad        *           multiplication
+dyad        %           division
+monad       %           1 divided by y
+monad       names       pretty print names defined in current namespace
+conjunct    !:          access lots of system functions
+(dyad       o.          access to circle functions (sin, cos, ...)     )
+syntax      {{          opens a direct definition
+syntax      {{)n        open direct definition of type n (or a, c, m, d)
+syntax      }}          close DD
+monad       $           get shape
+monad       #           get length
+dyad        $           reshape array
+monad       <           box
+monad       >           unbox/open
+noun        a:          empty box
+dyad        ;           join as boxes
+dyad        =           compares corresponding atoms
+syntax      assert.     error if not all 1s
+syntax      if.         if block ends at do.
+syntax      do.         ends a condition block
+syntax      elseif.     else-if block ends at do.
+syntax      else.       else block ends at end.
+syntax      end.        ends a control structure
+syntax      select.     target value/s to match against; ends at f/case.
+syntax      case.       test value/s to match target; ends at do.
+syntax      fcase.      like case. but invoces next f/case.; ends at do.
+dyad        >           is x greater than y?
+syntax      while.      checks condition before every loop; ends at do.
+syntax      whilst.     like while. but runs at least once; ends at do.
+syntax      for.        loop once for each item in clause; ends at do.
+syntax      for_var.    like for. but sets var to item
+syntax      return.     return last value or *left* arg
+verb        9!:8        returns list of default error messages
+verb        dberr       return last error's number
+verb        dberm       return last error's message
+verb        dbsig       equivalent to (13!:8)
+verb        13!:8       raise error y; optional: custom message x
+syntax      try.        handle errors in block; ends at catch/d/t.
+syntax      catch.      handle normal errors (not error 55 = throw.s)
+verb        dbr         disable (arg 0) or enable (1) debugging mode
+verb        dbq         query debugging mode state
+verb        dbs         shows debug stack
+verb        dbnxt       continue program on next line
+syntax      catchd.     replacement for catch. pauses when debugging
+syntax      throw.      exit fn, goes up callstack until finds catcht.
+syntax      catcht.     handles error 55 (throw.s) in *called* functions
+monad       i.          get integer sequence in shape of argument
+adverb      b.          call with arg 0 to show ranks of verb
+conjunct    "           change ranks of verb
+adverb      ~           swap arguments or copy right arg to left side
+syntax      [:          x?([: B A)y becomes (B x?Ay)
+conjunct    `           make list of verbs (gerund)
+conjunct    `:          execute a gerund in a certain way
+monad       conl        boxed list of namespaces
+monad       coname      get name of current namespace
+monad       cocurrent   switch to namespace
+monad       nl          boxed list of names defined in current namespace
+monad       clear       remove names defined in given/'base' namespace
+monad       copath      ancestors of *given* namespace
+adverb      f.          pull name into current namespace
+monad       erase       remove given names from *their* namespace
+monad       conew       create new instance of class
+monad       cocreate    creates new namespace, numeric if empty y
+dyad        conew       create new instance and pass x as args to create
+monad       codestroy   remove current namespace
+monad       coerase     remove namespace
+monad       coclass     switch to namespace
+dyad        copath      set ancestors of namespace
+monad       coinsert    prepend ancestors of current namespace
+dyad        {           index into array
+adverb      }           return copy of array with replaced elements
+dyad        #           repeat curresponding elements x-times
+monad       ,           flatten array; scalar becomes list
+monad       {:          last element
+monad       {.          first element
+dyad        {.          first/last x elements
+monad       }:          except last element
+monad       }.          except first element
+dyad        }.          except first/last x elements
+dyad        {::         index into boxed structure
+conjunct    m@.n        index gerund m
+monad       break       abort exec in session with given or default tag
+conjunct    x m&v y     apply monad m&v x-times
+conjunct    x u&n y     apply monad u&n x-times
+conjunct    u^:n        apply u or (x&u if x given) n-times
+conjunct    u^:v        call v on arg/s to get amount of repetitions
+conjunct    m@.v        call v on arg/s to get index of verb in m to run
+conjunct    F.          infinite fold single
+conjunct    F:          infinite fold multiple
+dyad        Z:          exit fold according to x; do nothing if y is 0
+conjunct    F..         fold single forward
+conjunct    F.:         fold single reverse
+conjunct    F:.         fold multiple forward
+conjunct    F::         fold multiple reverse
+conjunct    ::          if left verb throws run right verb
+adverb      b.          call with arg _1 to show inverse
+conjunct    :.          right verb is inverse of left verb
+conjunct    13 :        tries to convert function body to tacit verb
+conjunct    @:          as monad: monad>monad; as dyad: dyad>monad
+conjunct    @           like @: but calls left on each subresult
+conjunct    &:          as dyad: monads>dyad; as monad: like @:
+conjunct    &           like &: but calls left on each subresult
+conjunct    &.:         like &: but finally calls inverse of right verb
+conjunct    &.          like &.: but call left>inverse on each subresult
+monad       u:          2&u: or 4&u:
+dyad        u:          provides access to some unicode functions
+monad       datatype    type of noun as words
 ```
+"conjunct" = conjunction
