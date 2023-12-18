@@ -42,7 +42,7 @@ NB. used as an empty list!
 NB. Functions are executed in right to left order and are greedy (take
 NB. left argument if available). Use parentheses to influence that.
 # i. 3 2            NB. first i. on argument 3 2 then # on result
-# i. 5 - 2          NB. first - which takes both args, then i. then $
+# i. 5 - 2          NB. first - which takes both args, then i. then #
 2 * 3 + 4           NB. 14
 (2*3) + 4           NB. 10
 
