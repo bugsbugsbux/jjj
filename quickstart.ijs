@@ -83,12 +83,12 @@ NB. One name (like -) can be a monad (like negate) and a dyad (like
 NB. subtract) at the same time. Which is used depends on how it is
 NB. invoked.
 ambi =: {{
-    echo (<'called with:'),(<y)
-    'monad'         NB. the last value in a function is returned
+    echo (<'called with arg:'),(<y)
+    'momo'          NB. the last value in a function is returned
     NB. separate monad from dyad with line which only contains :
     :
-    echo (<'called with:'),(<x),(<y)
-    'dyad'          NB. the return value for the dyadic version
+    echo (<'called with args:'),(<x),(<y)
+    'dydy'          NB. the return value for the dyadic version
 }}
 ambi 1 ambi 2       NB. left one is monad, right one dyad
 2 amb ambi 1        NB. left one is dyad, right one monad
