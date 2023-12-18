@@ -1769,7 +1769,7 @@ NB. dyadically used but gerund only has 2 elements: use x unchanged
 ## Inverse and Tacit Functions:
 
 Many (mostly monadic) builtin verbs define an **inverse function** to
-undo their effect. The inverse of this *monads* can be *shown* with
+undo their effect. The inverse of these *monads* can be *shown* with
 argument `_1` to adverb `b.`.
 
 An explicit function does not have an inverse by default, but one can be
