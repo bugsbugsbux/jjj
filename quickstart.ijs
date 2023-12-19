@@ -151,7 +151,10 @@ echo local          NB. not found in global scope -> not executed
 NB. Functions which may take and/or return other functions as arguments
 NB. are called modifiers. If they return a new function (most do so) it
 NB. has access to the original arguments of the modifier as u (left arg)
-NB. and v (right arg). Modifiers are not ambivalent; with 2 original
+NB. and v (right arg). u and v may also be called m and n respectively
+NB. to indicate that they are nouns. Due to the predetermined meaning
+NB. of certain names, get into the habit of only using *capital* single
+NB. letter variables! Modifiers are not ambivalent; with 2 original
 NB. arguments they are called conjunctions and those with 1 are called
 NB. adverbs. Note that adverbs take their argument from the left and
 NB. sequences of modifiers are processed left to right!
