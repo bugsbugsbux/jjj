@@ -118,18 +118,21 @@ echo global         NB. does not exist -> wont execute
 global =: 'foo'     NB. interpreter doesn't show assignment return value
 echo global =:'glo' NB. but it can be used within an expression
 {{                  NB. function scope:
-    echo global     NB. read global
-    global =: 'changed from parent function'
+    echo global     NB. not found locally but globally -> global value
+    global =: 'changed by outer function'
     local =. 'local'
 
-    {{              NB. nested function's scope:
+    {{              NB. inner function's scope:
         echo 'global ', global
-        global =: 'changed from nested function'
+        global =: 'changed by inner function'
         echo local  NB. no access to parent -> not found -> not executed
         local =. 'local2'
     }} ''           NB. provide arg to immediately execute this function
-
     echo 'unchanged ', local
+    NB. Had we used =: in inner function this would still print the
+    NB. unchanged outer "local"'s value but a global variable "local"
+    NB. would have been created (or modified if it existed).
+
     NB. control-structures use function scope:
     foo =. 0
     while. foo < 3 do. echo foo =. foo + 1 end.
