@@ -1839,7 +1839,7 @@ specialFn =: _9:    NB. only for digits, infinity and their negatives
 tacit =: _9 "_
 verbs =: explicit ` specialFn ` tacit `:0
 verbs 'as monads'
-'call' verbs 'as dyads'
+'call' verbs 'as dyads' NB. note the typo from above
 ```
 
 ## Composition:
