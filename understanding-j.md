@@ -86,7 +86,7 @@ _3                  NB. negative numbers start with underscore
 _                   NB. sole underscore is infinity: a number
 __                  NB. negative infinity
 12j34               NB. complex/img, sometimes used to supply arg-pairs
-16bcoffee           NB. base-16 number
+16bcoffee           NB. base-16 number (must be lowercase)
 ```
 
 ## Lists, Booleans:
