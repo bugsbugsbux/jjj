@@ -44,6 +44,11 @@ sections.
 
 **Run the examples and read the comments!**
 
+If you have J installed you can open this file in JQt via the
+file-selection dialog which opens with `ctrl+o` (make sure to set the
+filetype-filter to "all"). Click on a line with J code and press
+`ctrl+enter` to execute it.
+
 Covered builtins are listed in the appendix with a short description.
 
 Important links:
