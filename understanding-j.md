@@ -19,7 +19,6 @@ blockquote {
 </style>
 -->
 
-- Status: Work in Progress
 - J versions: 9.4.2,
 
 Found anything wrong? File an issue at
