@@ -2085,6 +2085,7 @@ NB. UCP to string
 
 ## Covered Builtins:
 
+"conjunct" = conjunction
 ```
 comment     NB.         comment rest of line
 noun        _           infinity, but as number-prefix: negative sign
@@ -2230,4 +2231,3 @@ monad       u:          2&u: or 4&u:
 dyad        u:          provides access to some unicode functions
 monad       datatype    type of noun as words
 ```
-"conjunct" = conjunction
