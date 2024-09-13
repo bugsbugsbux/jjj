@@ -1254,6 +1254,33 @@ echo__ns 'inherited echo from "z", the default parent'
 copath ns           NB. show "mynamespace" inherits from "z"
 ```
 
+## Applying modifiers to local variables:
+
+Function-namespaces not being inheritable becomes a problem when
+applying modifiers to local variables:
+
+During evaluation phase 1 (see: Evaluation Rules) modifiers produce
+verbs with identical body but `u` and `v` replaced with the operands of
+the modifier, which were not yet evaluated. Then, during phase 2, the
+verb encounters the unresolved name, tries to look it up and does not
+find it since it does not have access to the caller's namespace.
+
+If a modifier uses `u.`/`v.` instead of `u`/`v` the resulting verb
+starts the lookup of a name they stand for from the scope of its caller!
+Here is an example:
+```J
+F =: {{
+    L =. +
+    L adv y         NB. local var L stays unevaluated during phase 1
+}}
+
+adv =: 1 : 'u/y'
+F 1 2 3             NB. error: unknown var: L
+
+adv =: 1 : 'u./y'   NB. looks for name L from the scope of the caller F
+F 1 2 3             NB. ok
+```
+
 ## Classes, OOP:
 
 In J, classes are simply namespaces whose instances (also namespaces)
@@ -2177,6 +2204,8 @@ monad       clear       remove names defined in given/'base' namespace
 monad       copath      ancestors of *given* namespace
 adverb      f.          pull name into current namespace
 monad       erase       remove given names from *their* namespace
+operand     u.          resolves modifier's operand u in caller's scope
+operand     v.          resolves modifier's operand v in caller's scope
 monad       conew       create new instance of class
 monad       cocreate    creates new namespace, numeric if empty y
 dyad        conew       create new instance and pass x as args to create
