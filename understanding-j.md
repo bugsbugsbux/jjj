@@ -1961,6 +1961,43 @@ Xb (,"_ _ 0)&. ((>"0)`a:) Y
 
 # Appendix
 
+## J shell scripts:
+
+J scripts are plaintext files, should use the extension `.ijs` and
+may have a _shebang as first line_ (`#!` + the path to the J
+executable).
+
+_Arguments_ to the script are saved as boxed strings in variable
+`ARGV_z_` in elements 3 and higher; element 2 is the path of the script
+(as used on the commandline) and the first and only argument which is
+always available is the name of the command which invoked the process
+(as used on the commandline; usually `jconsole`). Arguments to the J
+interpreter, which are not passed to the script, are not listed in
+`ARGV`. Thus in a script invoked like with
+`../j9.4/bin/jconsole -noel ./file.ijs foo 123` has
+`ARGV -: '../j9.4/bin/jconsole';'./file.ijs';'foo';'123'` while just
+running the interpreter from PATH interactively (`jconsole`) only has
+`ARGV -: <'jconsole'`.
+
+To access _environment variables_ use verb `getenv` which returns boolean
+`0` if it is not defined. (Note: environment variables have to be
+strings thus the boolean cannot be confused with a value `'0'`.)
+
+Use verbs `stdout` and `stderr` to write to these file-descriptors and
+do _not_ append a newline (unlike `echo`).
+
+Stdin is interpreted as input to the **interactive session which starts
+after the interpreter finished the supplied script** -- unless the
+script prevents starting the interactive session by _terminating
+explicitly_ with `exit` (takes the number which shall be the process'
+exit/return code as argument), or _consumes stdin_ with verb `stdin`,
+which returns it as a string. Since `stdin` and `stdout` are inverses,
+outputting the transformation of user input can be written conveniently
+using `&.`; for example the script `|. &. stdin ''` reverses the input
+and could be executed like so:
+`echo -n -e 'hello\nworld' | jconsole script.ijs`
+A string can be split into boxed lines using monadic `cutopen`.
+
 ## String Representation and Unicode:
 
 Note: For this section to display properly a font with support for emoji
@@ -2182,6 +2219,13 @@ conjunct    &:          as dyad: monads>dyad; as monad: like @:
 conjunct    &           like &: but calls left on each subresult
 conjunct    &.:         like &: but finally calls inverse of right verb
 conjunct    &.          like &.: but call left>inverse on each subresult
+noun        ARGV_z_     process name; [script name; [script arg1; ...]]
+monad       getenv      return environment variable y or 0 if undefined
+monad       stdout      write y to stdout (does not append newline)
+monad       stderr      write y to stderr (does not append newline)
+monad       exit        terminate J with exit code y (integer: 0-255)
+monad       stdin       consume stdin and return it as string
+monad       cutopen     split string y into boxed lines
 monad       u:          2&u: or 4&u:
 dyad        u:          provides access to some unicode functions
 monad       datatype    type of noun as words
