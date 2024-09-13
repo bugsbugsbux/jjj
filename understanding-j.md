@@ -1152,7 +1152,8 @@ Each name lives in a namespace also called a locale:
 
 Every function has its own local scope, that is an **unnamed
 namespace** that cannot be inherited, thus a function defined within
-another function does not have access to the outer function's namespace.
+another function does not have access to the outer function's namespace
+(except using `u.` or `v.`; see: Applying modifiers to local variables).
 ```J
 var =. 'global'     NB. outside function =. is equivalent to =:
 fn1 =: {{
