@@ -2078,23 +2078,24 @@ The verb `u:` provides access to unicode related functionality:
 - monad `u: string` is `2 u: string`
 - monad `u: number` is `4 u: number`
 - dyad: left arg is:
-    1. truncate to 1-byte precision
-    2. extend or truncate to 2-byte precision
-    3. convert to UCP (Unicode Code Point, a number)
-    4. get UCP in UCS-2 range (<65536) as "unicode"
-    5. like `1&u:` but raise error if discarding non-zero bits
-    6. from literal UTF-16: each 2 bytes become 1 atom of type "unicode"
-    7. convert (literal as UTF-8) to smallest string type needed;
-       get any UCP as "unicode"
-    8. convert to UTF-8;
-       get any UCP as UTF-8 encoded "literal"
-    9. convert string (literal as UTF-8) to type "unicode4" except when
-       all ASCII;
-       UCPs as "unicode4" (merges surrogate pairs)
-    10. convert each *atom* of string to "unicode4", therefore this
-        does not give valid UTF-32 if surrogate pairs are present (fix
-        with 9&u:);
-        get any UCP as "unicode4"
+  + `1`: truncate to 1-byte precision
+  + `2`: extend or truncate to 2-byte precision
+  + `3`: convert to UCP (Unicode Code Point, a number)
+  + `4`: get UCP in UCS-2 range (<65536) as "unicode"
+  + `5`: like `1&u:` but raise error if discarding non-zero bits
+  + `6`: from literal UTF-16: each 2 bytes become 1 atom of type
+    "unicode"
+  + `7`: convert (literal as UTF-8) to smallest string type needed;
+    get any UCP as "unicode"
+  + `8`: convert to UTF-8;
+    get any UCP as UTF-8 encoded "literal"
+  + `9`: convert string (literal as UTF-8) to type "unicode4" except
+    when all ASCII;
+    UCPs as "unicode4" (merges surrogate pairs)
+  + `10`: convert each *atom* of string to "unicode4", therefore this
+    does not give valid UTF-32 if surrogate pairs are present (fix
+    with 9&u:);
+    get any UCP as "unicode4"
 
 ```J
 2 5 $ 'helloworld'
